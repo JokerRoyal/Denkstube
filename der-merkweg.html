@@ -1,0 +1,3148 @@
+<title>Die Denkstube</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --grund:#e6ebe8; --grund-tief:#dbe2df; --flaeche:#f8f9f7; --flaeche-2:#eef2ef;
+  --tinte:#222a2b; --tinte-leise:#5b6a6b; --tinte-zart:#8b9899;
+  --rand:#cfd8d4; --rand-stark:#b7c3be;
+  --akzent:#6c5f8e; --akzent-tief:#574b76; --akzent-weich:#e6e1f0;
+  --moos:#48795a; --moos-weich:#dceade;
+  --kupfer:#a16f36; --kupfer-weich:#f2e6d4;
+  --warnung:#8d5a2b;
+  --schatten:0 1px 2px rgba(34,42,43,.05), 0 10px 26px -14px rgba(34,42,43,.22);
+  --rund:16px; --rund-klein:11px;
+  --skala:1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grund:#13181a; --grund-tief:#0e1214; --flaeche:#1d2427; --flaeche-2:#252e32;
+    --tinte:#e7edeb; --tinte-leise:#a3b1b1; --tinte-zart:#738183;
+    --rand:#313c40; --rand-stark:#445256;
+    --akzent:#b1a1d6; --akzent-tief:#c6bae4; --akzent-weich:#2c2740;
+    --moos:#83b892; --moos-weich:#1c2b22;
+    --kupfer:#d09f65; --kupfer-weich:#30261c;
+    --warnung:#d7a274;
+    --schatten:0 1px 2px rgba(0,0,0,.3), 0 12px 30px -16px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --grund:#13181a; --grund-tief:#0e1214; --flaeche:#1d2427; --flaeche-2:#252e32;
+  --tinte:#e7edeb; --tinte-leise:#a3b1b1; --tinte-zart:#738183;
+  --rand:#313c40; --rand-stark:#445256;
+  --akzent:#b1a1d6; --akzent-tief:#c6bae4; --akzent-weich:#2c2740;
+  --moos:#83b892; --moos-weich:#1c2b22;
+  --kupfer:#d09f65; --kupfer-weich:#30261c;
+  --warnung:#d7a274;
+  --schatten:0 1px 2px rgba(0,0,0,.3), 0 12px 30px -16px rgba(0,0,0,.6);
+}
+html{font-size:calc(17px * var(--skala)); height:100%;}
+body{
+  height:100%; margin:0; color:var(--tinte);
+  background:
+    radial-gradient(1100px 620px at 50% -12%, var(--akzent-weich) 0%, transparent 62%),
+    var(--grund);
+  font-family:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  font-size:1rem; line-height:1.55; -webkit-text-size-adjust:100%;
+}
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+h1,h2,h3{font-family:Fraunces, Georgia, serif; font-weight:600; margin:0; text-wrap:balance; line-height:1.2;}
+h1{font-size:1.6rem;} h2{font-size:1.22rem;} h3{font-size:1.02rem;}
+p{margin:0;}
+button{font:inherit; color:inherit; font-family:inherit;}
+:focus-visible{outline:3px solid var(--akzent); outline-offset:2px;}
+
+/* ---------- Geruest ---------- */
+#huelle{min-height:100%; display:flex; flex-direction:column;}
+#leiste{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:20;
+  display:flex; align-items:center; gap:.5rem;
+  padding:.55rem 1rem; padding-block:.55rem;
+  background:color-mix(in srgb, var(--grund) 88%, transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--rand);
+}
+#leiste-titel{font-family:Fraunces, Georgia, serif; font-size:1.02rem; font-weight:600; flex:1; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.leiste-knopf{
+  min-width:2.6rem; min-height:2.6rem; display:grid; place-items:center;
+  border:1px solid var(--rand); background:var(--flaeche); border-radius:999px;
+  cursor:pointer; font-size:1.05rem; line-height:1;
+}
+.leiste-knopf:hover{border-color:var(--rand-stark);}
+main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3rem; padding-block:1.15rem 3rem;}
+.stapel{display:flex; flex-direction:column; gap:1rem;}
+.stapel-eng{display:flex; flex-direction:column; gap:.55rem;}
+
+/* ---------- Bausteine ---------- */
+.karte{background:var(--flaeche); border:1px solid var(--rand); border-radius:var(--rund); padding:1.05rem;}
+.karte-hoch{box-shadow:var(--schatten);}
+.zeile{display:flex; align-items:center; gap:.7rem;}
+.zeile-weit{display:flex; align-items:center; justify-content:space-between; gap:.7rem; flex-wrap:wrap;}
+.leise{color:var(--tinte-leise);}
+.zart{color:var(--tinte-zart);}
+.klein{font-size:.86rem;}
+.etikett{font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--tinte-zart); font-weight:600;}
+.chip{display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .6rem; border-radius:999px;
+  background:var(--akzent-weich); color:var(--akzent-tief); font-size:.78rem; font-weight:600; border:1px solid transparent;}
+.chip-moos{background:var(--moos-weich); color:var(--moos);}
+.chip-kupfer{background:var(--kupfer-weich); color:var(--kupfer);}
+.zahl{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+
+.knopf{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  min-height:3rem; padding:.6rem 1.15rem; border-radius:999px; cursor:pointer;
+  border:1px solid var(--rand-stark); background:var(--flaeche); font-weight:600;
+}
+.knopf:hover{background:var(--flaeche-2);}
+.knopf-haupt{background:var(--akzent); border-color:var(--akzent); color:#fbfbfa;}
+:root[data-theme="dark"] .knopf-haupt{color:#15191b;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .knopf-haupt{color:#15191b;}}
+.knopf-haupt:hover{background:var(--akzent-tief); border-color:var(--akzent-tief);}
+.knopf-gross{min-height:3.5rem; font-size:1.06rem; width:100%;}
+.knopf-still{border-color:transparent; background:transparent; color:var(--tinte-leise);}
+.knopf-still:hover{background:var(--flaeche-2);}
+.knopf[disabled]{opacity:.45; cursor:default;}
+.knopf-reihe{display:flex; gap:.6rem; flex-wrap:wrap;}
+.knopf-reihe > .knopf{flex:1 1 9rem;}
+
+/* ---------- Sterne ---------- */
+.sterne{display:inline-flex; gap:.12rem; color:var(--kupfer); letter-spacing:.02em;}
+.sterne .leer{color:var(--rand-stark);}
+
+/* ---------- Startseite ---------- */
+.gruss{font-family:Fraunces, Georgia, serif; font-size:1.75rem; font-weight:600; line-height:1.15;}
+.weiter-karte{
+  background:linear-gradient(170deg, var(--flaeche) 0%, var(--flaeche-2) 100%);
+  border:1px solid var(--rand); border-radius:var(--rund); padding:1.15rem; box-shadow:var(--schatten);
+}
+.pensum{display:flex; gap:.4rem;}
+.pensum i{width:.85rem; height:.85rem; border-radius:999px; background:var(--rand-stark); display:block;}
+.pensum i.voll{background:var(--moos);}
+.werte{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem;}
+.wert{background:var(--flaeche-2); border-radius:var(--rund-klein); padding:.65rem .5rem; text-align:center;}
+.wert b{display:block; font-family:"IBM Plex Mono", monospace; font-size:1.2rem; font-variant-numeric:tabular-nums; font-weight:500;}
+.wert span{font-size:.74rem; color:var(--tinte-leise);}
+
+.felder{display:flex; flex-direction:column; gap:.55rem;}
+.feld-zeile{display:grid; grid-template-columns:1fr auto; gap:.15rem .7rem; align-items:baseline;}
+.feld-zeile .spur{grid-column:1 / -1; height:6px; border-radius:3px; background:var(--flaeche-2); overflow:hidden;}
+.feld-zeile .spur i{display:block; height:100%; border-radius:3px; background:var(--akzent);}
+.feld-zeile .wieviel{font-family:"IBM Plex Mono", monospace; font-size:.8rem; color:var(--tinte-leise); font-variant-numeric:tabular-nums;}
+
+/* ---------- Wegkarte ---------- */
+.abschnitt-kopf{display:flex; align-items:baseline; gap:.6rem; margin-top:.4rem;}
+.abschnitt-kopf h2{flex:1;}
+.wegpunkte{display:grid; grid-template-columns:repeat(auto-fill, minmax(4.4rem,1fr)); gap:.55rem;}
+.wegpunkt{
+  position:relative; aspect-ratio:1; border-radius:var(--rund-klein); cursor:pointer;
+  border:1px solid var(--rand); background:var(--flaeche);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.15rem;
+  font-family:"IBM Plex Mono", monospace; font-size:1.05rem; padding:.2rem;
+}
+.wegpunkt:hover{border-color:var(--akzent);}
+.wegpunkt small{font-size:.62rem; letter-spacing:.04em;}
+.wegpunkt.geschafft{background:var(--moos-weich); border-color:transparent;}
+.wegpunkt.offen{border-color:var(--akzent); border-width:2px;}
+.wegpunkt.zu{opacity:.42; cursor:default;}
+.wegpunkt.zu:hover{border-color:var(--rand);}
+
+/* ---------- Spielflaeche ---------- */
+.spielkopf{display:flex; flex-direction:column; gap:.45rem; margin-bottom:.9rem;}
+.anweisung{font-family:Fraunces, Georgia, serif; font-size:1.18rem; font-weight:600; text-wrap:balance;}
+.unterzeile{font-size:.9rem; color:var(--tinte-leise); min-height:1.3em;}
+.merkbalken{height:6px; background:var(--flaeche-2); border-radius:3px; overflow:hidden;}
+.merkbalken i{display:block; height:100%; background:var(--kupfer); border-radius:3px; width:100%; transform-origin:left center;}
+.buehne{display:flex; flex-direction:column; gap:.9rem; align-items:stretch;}
+
+.gitter{display:grid; gap:.5rem; grid-template-columns:repeat(var(--spalten,4), 1fr);}
+.feldchen{
+  aspect-ratio:1; border-radius:var(--rund-klein); border:1px solid var(--rand);
+  background:var(--flaeche); display:grid; place-items:center; cursor:pointer;
+  font-size:clamp(1.25rem, 7vw, 1.9rem); user-select:none; padding:0; max-width:100%;
+  transition:background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.feldchen.ruecken{background:var(--akzent-weich); border-color:transparent; color:transparent;}
+.feldchen.ruecken::after{content:"\2740"; color:var(--akzent); font-size:1.1rem; opacity:.5;}
+.feldchen.offen{background:var(--flaeche-2);}
+.feldchen.gefunden{background:var(--moos-weich); border-color:transparent; cursor:default;}
+.feldchen.an{background:var(--kupfer); border-color:var(--kupfer);}
+.feldchen.gewaehlt{background:var(--akzent-weich); border-color:var(--akzent);}
+.feldchen.nummer{font-family:"IBM Plex Mono",monospace; font-size:1.05rem;}
+
+.karten-reihe{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;}
+.dingchen{
+  display:flex; flex-direction:column; align-items:center; gap:.15rem;
+  min-width:4.8rem; padding:.6rem .5rem; border-radius:var(--rund-klein);
+  border:1px solid var(--rand); background:var(--flaeche); font-size:.8rem; cursor:default;
+}
+.dingchen em{font-size:1.5rem; font-style:normal; line-height:1.1;}
+
+.wahl{display:flex; flex-direction:column; gap:.5rem;}
+.wahl.zwei{display:grid; grid-template-columns:repeat(2,1fr);}
+.wahl-knopf{
+  min-height:3.1rem; padding:.65rem .9rem; border-radius:var(--rund-klein);
+  border:1px solid var(--rand); background:var(--flaeche); cursor:pointer; text-align:center; font-weight:600;
+}
+.wahl-knopf:hover{border-color:var(--akzent); background:var(--flaeche-2);}
+.wahl-knopf.richtig{background:var(--moos-weich); border-color:var(--moos); color:var(--moos);}
+.wahl-knopf.falsch{background:var(--kupfer-weich); border-color:var(--warnung); color:var(--warnung);}
+.wahl-knopf.gewaehlt{border-color:var(--akzent); background:var(--akzent-weich);}
+.wahl-knopf[disabled]{cursor:default;}
+
+.wortwahl{display:flex; flex-wrap:wrap; gap:.45rem;}
+.wortwahl .wahl-knopf{flex:1 1 7.2rem; min-height:2.9rem; font-size:.95rem;}
+
+.tastatur{display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; max-width:17rem; margin:0 auto; width:100%;}
+.tastatur button{min-height:3.2rem; border-radius:var(--rund-klein); border:1px solid var(--rand);
+  background:var(--flaeche); font-family:"IBM Plex Mono",monospace; font-size:1.2rem; cursor:pointer;}
+.tastatur button:hover{background:var(--flaeche-2);}
+.anzeige{
+  font-family:"IBM Plex Mono",monospace; font-size:1.9rem; letter-spacing:.2em; text-align:center;
+  min-height:3.2rem; display:grid; place-items:center; background:var(--flaeche-2);
+  border-radius:var(--rund-klein); padding:.4rem .8rem; word-break:break-all;
+}
+.grosszeichen{
+  font-family:Fraunces, Georgia, serif; font-size:clamp(3rem,18vw,5rem); text-align:center;
+  min-height:6.5rem; display:grid; place-items:center; line-height:1;
+}
+.stroop-wort{font-family:Fraunces, Georgia, serif; font-weight:600; font-size:clamp(2.4rem,14vw,3.6rem);
+  text-align:center; min-height:5.5rem; display:grid; place-items:center;}
+.geschichte{font-size:1.05rem; line-height:1.72; background:var(--flaeche-2); border-radius:var(--rund-klein);
+  padding:1rem; border-left:3px solid var(--kupfer);}
+.geschichte p + p{margin-top:.7rem;}
+.legende{display:grid; grid-template-columns:repeat(auto-fit,minmax(4rem,1fr)); gap:.5rem;}
+.legende div{background:var(--flaeche-2); border-radius:var(--rund-klein); padding:.5rem; text-align:center;}
+.legende b{display:block; font-size:1.6rem; color:var(--akzent); line-height:1.2;}
+.legende span{font-family:"IBM Plex Mono",monospace; font-size:1rem;}
+.buchstaben{display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center;}
+.buchstaben button{min-width:2.9rem; min-height:3.1rem; border-radius:var(--rund-klein); border:1px solid var(--rand);
+  background:var(--flaeche); font-family:"IBM Plex Mono",monospace; font-size:1.15rem; cursor:pointer;}
+.buchstaben button.weg{opacity:.28; cursor:default;}
+.schlitze{display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; min-height:3.1rem;}
+.schlitz{min-width:2.9rem; min-height:3.1rem; border-radius:var(--rund-klein); border:1px dashed var(--rand-stark);
+  display:grid; place-items:center; font-family:"IBM Plex Mono",monospace; font-size:1.15rem; background:var(--flaeche);
+  cursor:pointer;}
+.schlitz.voll{border-style:solid; background:var(--akzent-weich); border-color:transparent;}
+
+.merkzettel{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;}
+.merkzettel span{background:var(--flaeche-2); border-radius:999px; padding:.45rem 1rem; font-size:1.05rem;}
+
+/* ---------- Ergebnis ---------- */
+.ergebnis-sterne{font-size:2.6rem; text-align:center; color:var(--kupfer); letter-spacing:.1em;}
+.ergebnis-sterne .leer{color:var(--rand-stark);}
+.notiz{background:var(--akzent-weich); border-radius:var(--rund-klein); padding:.85rem 1rem; font-size:.93rem;
+  color:var(--akzent-tief);}
+.notiz b{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.2rem;}
+
+/* ---------- Einstellungen / Wissen ---------- */
+.schalter{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.7rem 0;}
+.schalter + .schalter{border-top:1px solid var(--rand);}
+.schalter-text b{display:block; font-weight:600;}
+.schalter-text span{font-size:.85rem; color:var(--tinte-leise);}
+.umschalter{position:relative; width:3.2rem; min-width:3.2rem; height:1.9rem; border-radius:999px;
+  border:1px solid var(--rand-stark); background:var(--flaeche-2); cursor:pointer;}
+.umschalter::after{content:""; position:absolute; top:.2rem; left:.2rem; width:1.35rem; height:1.35rem;
+  border-radius:999px; background:var(--tinte-zart); transition:transform .2s ease, background .2s ease;}
+.umschalter[aria-pressed="true"]{background:var(--akzent-weich); border-color:var(--akzent);}
+.umschalter[aria-pressed="true"]::after{transform:translateX(1.28rem); background:var(--akzent);}
+.wahlreihe{display:flex; gap:.4rem;}
+.wahlreihe button{flex:1; min-height:2.8rem; border-radius:var(--rund-klein); border:1px solid var(--rand);
+  background:var(--flaeche); cursor:pointer;}
+.wahlreihe button[aria-pressed="true"]{background:var(--akzent-weich); border-color:var(--akzent); color:var(--akzent-tief); font-weight:600;}
+.liste-punkte{display:flex; flex-direction:column; gap:.75rem;}
+.punkt{display:grid; grid-template-columns:1.8rem 1fr; gap:.7rem; align-items:start;}
+.punkt em{font-style:normal; font-size:1.3rem; line-height:1.2;}
+.punkt b{display:block;}
+.punkt p{font-size:.92rem; color:var(--tinte-leise);}
+
+/* ---------- Bewegung ---------- */
+@keyframes auf{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+@keyframes wackel{0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);}}
+@keyframes puls{0%{transform:scale(1);} 40%{transform:scale(1.07);} 100%{transform:scale(1);}}
+.auf{animation:auf .32s ease both;}
+.wackel{animation:wackel .3s ease;}
+.puls{animation:puls .35s ease;}
+@media (prefers-reduced-motion: reduce){
+  .auf,.wackel,.puls{animation:none;}
+  .merkbalken i{transition:none !important;}
+}
+:root[data-ruhe="1"] .auf, :root[data-ruhe="1"] .wackel, :root[data-ruhe="1"] .puls{animation:none;}
+.trenner{height:1px; background:var(--rand); border:0; margin:.2rem 0;}
+
+/* ---------- Tagesziel, Rastplatz, Erzählfeld ---------- */
+.balkenspur{height:10px; border-radius:5px; background:var(--flaeche-2); overflow:hidden;}
+.balkenspur i{display:block; height:100%; border-radius:5px; background:var(--moos); width:0;
+  transition:width .5s ease;}
+.balkenspur.offen i{background:var(--akzent);}
+.schreibfeld{width:100%; font:inherit; color:var(--tinte); background:var(--flaeche);
+  border:1px solid var(--rand); border-radius:var(--rund-klein); padding:.7rem .85rem;
+  resize:vertical; min-height:6rem; line-height:1.6;}
+.schluss{background:var(--moos-weich); color:var(--moos); border-radius:var(--rund-klein);
+  padding:.9rem 1rem; font-size:.95rem;}
+.schluss b{display:block; font-family:Fraunces, Georgia, serif; font-size:1.06rem; margin-bottom:.2rem;}
+.rastknopf{
+  display:flex; align-items:center; gap:.6rem; width:100%; text-align:left; cursor:pointer;
+  margin-top:.55rem; padding:.7rem .9rem; border-radius:var(--rund-klein);
+  border:1px dashed var(--rand-stark); background:transparent; font-size:.92rem; color:var(--tinte-leise);
+}
+.rastknopf:hover{border-color:var(--kupfer); color:var(--tinte);}
+.rastknopf em{font-style:normal; font-size:1.15rem;}
+.rastknopf span{flex:1;}
+.hinweiskasten{background:var(--kupfer-weich); color:var(--kupfer); border-radius:var(--rund-klein);
+  padding:.8rem 1rem; font-size:.9rem;}
+
+/* ---------- Zweite Hälfte: Wortkarten, Uhr, Kassenzettel, Buchstabengitter ---------- */
+.feldchen.wortfeld{aspect-ratio:auto; min-height:3.9rem; font-size:.84rem; line-height:1.15;
+  padding:.3rem .25rem; text-align:center; overflow-wrap:anywhere; hyphens:auto;}
+.feldchen.buchstabe{font-family:"IBM Plex Mono", monospace; font-size:clamp(.85rem, 4.2vw, 1.15rem);
+  font-weight:500; letter-spacing:.02em;}
+.feldchen.buchstabe.start{background:var(--akzent-weich); border-color:var(--akzent);}
+.uhrkasten{display:flex; justify-content:center;}
+.uhrkasten svg{max-width:100%; height:auto;}
+.kassenzettel{background:var(--flaeche-2); border-radius:var(--rund-klein); padding:.9rem 1rem;
+  font-family:"IBM Plex Mono", monospace; font-size:.95rem; display:flex; flex-direction:column; gap:.35rem;}
+.kassenzettel div{display:flex; justify-content:space-between; gap:1rem; font-variant-numeric:tabular-nums;}
+.kassenzettel .strich{display:block; height:1px; background:var(--rand); margin:.25rem 0;}
+.suchworte{display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center;}
+.suchworte span{background:var(--flaeche-2); border-radius:999px; padding:.3rem .8rem; font-size:.88rem;
+  font-family:"IBM Plex Mono", monospace; letter-spacing:.03em;}
+.suchworte span.gefunden{background:var(--moos-weich); color:var(--moos); text-decoration:line-through;}
+</style>
+
+<div id="huelle">
+  <header id="leiste">
+    <button id="zurueck" class="leiste-knopf" hidden aria-label="Zurück">&#8592;</button>
+    <div id="leiste-titel">Die Denkstube</div>
+    <button id="knopf-karte" class="leiste-knopf" aria-label="Wegkarte" title="Wegkarte">&#9781;</button>
+    <button id="knopf-mehr" class="leiste-knopf" aria-label="Einstellungen" title="Einstellungen">&#9788;</button>
+  </header>
+
+  <main>
+    <!-- ============ Start ============ -->
+    <section id="ansicht-start" class="stapel">
+      <div>
+        <p class="gruss" id="gruss">Willkommen</p>
+        <p class="leise" id="gruss-zeile">Ein kleiner Spaziergang für den Kopf &ndash; zwölf Minuten am Tag genügen.</p>
+      </div>
+
+      <div class="weiter-karte stapel-eng">
+        <div class="zeile-weit">
+          <span class="etikett" id="weiter-abschnitt">Der Kiesweg</span>
+          <span class="chip" id="weiter-feld">Visuell-räumlich</span>
+        </div>
+        <h2 id="weiter-titel">Zwei Tassen, zwei Löffel</h2>
+        <p class="leise klein" id="weiter-text">Level 1 von 50</p>
+        <button class="knopf knopf-haupt knopf-gross" id="weiter-knopf" style="margin-top:.4rem">Weiter üben</button>
+      </div>
+
+      <button class="knopf" id="knopf-runde" style="width:100%">Tagesrunde &ndash; drei Aufgaben, bunt gemischt</button>
+
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <span class="etikett">Heute</span>
+          <span class="klein zart zahl" id="ziel-zahl">0 von 12 Minuten</span>
+        </div>
+        <div class="balkenspur offen" id="ziel-spur"><i id="ziel-balken"></i></div>
+        <p class="klein leise" id="pensum-text">Noch keine Übung heute. Schon eine einzige zählt.</p>
+        <div class="werte" style="margin-top:.35rem">
+          <div class="wert"><b id="wert-level">0</b><span id="wert-level-text">von 100 Leveln</span></div>
+          <div class="wert"><b id="wert-sterne">0</b><span id="wert-sterne-text">von 300 Sternen</span></div>
+          <div class="wert"><b id="wert-tage">0</b><span>Tage in Folge</span></div>
+        </div>
+      </div>
+
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <h3>Trainingsfelder</h3>
+          <span class="klein zart">geschaffte Level</span>
+        </div>
+        <div class="felder" id="felder"></div>
+        <p class="klein zart">Der Weg wechselt die Felder absichtlich durch &ndash; Abwechslung hält das Üben wach.</p>
+      </div>
+
+      <button class="knopf" id="knopf-wissen">Was dem Kopf sonst noch gut tut</button>
+    </section>
+
+    <!-- ============ Wegkarte ============ -->
+    <section id="ansicht-karte" class="stapel" hidden>
+      <p class="leise klein" id="karte-kopf">Hundert Stationen in zehn Räumen. Sie werden langsam kniffliger &ndash; und jede lässt sich so oft wiederholen, wie du magst.</p>
+      <div id="karte-liste" class="stapel"></div>
+    </section>
+
+    <!-- ============ Spiel ============ -->
+    <section id="ansicht-spiel" hidden>
+      <div class="spielkopf">
+        <div class="zeile-weit">
+          <span class="etikett" id="spiel-etikett">Level 1</span>
+          <span class="klein zart" id="spiel-zaehler"></span>
+        </div>
+        <p class="anweisung" id="spiel-anweisung">Schau dir die Karten an.</p>
+        <p class="unterzeile" id="spiel-unterzeile"></p>
+        <div class="merkbalken" id="spiel-balken" hidden><i></i></div>
+      </div>
+      <div class="buehne" id="buehne"></div>
+    </section>
+
+    <!-- ============ Ergebnis ============ -->
+    <section id="ansicht-ergebnis" class="stapel" hidden>
+      <div class="karte karte-hoch stapel-eng auf">
+        <p class="ergebnis-sterne" id="ergebnis-sterne">&#9733;&#9733;&#9733;</p>
+        <h2 style="text-align:center" id="ergebnis-lob">Sehr schön.</h2>
+        <p class="leise klein" style="text-align:center" id="ergebnis-zahlen"></p>
+        <div class="notiz" id="ergebnis-notiz" style="margin-top:.5rem"></div>
+      </div>
+      <div class="schluss" id="ergebnis-schluss" hidden></div>
+      <div class="knopf-reihe">
+        <button class="knopf" id="ergebnis-nochmal">Noch einmal</button>
+        <button class="knopf knopf-haupt" id="ergebnis-weiter">Nächstes Level</button>
+      </div>
+      <button class="knopf knopf-still" id="ergebnis-pause">Für heute genug</button>
+    </section>
+
+    <!-- ============ Einstellungen ============ -->
+    <section id="ansicht-mehr" class="stapel" hidden>
+      <div class="karte">
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Tagesziel</b>
+            <span>Zehn bis fünfzehn Minuten am Tag sind genug. Ist das Ziel erreicht, sagt die Stube Bescheid &ndash; weiterspielen darfst du trotzdem.</span>
+          </div>
+        </div>
+        <div class="wahlreihe" id="wahl-ziel">
+          <button data-wert="10" aria-pressed="false">10 Min.</button>
+          <button data-wert="12" aria-pressed="true">12 Min.</button>
+          <button data-wert="15" aria-pressed="false">15 Min.</button>
+          <button data-wert="0" aria-pressed="false">kein Ziel</button>
+        </div>
+        <p class="klein zart" style="margin-top:.7rem">Die Stube kann sich nicht von selbst melden. Wer eine Erinnerung möchte, stellt sich im Handy einen wiederkehrenden Wecker auf die eigene Übungszeit &ndash; am besten immer dieselbe Tageszeit, das macht aus dem Üben eine Gewohnheit.</p>
+      </div>
+
+      <div class="karte">
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Schriftgröße</b>
+            <span>Größer, wenn die Augen müde sind.</span>
+          </div>
+        </div>
+        <div class="wahlreihe" id="wahl-schrift">
+          <button data-wert="1" aria-pressed="true">Normal</button>
+          <button data-wert="1.12" aria-pressed="false">Gross</button>
+          <button data-wert="1.26" aria-pressed="false">Sehr gross</button>
+        </div>
+      </div>
+
+      <div class="karte">
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Mehr Zeit zum Merken</b>
+            <span>Alle Merkzeiten werden um die Hälfte verlängert.</span>
+          </div>
+          <button class="umschalter" id="schalter-zeit" aria-pressed="false" aria-label="Mehr Zeit zum Merken"></button>
+        </div>
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Leise Töne</b>
+            <span>Ein kurzer Klang, wenn etwas stimmt.</span>
+          </div>
+          <button class="umschalter" id="schalter-ton" aria-pressed="true" aria-label="Leise Töne"></button>
+        </div>
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Ruhige Ansicht</b>
+            <span>Keine Bewegung, kein Wackeln.</span>
+          </div>
+          <button class="umschalter" id="schalter-ruhe" aria-pressed="false" aria-label="Ruhige Ansicht"></button>
+        </div>
+        <div class="schalter">
+          <div class="schalter-text">
+            <b>Alle Level offen</b>
+            <span>Frei stöbern, statt der Reihe nach zu gehen.</span>
+          </div>
+          <button class="umschalter" id="schalter-offen" aria-pressed="false" aria-label="Alle Level offen"></button>
+        </div>
+      </div>
+
+      <div class="karte stapel-eng">
+        <h3>Fortschritt</h3>
+        <p class="klein leise" id="mehr-fortschritt">Noch kein Level geschafft.</p>
+        <button class="knopf" id="knopf-loeschen" style="margin-top:.3rem">Fortschritt zurücksetzen</button>
+        <p class="klein zart">Der Fortschritt liegt nur in diesem Browser &ndash; auf einem anderen Gerät fängt der Weg wieder vorn an. Was du auf den Rastplätzen erzählt hast, bleibt auch beim Zurücksetzen erhalten.</p>
+      </div>
+
+      <button class="knopf knopf-still" id="knopf-wissen-2">Was dem Kopf sonst noch gut tut</button>
+    </section>
+
+    <!-- ============ Wissen ============ -->
+    <section id="ansicht-wissen" class="stapel" hidden>
+      <div class="karte stapel-eng">
+        <h2>Ehrlich gesagt</h2>
+        <p class="leise">Gedächtnistraining macht vor allem in den geübten Aufgaben besser &ndash; darin ist es zuverlässig gut. Dass Rätsel allein eine Demenz verhindern, ist nicht belegt. Am besten belegt sind <b>kombinierte</b> Programme: Bewegung, Ernährung, Blutdruck im Blick und geistige Aufgaben zusammen (so war die finnische FINGER-Studie aufgebaut, und so lesen sich die Empfehlungen der Lancet-Kommission zur Demenz).</p>
+        <p class="leise">Heisst: Dieser Weg hier ist der geistige Teil. Die anderen Teile sind mindestens so wichtig &ndash; und die meisten davon machen Freude.</p>
+      </div>
+
+      <div class="karte stapel-eng">
+        <h2>Warum zehn bis fünfzehn Minuten reichen</h2>
+        <p class="leise">Verteiltes Üben schlägt geballtes Üben: dreimal zehn Minuten an drei Tagen bringen mehr als eine halbe Stunde an einem. Das Gehirn braucht die Pausen dazwischen, um das Geübte zu festigen &ndash; in der Lernforschung heißt das der Verteilungseffekt, und er ist einer der stabilsten Befunde überhaupt.</p>
+        <p class="leise">Dazu kommt: Bei fordernden Aufgaben lässt die Konzentration nach einer Viertelstunde messbar nach. Wer dann weitermacht, übt vor allem Müdigkeit &ndash; und nimmt sich die Aufmerksamkeit, die der übrige Tag auch noch braucht. Diese Stube soll die Konzentration stärken, nicht auffressen.</p>
+        <p class="leise">Deshalb das Tagesziel: Ist es voll, wird freundlich Schluss gesagt. Wer trotzdem weitermag, macht weiter &ndash; es wird nur nichts mehr verlangt.</p>
+      </div>
+
+      <div class="karte">
+        <h3 style="margin-bottom:.8rem">Die anderen Teile</h3>
+        <div class="liste-punkte">
+          <div class="punkt"><em>&#128694;</em><div><b>Bewegung</b><p>Zügiges Gehen, Radeln, Tanzen &ndash; etwa 150 Minuten in der Woche. Der Blutfluss im Gehirn ist der am besten belegte Hebel überhaupt.</p></div></div>
+          <div class="punkt"><em>&#128564;</em><div><b>Schlaf</b><p>Im Schlaf wird das Gemerkte einsortiert und das Gehirn gespült. Sieben Stunden sind mehr wert als jedes Rätsel.</p></div></div>
+          <div class="punkt"><em>&#9749;</em><div><b>Gesellschaft</b><p>Ein Gespräch ist das anspruchsvollste Gedächtnisspiel, das es gibt: zuhören, behalten, antworten. Einsamkeit zählt zu den Risikofaktoren.</p></div></div>
+          <div class="punkt"><em>&#128066;</em><div><b>Hören und Sehen</b><p>Schlechtes Hören schneidet das Gehirn von Reizen ab und gilt als einer der größten beeinflussbaren Risikofaktoren. Ein Hörgerät ist Gedächtnisschutz.</p></div></div>
+          <div class="punkt"><em>&#129658;</em><div><b>Blutdruck, Zucker, Gewicht</b><p>Was den Gefäßen gut tut, tut dem Kopf gut. Ab der Lebensmitte zählt jeder gut eingestellte Wert.</p></div></div>
+          <div class="punkt"><em>&#127859;</em><div><b>Essen</b><p>Viel Gemüse, Hülsenfrüchte, Nüsse, Olivenöl, Fisch &ndash; mediterran gedacht. Kein Wundermittel, aber ein guter Boden.</p></div></div>
+          <div class="punkt"><em>&#127925;</em><div><b>Etwas ganz Neues</b><p>Eine Sprache, ein Instrument, ein neuer Weg zum Markt. Neues baut Reserve auf &ndash; mehr als das Wiederholen des Vertrauten.</p></div></div>
+        </div>
+      </div>
+
+      <div class="karte stapel-eng">
+        <h3>Wenn du unsicher bist</h3>
+        <p class="leise klein">Wer merkt, dass das Gedächtnis sich wirklich verändert &ndash; Termine, Namen, vertraute Wege &ndash;, klärt das am besten früh bei der Hausärztin oder dem Hausarzt. Früh nachsehen lassen ist kein Drama, sondern die beste Karte, die man hat. Diese App ist ein Spiel und keine Untersuchung.</p>
+      </div>
+      <button class="knopf" id="wissen-zurueck">Zurück zum Weg</button>
+    </section>
+  </main>
+</div>
+
+<script>
+/* =========================================================
+   Die Denkstube — Daten
+   ========================================================= */
+
+const ABSCHNITTE = [
+  {name:'Der Kiesweg',      von:1,  bis:10, satz:'Sanft anfangen. Kurze Aufgaben, viel Zeit zum Schauen.'},
+  {name:'Die Kräuterbank',  von:11, bis:20, satz:'Ein Stück länger merken, ein Stück mehr Sorten.'},
+  {name:'Das Gewächshaus',  von:21, bis:30, satz:'Jetzt wird rückwärts gedacht, umgestellt und mitgerechnet.'},
+  {name:'Die Bibliothek',   von:31, bis:40, satz:'Längere Listen, Ablenkung dazwischen, Regeln die wechseln.'},
+  {name:'Der Sternenhimmel',von:41, bis:50, satz:'Die kniffligen Stücke. Hier darf auch etwas misslingen.'},
+  {name:'Die Dachkammer',   von:51, bis:60, satz:'Länger behalten, in der richtigen Folge wiedergeben, Zusammengehörendes finden.'},
+  {name:'Der Uhrenladen',   von:61, bis:70, satz:'Alles mit Takt und Tempo: Zeiger lesen, zusammenrechnen, zügig antworten.'},
+  {name:'Das Kartenzimmer', von:71, bis:80, satz:'Wege im Kopf gehen, Plätze behalten, Muster rückwärts nachlegen.'},
+  {name:'Der Lesesaal',     von:81, bis:90, satz:'Wörter, Texte und lange Listen — und Fragen erst nach einer Störung.'},
+  {name:'Der Leuchtturm',   von:91, bis:100, satz:'Das obere Ende. Wer hier zwei Sterne holt, kann sehr zufrieden sein.'}
+];
+
+const FELDER = {
+  paare:       'Visuell-räumliches Gedächtnis',
+  folge:       'Arbeitsgedächtnis',
+  leuchten:    'Aufmerksamkeit & Reihenfolge',
+  positionen:  'Visuelle Merkspanne',
+  liste:       'Verbales Gedächtnis',
+  wasfehlt:    'Visuelles Gedächtnis',
+  zuordnung:   'Verknüpfungsgedächtnis',
+  reihenfolge: 'Reihenfolgegedächtnis',
+  nback:       'Arbeitsgedächtnis',
+  kette:       'Rechnen im Kopf',
+  geschichte:  'Episodisches Gedächtnis',
+  stroop:      'Konzentration & Impulskontrolle',
+  muster:      'Logisches Denken',
+  code:        'Kurzzeitgedächtnis & Tempo',
+  interferenz: 'Merken trotz Ablenkung',
+  anagramm:    'Wortfindung',
+  oddone:      'Begriffe ordnen',
+  sprichwort:  'Sprachgedächtnis',
+  wortkette:   'Wortschatz & Verknüpfen',
+  sammelkorb:  'Wortfindung mit Tempo',
+  palast:      'Merktechnik: Orte',
+  suchbild:    'Genaues Hinsehen',
+  zeitleiste:  'Wissen & Zeitgefühl',
+  rastplatz:   'Erinnern, ohne Punkte',
+  passen:      'Zusammengehörendes merken',
+  wegplan:     'Räumliches Vorstellen',
+  uhrzeit:     'Uhr und Zeit',
+  geldbeutel:  'Rechnen im Alltag',
+  wortgitter:  'Wörter aufspüren',
+  pruefung:    'Alles zusammen'
+};
+
+/* Für die Übersicht auf der Startseite: die Spielarten in sechs grobe Felder gebündelt */
+const GRUPPEN = {
+  folge:'Arbeitsgedächtnis', nback:'Arbeitsgedächtnis', kette:'Arbeitsgedächtnis', code:'Arbeitsgedächtnis',
+  liste:'Sprache und Wörter', interferenz:'Sprache und Wörter', anagramm:'Sprache und Wörter',
+  sprichwort:'Sprache und Wörter', wortkette:'Sprache und Wörter', sammelkorb:'Sprache und Wörter',
+  paare:'Bilder und Plätze', wasfehlt:'Bilder und Plätze', positionen:'Bilder und Plätze', palast:'Bilder und Plätze',
+  leuchten:'Folgen und Aufmerksamkeit', reihenfolge:'Folgen und Aufmerksamkeit', stroop:'Folgen und Aufmerksamkeit',
+  suchbild:'Folgen und Aufmerksamkeit',
+  geschichte:'Erinnern und Verknüpfen', zuordnung:'Erinnern und Verknüpfen',
+  muster:'Denken und Ordnen', oddone:'Denken und Ordnen', zeitleiste:'Denken und Ordnen',
+  uhrzeit:'Denken und Ordnen', geldbeutel:'Arbeitsgedächtnis',
+  wortgitter:'Sprache und Wörter', passen:'Erinnern und Verknüpfen', wegplan:'Bilder und Plätze',
+  pruefung:'Alles zusammen'
+};
+
+const NOTIZEN = {
+  paare:       'Karten suchen heißt: sich merken, wo etwas lag. Genau das braucht man später für den Schlüssel, die Brille und den geparkten Wagen.',
+  folge:       'Eine Ziffernfolge im Kopf halten ist der klassische Test für die Merkspanne. Rückwärts kommt noch das Umsortieren dazu — dieselbe Arbeit wie „hundertsiebenundvierzig" zu hören und aufzuschreiben.',
+  leuchten:    'Eine Reihenfolge nachzumachen verbindet Schauen, Behalten und Handeln. Das ist die Grundlage für jede Handlungsfolge, vom Rezept bis zum Fahrkartenautomaten.',
+  positionen:  'Ein Muster von Plätzen auf einmal aufzunehmen trainiert das räumliche Bild im Kopf — hilfreich beim Wiederfinden von Wegen und Dingen.',
+  liste:       'Wortlisten sind die ehrlichste Gedächtnisübung: einprägen, halten, wiedererkennen. Die Einkaufsliste ohne Zettel ist der Alltagstest dazu.',
+  wasfehlt:    'Erst das Ganze aufnehmen, dann die Lücke bemerken. Diese Übung schärft den Blick fürs Detail und das genaue Hinsehen.',
+  zuordnung:   'Zwei Dinge zu einem Paar verbinden — Name und Gesicht, Name und Ort — ist die Fähigkeit, die im Alltag am ersten wackelt. Und die man am besten üben kann.',
+  reihenfolge: 'Nicht nur was, sondern in welcher Folge. Dieses Gedächtnis brauchst du für Erzählungen, Rezepte und Wegbeschreibungen.',
+  nback:       'Immer nur die letzten Eindrücke im Kopf behalten und laufend austauschen — die anspruchsvollste Arbeitsgedächtnisübung, die es gibt. Fehler gehören dazu.',
+  kette:       'Rechnen, ohne etwas aufzuschreiben: der Zwischenwert muss im Kopf gehalten werden, während schon der nächste Schritt kommt.',
+  geschichte:  'Eine Geschichte behalten und nach Einzelheiten befragt werden — so arbeitet das Erinnerungsgedächtnis. Genau das, was beim Erzählen am Kaffeetisch gebraucht wird.',
+  stroop:      'Das Naheliegende unterdrücken und der Regel folgen. Das ist Konzentration im engeren Sinn — und sie lässt sich üben.',
+  muster:      'Eine Regel in Zahlen erkennen und weiterdenken. Logik und Gedächtnis arbeiten hier zusammen.',
+  code:        'Eine kleine Tabelle im Kopf behalten und sofort anwenden. Dieselbe Arbeit wie eine Telefonnummer zu merken, während man sie eintippt.',
+  interferenz: 'Merken, gestört werden, sich trotzdem erinnern. Die Ablenkung ist der Punkt — im Alltag klingelt es immer im falschen Moment.',
+  anagramm:    'Aus Buchstaben ein Wort finden: das Wortgedächtnis von hinten aufgezäumt. Hilft gegen das Gefühl, ein Wort „liegt auf der Zunge".',
+  oddone:      'Begriffe sortieren und die Ausnahme erkennen. Dahinter steckt das Wissen über Bedeutungen — das stabilste Gedächtnis, das wir haben.',
+  pruefung:    'Drei Aufgaben hintereinander, ohne Pause. Wer bis hier gekommen ist, hat sich das verdient.',
+  sprichwort:  'Sprichwörter liegen tief im Langzeitgedächtnis — oft tiefer als alles andere. Sie hervorzuholen macht Freude und hält den Zugriff auf Wörter geschmeidig.',
+  wortkette:   'Zusammengesetzte Wörter sind die Spezialität des Deutschen. Eine Kette zu bauen verbindet Wortschatz, Fantasie und das Halten des letzten Gliedes im Kopf.',
+  sammelkorb:  'Begriffe einer Kategorie schnell herausfischen: das ist die Wortflüssigkeit, die Sprachtests messen — und im Alltag dafür sorgt, dass das richtige Wort schnell da ist.',
+  palast:      'Die Loci-Methode: Dinge an vertraute Orte legen und sie dort wieder abholen. Die älteste Merktechnik der Welt — Redner nutzten sie schon in der Antike, und sie funktioniert heute genauso.',
+  suchbild:    'Zwei Reihen vergleichen schult den genauen Blick und die Ausdauer der Aufmerksamkeit. Kein Merken, nur Hinsehen — eine Verschnaufpause mit Nutzen.',
+  zeitleiste:  'Dinge in ihre Zeit einordnen verbindet Wissen mit eigenem Erlebten. Dieses Gedächtnis ist stabil und wächst ein Leben lang weiter.',
+  rastplatz:   'Erinnerungspflege: vom eigenen Leben erzählen. Es gibt hier nichts zu gewinnen und nichts falsch zu machen — und genau deshalb tut es gut.',
+  passen:      'Hier sehen die Paare nicht gleich aus, sie gehören zusammen. Der Platz muss gemerkt und die Bedeutung mitgedacht werden — zwei Dinge auf einmal.',
+  wegplan:     'Einen Weg aus Pfeilen im Kopf behalten und dann wirklich gehen. Räumliches Arbeitsgedächtnis: dieselbe Leistung wie eine Wegbeschreibung zu behalten.',
+  uhrzeit:     'Zeiger lesen und in Gedanken weiterdrehen. Die analoge Uhr ist eine kleine Rechenaufgabe mit Bild — und sie kommt in jedem Gedächtnistest der Welt vor.',
+  geldbeutel:  'Einkaufen im Kopf: zusammenzählen, dann das Rückgeld. Rechnen mit Geld ist die alltagsnächste Übung, die es gibt — und eine der letzten, die man aufgeben will.',
+  wortgitter:  'Wörter im Buchstabengewimmel aufspüren. Das Auge sucht, der Wortschatz erkennt — und die Uhr sorgt dafür, dass es nicht zu gemütlich wird.'
+};
+
+/* ---------- Bausteine für die Aufgaben ---------- */
+
+const SYMBOLE = ['🌿','🍐','🫖','🧺','🕯️','🐦','🌰','🍄','🪵','🧶','🌼','🐌','🍋','🪴','🐝','🌙','☕','🥨','🧦','🪶','🍁','🐞','🎻','🫐','🥐','🌻','🐚','🍀'];
+
+const DINGE = [
+  {e:'🫖',w:'Teekanne'},{e:'🧺',w:'Korb'},{e:'🕯️',w:'Kerze'},{e:'🍐',w:'Birne'},
+  {e:'🧶',w:'Wollknäuel'},{e:'🌼',w:'Margerite'},{e:'🍄',w:'Pilz'},{e:'🐌',w:'Schnecke'},
+  {e:'🍋',w:'Zitrone'},{e:'🪴',w:'Topfpflanze'},{e:'🐝',w:'Biene'},{e:'☕',w:'Tasse'},
+  {e:'🥨',w:'Brezel'},{e:'🧦',w:'Socke'},{e:'🪶',w:'Feder'},{e:'🍁',w:'Blatt'},
+  {e:'🐞',w:'Marienkäfer'},{e:'🎻',w:'Geige'},{e:'🫐',w:'Blaubeeren'},{e:'🥐',w:'Hörnchen'},
+  {e:'🌻',w:'Sonnenblume'},{e:'🐚',w:'Muschel'},{e:'🍀',w:'Klee'},{e:'🌰',w:'Eichel'},
+  {e:'🐦',w:'Amsel'},{e:'🌙',w:'Mond'},{e:'🪵',w:'Holzscheit'},{e:'🌿',w:'Zweig'}
+];
+
+const WORTFELDER = {
+  kueche:   {titel:'Auf dem Küchentisch', worte:['Kanne','Sieb','Zimt','Honig','Butter','Teller','Schürze','Kelle','Mehl','Rosine','Krug','Löffel','Backblech','Salz','Quirl','Tasse','Hefe','Nudelholz']},
+  garten:   {titel:'Im Garten',           worte:['Harke','Beet','Rose','Gießkanne','Zaun','Amsel','Tulpe','Efeu','Schnecke','Bank','Hecke','Kompost','Spaten','Laube','Regentonne','Klee','Kürbis','Maulwurf']},
+  markt:    {titel:'Auf dem Markt',       worte:['Korb','Kirschen','Käse','Brot','Fenchel','Blumen','Lauch','Quark','Kleingeld','Waage','Oliven','Radieschen','Sellerie','Papiertüte','Pilze','Trauben','Honigglas','Stand']},
+  reise:    {titel:'An der See',          worte:['Koffer','Fahrkarte','Bahnsteig','Regenschirm','Postkarte','Hafen','Leuchtturm','Fähre','Landkarte','Sandburg','Möwe','Fernglas','Kiesel','Deich','Fahrplan','Muschel','Steg','Windjacke']},
+  naehkorb: {titel:'Im Nähkörbchen',      worte:['Fingerhut','Garn','Schere','Knopf','Nadel','Band','Maßband','Filz','Stoffrest','Spule','Häkelnadel','Kreide','Saum','Borte','Nadelkissen','Wolle','Öse','Litze']},
+  werkstatt:{titel:'In der Werkstatt',    worte:['Hammer','Zange','Schraube','Dübel','Feile','Pinsel','Leiter','Eimer','Wasserwaage','Säge','Zollstock','Bohrer','Kanister','Kabel','Kiste','Lack','Klemme','Schleifpapier']}
+};
+
+const ZUORDNUNGEN = {
+  blumen: {frage:'Welche Blume steht bei %a im Fenster?', was:'Blume', paare:[
+    ['Frau Ostermann','Ringelblume'],['Herr Albrecht','Dahlie'],['Tante Hilde','Flieder'],
+    ['Herr Kowalski','Rittersporn'],['Frau Beetz','Kamille'],['Onkel Ernst','Sonnenblume'],
+    ['Frau Dahl','Levkoje'],['Herr Simon','Zinnie']]},
+  staedte: {frage:'Wo wohnt %a?', was:'Stadt', paare:[
+    ['Frau Krüger','Lübeck'],['Herr Manteuffel','Passau'],['Lena','Görlitz'],
+    ['Herr Vogt','Trier'],['Frau Sander','Flensburg'],['Jonas','Bamberg'],
+    ['Frau Paulsen','Husum'],['Herr Reinhardt','Weimar']]},
+  berufe: {frage:'Was ist %a von Beruf?', was:'Beruf', paare:[
+    ['Frau Bremer','Buchbinderin'],['Herr Naumann','Uhrmacher'],['Frau Eckhardt','Hebamme'],
+    ['Herr Tietz','Gärtner'],['Frau Zimmer','Tierärztin'],['Herr Pape','Schornsteinfeger'],
+    ['Frau Loos','Organistin'],['Herr Walther','Kartograf']]}
+};
+
+const GESCHICHTEN = {
+  brief: {
+    titel:'Der Brief',
+    text:['Am Dienstagmorgen lag ein Brief im Kasten. Die Marke war blau und zeigte einen Leuchtturm.',
+          'Geschrieben hatte Gerda aus Rostock. Sie kommt im Juni zu Besuch und bringt ihren Hund Paul mit.'],
+    fragen:[
+      {f:'An welchem Tag kam der Brief?', o:['Am Montag','Am Dienstag','Am Freitag','Am Sonntag'], r:1},
+      {f:'Was war auf der Marke zu sehen?', o:['Ein Segelboot','Eine Möwe','Ein Leuchtturm','Eine Brücke'], r:2},
+      {f:'Wie heißt der Hund?', o:['Paul','Peter','Pauline','Pascha'], r:0}
+    ]},
+  markt: {
+    titel:'Der Markttag',
+    text:['Herr Wendt ging am Samstag um halb neun zum Markt. Er kaufte drei Pfund Äpfel, einen Bund Radieschen und für seine Nachbarin einen Strauß Sonnenblumen.',
+          'Am Käsestand traf er Frau Liebig, die von ihrer Reise nach Prag erzählte. Zum Schluss fehlte ihm das Kleingeld für den Fisch — also nahm er zwei Brötchen.'],
+    fragen:[
+      {f:'Wie viele Pfund Äpfel kaufte Herr Wendt?', o:['Ein Pfund','Zwei Pfund','Drei Pfund','Fünf Pfund'], r:2},
+      {f:'Welche Blumen bekam die Nachbarin?', o:['Sonnenblumen','Tulpen','Nelken','Astern'], r:0},
+      {f:'Wohin war Frau Liebig gereist?', o:['Nach Wien','Nach Prag','Nach Dresden','Nach Riga'], r:1},
+      {f:'Was nahm er statt des Fisches?', o:['Zwei Brötchen','Ein Stück Käse','Eine Tüte Pilze','Nichts'], r:0}
+    ]},
+  rezept: {
+    titel:'Großmutters Streuselkuchen',
+    text:['Fünfhundert Gramm Mehl, ein Würfel Hefe, zweihundert Gramm Butter, zwei Esslöffel Zucker und eine Prise Salz.',
+          'Der Teig muss vierzig Minuten gehen, am besten neben dem Ofen. Gebacken wird bei hundertachtzig Grad.',
+          'Großmutter legte immer Mirabellen darunter, nie Pflaumen, und schrieb das Rezept mit Bleistift auf die Rückseite einer Ansichtskarte aus Bad Elster.'],
+    fragen:[
+      {f:'Wie viel Mehl kommt in den Teig?', o:['300 Gramm','400 Gramm','500 Gramm','750 Gramm'], r:2},
+      {f:'Wie lange muss der Teig gehen?', o:['Zwanzig Minuten','Dreißig Minuten','Vierzig Minuten','Eine Stunde'], r:2},
+      {f:'Welche Früchte kamen unter die Streusel?', o:['Pflaumen','Mirabellen','Äpfel','Kirschen'], r:1},
+      {f:'Bei welcher Temperatur wird gebacken?', o:['160 Grad','170 Grad','180 Grad','200 Grad'], r:2},
+      {f:'Wo stand das Rezept?', o:['In einem Heft','Auf einer Ansichtskarte','Auf der Tüte','In der Zeitung'], r:1}
+    ]},
+  umzug: {
+    titel:'Der Umzug der Nachbarn',
+    text:['Am zweiten Freitag im Mai zogen Steinbachs aus dem Erdgeschoss aus. Der Möbelwagen hatte ein Bremer Kennzeichen und stand ab sieben Uhr in der Einfahrt.',
+          'Drei Männer trugen zuerst das Klavier hinaus, dann einen Schrank mit Spiegeltüren, zuletzt vierzehn Kisten Bücher.',
+          'Frau Steinbach schenkte Herrn Lorenz zum Abschied ihren Rosenstock im Tontopf. Das alte Küchenradio ließ sie auf dem Fensterbrett stehen.'],
+    fragen:[
+      {f:'In welchem Monat war der Umzug?', o:['Im März','Im Mai','Im Juni','Im September'], r:1},
+      {f:'Woher kam der Möbelwagen?', o:['Aus Bremen','Aus Berlin','Aus Bochum','Aus Bamberg'], r:0},
+      {f:'Was wurde zuerst hinausgetragen?', o:['Der Schrank','Die Bücherkisten','Das Klavier','Der Rosenstock'], r:2},
+      {f:'Wie viele Kisten Bücher waren es?', o:['Vier','Neun','Vierzehn','Vierzig'], r:2},
+      {f:'Wer bekam den Rosenstock?', o:['Herr Lorenz','Frau Wendt','Der Hausmeister','Die Enkelin'], r:0},
+      {f:'Was blieb auf dem Fensterbrett stehen?', o:['Der Tontopf','Das Küchenradio','Ein Spiegel','Eine Kerze'], r:1}
+    ]},
+  gewitter: {
+    titel:'Das Gewitter',
+    text:['Am Donnerstag kurz nach halb sechs wurde es über dem Dorf dunkel. Der erste Blitz fuhr in die Pappel hinter der Molkerei, und der Strom fiel für zwanzig Minuten aus.',
+          'Familie Warnke saß bei zwei Kerzen in der Küche und aß kalte Kartoffeln mit Quark.',
+          'Später zählte der Junge zwischen Blitz und Donner bis vier — das Gewitter war also noch gut einen Kilometer entfernt. Am Morgen lagen drei Dachziegel auf dem Rasen, und die Regentonne war übergelaufen.'],
+    fragen:[
+      {f:'An welchem Tag war das Gewitter?', o:['Am Dienstag','Am Donnerstag','Am Samstag','Am Sonntag'], r:1},
+      {f:'In welchen Baum fuhr der Blitz?', o:['In die Eiche','In die Birke','In die Pappel','In die Linde'], r:2},
+      {f:'Wie lange fiel der Strom aus?', o:['Zehn Minuten','Zwanzig Minuten','Eine halbe Stunde','Bis zum Morgen'], r:1},
+      {f:'Was gab es zu essen?', o:['Kalte Kartoffeln mit Quark','Brot mit Käse','Suppe','Nichts'], r:0},
+      {f:'Bis wie viel zählte der Junge?', o:['Bis zwei','Bis vier','Bis sieben','Bis zehn'], r:1},
+      {f:'Wie viele Dachziegel lagen am Morgen auf dem Rasen?', o:['Einer','Zwei','Drei','Fünf'], r:2}
+    ]}
+};
+
+const MUSTER_LEICHT = [
+  {reihe:[2,4,6,8], o:[9,10,11,12], r:1, warum:'Immer zwei mehr.'},
+  {reihe:[5,10,15,20], o:[22,25,30,35], r:1, warum:'Immer fünf mehr.'},
+  {reihe:[1,2,4,8], o:[10,12,16,20], r:2, warum:'Jede Zahl ist das Doppelte.'},
+  {reihe:[20,18,16,14], o:[13,12,11,10], r:1, warum:'Immer zwei weniger.'},
+  {reihe:[3,6,9,12], o:[14,15,16,18], r:1, warum:'Die Dreierreihe.'}
+];
+
+const MUSTER_SCHWER = [
+  {reihe:[1,1,2,3,5,8], o:[11,12,13,15], r:2, warum:'Jede Zahl ist die Summe der beiden davor.'},
+  {reihe:[2,6,18,54], o:[108,148,162,216], r:2, warum:'Immer dreimal so viel.'},
+  {reihe:[81,27,9], o:[2,3,4,6], r:1, warum:'Immer ein Drittel.'},
+  {reihe:[3,6,5,10,9,18], o:[16,17,19,20], r:1, warum:'Abwechselnd verdoppeln und eins abziehen.'},
+  {reihe:[100,97,91,82], o:[70,72,74,76], r:0, warum:'Es wird 3, dann 6, dann 9, dann 12 abgezogen.'},
+  {reihe:[1,4,9,16,25], o:[30,33,36,49], r:2, warum:'Die Quadratzahlen: 6 mal 6 ist 36.'}
+];
+
+const ODDONE = [
+  {o:['Amsel','Spatz','Fledermaus','Meise'], r:2, warum:'Die Fledermaus ist kein Vogel.'},
+  {o:['Hammer','Zange','Nagel','Feile'], r:2, warum:'Der Nagel ist kein Werkzeug, sondern Material.'},
+  {o:['Juni','Juli','Freitag','August'], r:2, warum:'Freitag ist ein Wochentag, kein Monat.'},
+  {o:['Geige','Cello','Harfe','Bratsche'], r:2, warum:'Die Harfe wird gezupft, die anderen gestrichen.'},
+  {o:['Kartoffel','Möhre','Erbse','Sellerie'], r:2, warum:'Die Erbse wächst nicht in der Erde.'},
+  {o:['Lübeck','Rostock','Kassel','Kiel'], r:2, warum:'Kassel liegt nicht am Wasser.'}
+];
+
+const ANAGRAMME_LEICHT = [
+  {wort:'KERZE',  hinweis:'Sie brennt am Abend auf dem Tisch.'},
+  {wort:'TASSE',  hinweis:'Steht neben der Kanne.'},
+  {wort:'GARTEN', hinweis:'Dort wächst es hinter dem Haus.'},
+  {wort:'BLUME',  hinweis:'Steht in der Vase.'}
+];
+
+const ANAGRAMME_SCHWER = [
+  {wort:'KIRSCHBAUM',  hinweis:'Im Juni hängt er voll roter Früchte.'},
+  {wort:'REGENSCHIRM', hinweis:'Bleibt am liebsten im Zug liegen.'},
+  {wort:'LEUCHTTURM',  hinweis:'Er blinkt für die Schiffe.'},
+  {wort:'GARTENBANK',  hinweis:'Darauf sitzt man im Schatten.'}
+];
+
+const KETTEN = {
+  drei:  {start:7,  schritte:[['+',5],['×',2],['−',4]]},
+  vier:  {start:12, schritte:[['−',4],['×',3],['+',6],['÷',2]]},
+  fuenf: {start:9,  schritte:[['×',3],['−',7],['÷',4],['+',18],['×',2]]},
+  sechs: {start:8,  schritte:[['×',3],['+',6],['÷',5],['×',7],['−',12],['÷',2]]},
+  sieben:{start:11, schritte:[['×',2],['+',8],['÷',3],['×',9],['−',18],['÷',8],['+',16]]}
+};
+
+const FARBEN = [
+  {name:'Rot',  hell:'#b4452f', dunkel:'#e2775f'},
+  {name:'Blau', hell:'#33648f', dunkel:'#79a7d6'},
+  {name:'Grün', hell:'#41764f', dunkel:'#7cb98b'},
+  {name:'Gelb', hell:'#9a7413', dunkel:'#d9ac3f'}
+];
+
+const CODE_ZEICHEN = ['✦','❖','✿','✳','❋','◈','✜','❂'];
+
+const SPRICHWOERTER = [
+  {satz:'Morgenstund hat Gold im …',                    o:['Mund','Sack','Haar','Korb'], r:0},
+  {satz:'Der Apfel fällt nicht weit vom …',             o:['Stamm','Baum','Zaun','Korb'], r:0},
+  {satz:'Eine Schwalbe macht noch keinen …',            o:['Sommer','Frühling','Flug','Ton'], r:0},
+  {satz:'Man soll den Tag nicht vor dem Abend …',       o:['loben','zählen','beenden','feiern'], r:0},
+  {satz:'Lügen haben kurze …',                          o:['Beine','Ohren','Wege','Arme'], r:0},
+  {satz:'Übung macht den …',                            o:['Meister','Alltag','Anfang','Unterschied'], r:0},
+  {satz:'Wer zuletzt lacht, lacht am …',                o:['besten','längsten','lautesten','liebsten'], r:0},
+  {satz:'Es ist nicht alles Gold, was …',               o:['glänzt','leuchtet','teuer ist','schimmert'], r:0},
+  {satz:'Reden ist Silber, Schweigen ist …',            o:['Gold','Kupfer','Diamant','Perle'], r:0},
+  {satz:'Viele Köche verderben den …',                  o:['Brei','Braten','Kuchen','Abend'], r:0},
+  {satz:'Der frühe Vogel fängt den …',                  o:['Wurm','Käfer','Tag','Fisch'], r:0},
+  {satz:'Wer im Glashaus sitzt, soll nicht mit Steinen …', o:['werfen','bauen','spielen','zielen'], r:0},
+  {satz:'Aller Anfang ist …',                           o:['schwer','neu','gut','krumm'], r:0},
+  {satz:'Ein Unglück kommt selten …',                   o:['allein','angesagt','zweimal','langsam'], r:0},
+  {satz:'Wo gehobelt wird, da fallen …',                o:['Späne','Bretter','Nägel','Blätter'], r:0},
+  {satz:'Der Ton macht die …',                          o:['Musik','Stimmung','Rede','Regel'], r:0}
+];
+
+/* Wortketten: jedes Glied hängt hinten ans vorige — Haustür, Türschloss, Schlosspark … */
+const WORTKETTEN = [
+  ['HAUS','TÜR','SCHLOSS','PARK','BANK'],
+  ['SCHNEE','BALL','SPIEL','PLATZ','REGEN'],
+  ['APFEL','KUCHEN','TELLER','RAND','STEIN'],
+  ['SOMMER','REGEN','SCHIRM','STÄNDER','LAMPE'],
+  ['WINTER','MANTEL','TASCHE','LAMPE','SCHIRM'],
+  ['GARTEN','ZAUN','PFAHL','BAU','STELLE'],
+  ['KAFFEE','MÜHLE','RAD','WEG','RAND'],
+  ['SOMMER','TAG','BUCH','LADEN','TISCH','DECKE'],
+  ['WEIN','BERG','BAHN','HOF','TOR','BOGEN']
+];
+const STOERER = ['Zwiebel','Gurke','Amsel','Sessel','Nudel','Marmelade','Kirsche','Pinsel','Teppich','Rosine','Zitrone','Schnecke','Distel','Kelle','Brezel','Gießkanne'];
+
+const KOERBE = [
+  {frage:'Was gehört in die Suppe?',
+   treffer:['Möhre','Lauch','Sellerie','Nudeln','Petersilie','Kartoffel','Erbsen'],
+   rest:['Schraube','Gummistiefel','Kerze','Zahnbürste','Briefmarke','Pinsel','Schlüssel','Handschuh','Bügeleisen','Regenschirm']},
+  {frage:'Was blüht im Garten?',
+   treffer:['Rose','Tulpe','Flieder','Dahlie','Mohn','Pfingstrose','Nelke'],
+   rest:['Kompass','Hammer','Radio','Kachel','Schnur','Teekanne','Bürste','Stiefel','Anker','Zollstock']},
+  {frage:'Was kann fliegen?',
+   treffer:['Amsel','Biene','Schwalbe','Libelle','Möwe','Storch','Fledermaus'],
+   rest:['Maulwurf','Karpfen','Nudelholz','Ziegel','Sessel','Kürbis','Schnecke','Muschel','Dackel','Wanduhr']},
+  {frage:'Was findet man am Meer?',
+   treffer:['Möwe','Düne','Leuchtturm','Muschel','Watt','Fähre','Strandkorb'],
+   rest:['Gletscher','Schornstein','Keller','Bahnsteig','Weinberg','Dachboden','Nudelholz','Bergsee','Heizkessel','Kirchturm']},
+  {frage:'Womit kann man schreiben?',
+   treffer:['Bleistift','Kreide','Feder','Kugelschreiber','Filzstift','Tinte','Griffel'],
+   rest:['Löffel','Bügeleisen','Kissen','Radieschen','Hammer','Tasse','Schere','Gießkanne','Socke','Lampe']},
+  {frage:'Was ist aus Holz?',
+   treffer:['Balken','Kochlöffel','Leiter','Fass','Schrank','Zaunlatte','Bleistift'],
+   rest:['Fensterglas','Teekessel','Stahlnagel','Wollsocke','Gummiband','Porzellantasse','Blechdose','Ziegelstein','Seidenschal','Kupferdraht']}
+];
+
+const ORTE = ['an der Haustür','auf der Garderobe','in der Küche','auf dem Sofa','am Fenster','auf der Treppe','im Bad','auf dem Balkon'];
+
+const ZEITLEISTEN = [
+  {frage:'Was kam zuerst ins Wohnzimmer?', dinge:['Petroleumlampe','Röhrenradio','Farbfernseher','Smartphone'],
+   warum:'Lampe, Radio, Farbfernsehen (in Deutschland ab 1967), dann das Telefon für alles.'},
+  {frage:'Womit hat man Musik gehört — von früh nach spät?', dinge:['Grammophon','Schallplattenspieler','Kassettenrekorder','CD-Spieler'],
+   warum:'Trichter, Platte, Kassette, Silberscheibe.'},
+  {frage:'Wie ist man gereist — von früh nach spät?', dinge:['Pferdefuhrwerk','Dampflokomotive','VW Käfer','ICE'],
+   warum:'Pferd, Dampf, eigenes Auto, Hochgeschwindigkeit.'},
+  {frage:'Wo hat man eingekauft — von früh nach spät?', dinge:['Tante-Emma-Laden','Selbstbedienungsladen','Großer Supermarkt','Bestellung im Netz'],
+   warum:'Über den Ladentisch, dann selbst in den Korb, dann die Halle, dann der Bote.'},
+  {frage:'Wie wurde geschrieben — von früh nach spät?', dinge:['Federkiel','Schreibmaschine','Elektrische Kugelkopfmaschine','Computertastatur'],
+   warum:'Tinte, Mechanik, Kugelkopf, Taste.'}
+];
+
+/* ================= Stoff für die zweite Hälfte (51–100) ================= */
+
+/* Paare, die nicht gleich aussehen, sondern zusammengehören */
+const PASS_PAARE = [
+  ['Nadel','Faden'],['Hammer','Nagel'],['Tasse','Untertasse'],['Schloss','Schlüssel'],
+  ['Pinsel','Farbe'],['Brief','Briefmarke'],['Schuh','Schnürsenkel'],['Kanne','Tee'],
+  ['Besen','Kehrblech'],['Butter','Brot'],['Salz','Pfeffer'],['Vase','Blume'],
+  ['Wolle','Stricknadel'],['Kerze','Streichholz'],['Zahnbürste','Zahnpasta'],['Gießkanne','Beet']
+];
+
+const SPRICHWOERTER_SCHWER = [
+  {satz:'Wer den Pfennig nicht ehrt, ist des Talers nicht …',   o:['wert','froh','würdig','sicher'], r:0},
+  {satz:'Der Krug geht so lange zum Brunnen, bis er …',         o:['bricht','leer ist','rostet','umfällt'], r:0},
+  {satz:'Wer zwei Hasen jagt, fängt …',                          o:['keinen','beide','einen','den kleineren'], r:0},
+  {satz:'Man muss das Eisen schmieden, solange es …',            o:['heiß ist','weich bleibt','glüht','in der Hand liegt'], r:0},
+  {satz:'Wo kein Kläger ist, ist auch kein …',                   o:['Richter','Schaden','Zeuge','Urteil'], r:0},
+  {satz:'Wer anderen eine Grube gräbt, fällt selbst …',          o:['hinein','daneben','darüber','ins Gras'], r:0},
+  {satz:'Es wird nichts so heiß gegessen, wie es …',             o:['gekocht wird','riecht','aussieht','serviert wird'], r:0},
+  {satz:'Kleine Kinder, kleine Sorgen; große Kinder, …',         o:['große Sorgen','stille Tage','leere Kassen','lange Wege'], r:0},
+  {satz:'Wer rastet, der …',                                     o:['rostet','wartet','bleibt','fehlt'], r:0},
+  {satz:'Auch ein blindes Huhn findet mal ein …',                o:['Korn','Nest','Ei','Beet'], r:0},
+  {satz:'Der Teufel steckt im …',                                o:['Detail','Keller','Sack','Nebel'], r:0},
+  {satz:'Der Zug der Zeit bleibt für niemanden …',               o:['stehen','pünktlich','gleich','leer'], r:0}
+];
+
+const MUSTER_HART = [
+  {reihe:[2,3,5,7,11], o:[12,13,14,15], r:1, warum:'Die Primzahlen — nach 11 kommt 13.'},
+  {reihe:[1,2,6,24], o:[48,96,120,144], r:2, warum:'Mal 2, mal 3, mal 4, mal 5 — also 24 mal 5.'},
+  {reihe:[64,32,16,8], o:[2,3,4,6], r:2, warum:'Immer die Hälfte.'},
+  {reihe:[1,4,2,8,3,12], o:[4,6,9,16], r:0, warum:'Zwei Reihen ineinander: 1, 2, 3, 4 — und 4, 8, 12.'},
+  {reihe:[5,11,23,47], o:[85,94,95,96], r:2, warum:'Jedes Mal verdoppeln und eins dazu.'},
+  {reihe:[7,14,12,24,22], o:[33,40,44,46], r:2, warum:'Verdoppeln, zwei abziehen, verdoppeln …'},
+  {reihe:[9,16,25,36], o:[45,47,49,64], r:2, warum:'Quadratzahlen — sieben mal sieben ist 49.'},
+  {reihe:[100,50,52,26,28], o:[13,14,15,16], r:0, warum:'Halbieren, zwei dazu, halbieren …'}
+];
+
+const ANAGRAMME_HART = [
+  {wort:'GARTENSCHERE', hinweis:'Damit wird die Hecke gerade.'},
+  {wort:'TASCHENLAMPE', hinweis:'Leuchtet in den Keller.'},
+  {wort:'SONNENSCHIRM', hinweis:'Steht im Juli über dem Tisch.'},
+  {wort:'WOLLDECKE',    hinweis:'Liegt über der Sofalehne.'},
+  {wort:'BLUMENERDE',   hinweis:'Kommt im Frühjahr sackweise ins Haus.'}
+];
+
+const ODDONE_MEHR = [
+  {o:['Ahorn','Birke','Efeu','Eiche'], r:2, warum:'Efeu ist kein Baum, sondern eine Kletterpflanze.'},
+  {o:['Geige','Trompete','Posaune','Klarinette'], r:0, warum:'Nur die Geige wird nicht geblasen.'},
+  {o:['Elbe','Rhein','Bodensee','Donau'], r:2, warum:'Der Bodensee ist ein See, die anderen sind Flüsse.'},
+  {o:['Handschuh','Mütze','Schal','Gießkanne'], r:3, warum:'Die Gießkanne wärmt niemanden.'},
+  {o:['Sekunde','Minute','Meter','Stunde'], r:2, warum:'Der Meter misst Länge, nicht Zeit.'},
+  {o:['Hefe','Mehl','Zucker','Kachel'], r:3, warum:'Die Kachel gehört an die Wand, nicht in den Teig.'}
+];
+
+const ZEITLEISTEN_LANG = [
+  {frage:'Fünf Lichter — welches kam zuerst?', dinge:['Kerzenlaterne','Gaslaterne','Glühbirne','Leuchtstoffröhre','LED-Lampe'],
+   warum:'Kerze, Gas, Glühfaden, Röhre, Leuchtdiode.'},
+  {frage:'Wie wurde Wäsche gewaschen — von früh nach spät?', dinge:['Waschbrett','Waschkessel','Maschine mit Schleuder','Vollautomat','Maschine mit Zeitwahl'],
+   warum:'Hand, Kessel, Trommel mit Schleuder, Vollautomat, programmierbar.'},
+  {frage:'Wie wurde geheizt — von früh nach spät?', dinge:['Offene Feuerstelle','Kachelofen','Kohleofen','Ölheizung','Wärmepumpe'],
+   warum:'Feuer, Kachel, Kohle, Öl, Strom aus der Luft.'},
+  {frage:'Wie kamen Nachrichten an — von früh nach spät?', dinge:['Bote zu Fuß','Postkutsche','Telegramm','Telefon','E-Mail'],
+   warum:'Fuß, Kutsche, Draht, Stimme, Netz.'}
+];
+
+const GELDWAREN = [
+  {w:'Brot', p:2.40}, {w:'Butter', p:1.99}, {w:'Milch', p:1.19}, {w:'Käse', p:3.49},
+  {w:'Eier', p:2.79}, {w:'Apfelsaft', p:1.89}, {w:'Kuchen', p:3.20}, {w:'Kaffee', p:5.99},
+  {w:'Honig', p:4.50}, {w:'Nudeln', p:1.49}, {w:'Seife', p:0.99}, {w:'Tee', p:2.29}
+];
+
+const ZAHLWORT = ['zwölf','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf'];
+const PFEILE = {o:'↑', u:'↓', l:'←', r:'→'};
+
+/* Wortsuche: kurze Wörter, die sich gut ins Gitter legen lassen */
+const GITTERWOERTER = ['BIRNE','KANNE','TULPE','HONIG','LAMPE','SESSEL','KERZE','AMSEL','GARTEN','SCHERE','BESEN','TELLER','WOLLE','NADEL','BUTTER','FENSTER','KAFFEE','MANTEL','KISSEN','SPATEN'];
+
+/* ---------- Die fünfzig Stationen ---------- */
+
+const LEVEL = [
+  /* --- Der Kiesweg: sanft anfangen --- */
+  {n:1,  typ:'paare',       titel:'Zwei Tassen, zwei Löffel', p:{spalten:2, zeilen:2, vorschau:5}},
+  {n:2,  typ:'sprichwort',  titel:'Wie ging das noch?',       p:{anzahl:3}},
+  {n:3,  typ:'folge',       titel:'Die kurze Nummer',         p:{laengen:[3,3,4], vorschau:1}},
+  {n:4,  typ:'liste',       titel:'Der kleine Einkauf',       p:{feld:'markt', anzahl:4, auswahl:8, vorschau:14}},
+  {n:5,  typ:'suchbild',    titel:'Zwei Regale',              p:{spalten:6, unterschiede:2}},
+  {n:6,  typ:'leuchten',    titel:'Vier Laternen',            p:{spalten:2, zeilen:2, laengen:[2,3,3]}},
+  {n:7,  typ:'wasfehlt',    titel:'Etwas ist weg',            p:{anzahl:5, runden:2, vorschau:9}},
+  {n:8,  typ:'sammelkorb',  titel:'Was in die Suppe gehört',  p:{welcher:0, treffer:5, sekunden:55}},
+  {n:9,  typ:'paare',       titel:'Sechs im Regal',           p:{spalten:3, zeilen:2, vorschau:5}},
+  {n:10, typ:'geschichte',  titel:'Der Brief',                p:{welche:'brief', fragen:2, vorschau:24}},
+
+  /* --- Die Kräuterbank --- */
+  {n:11, typ:'zuordnung',   titel:'Wer hat welche Blume?',    p:{pool:'blumen', anzahl:3, vorschau:16}},
+  {n:12, typ:'folge',       titel:'Fünf Ziffern',             p:{laengen:[4,4,5], vorschau:1}},
+  {n:13, typ:'wortkette',   titel:'Haustür, Türschloss …',    p:{schritte:3}},
+  {n:14, typ:'positionen',  titel:'Drei Fenster leuchten',    p:{spalten:3, zeilen:3, zellen:3, runden:2, vorschau:4}},
+  {n:15, typ:'muster',      titel:'Wie geht es weiter?',      p:{quelle:'leicht', anzahl:3}},
+  {n:16, typ:'palast',      titel:'Ein Gang durch die Wohnung', p:{orte:4, vorschau:3.6}},
+  {n:17, typ:'paare',       titel:'Acht im Schrank',          p:{spalten:4, zeilen:2, vorschau:5}},
+  {n:18, typ:'reihenfolge', titel:'Der Reihe nach',           p:{anzahl:4, vorschau:9}},
+  {n:19, typ:'kette',       titel:'Drei Schritte im Kopf',    p:{kette:'drei', vorschau:2.2}},
+  {n:20, typ:'sprichwort',  titel:'Alte Weisheiten',          p:{anzahl:4}},
+
+  /* --- Das Gewächshaus --- */
+  {n:21, typ:'liste',       titel:'Der Küchenzettel',         p:{feld:'kueche', anzahl:5, auswahl:10, vorschau:14}},
+  {n:22, typ:'stroop',      titel:'Farbe sticht Wort',        p:{runden:10, regel:'farbe', zeit:6}, tol:[1,3]},
+  {n:23, typ:'folge',       titel:'Rückwärts gelesen',        p:{laengen:[3,3,4], rueckwaerts:true, vorschau:1}},
+  {n:24, typ:'anagramm',    titel:'Buchstabensalat',          p:{quelle:'leicht', anzahl:3}},
+  {n:25, typ:'sammelkorb',  titel:'Der schnelle Korb',        p:{treffer:6, sekunden:42}},
+  {n:26, typ:'geschichte',  titel:'Der Markttag',             p:{welche:'markt', fragen:3, vorschau:34}},
+  {n:27, typ:'leuchten',    titel:'Neun Laternen',            p:{spalten:3, zeilen:3, laengen:[3,4,4]}},
+  {n:28, typ:'zeitleiste',  titel:'Was kam zuerst?',          p:{anzahl:2}},
+  {n:29, typ:'reihenfolge', titel:'Sechs in Folge',           p:{anzahl:6, vorschau:11}},
+  {n:30, typ:'code',        titel:'Die Geheimschrift',        p:{zeichen:4, stellen:3, runden:2, vorschau:12}},
+
+  /* --- Die Bibliothek --- */
+  {n:31, typ:'positionen',  titel:'Vier Lichter im Viereck',  p:{spalten:4, zeilen:4, zellen:4, runden:3, vorschau:4}},
+  {n:32, typ:'nback',       titel:'Kommt das noch mal?',      p:{n:1, reize:14, tempo:2.2}, tol:[1,4]},
+  {n:33, typ:'oddone',      titel:'Was passt nicht dazu?',    p:{anzahl:4}},
+  {n:34, typ:'interferenz', titel:'Das Telefon klingelt',     p:{feld:'naehkorb', anzahl:5, auswahl:12, vorschau:14, stoerung:5}},
+  {n:35, typ:'paare',       titel:'Zwölf Karten',             p:{spalten:4, zeilen:3, vorschau:4}},
+  {n:36, typ:'zuordnung',   titel:'Wer wohnt wo?',            p:{pool:'staedte', anzahl:4, vorschau:18}},
+  {n:37, typ:'wortkette',   titel:'Die lange Wortkette',      p:{schritte:4}},
+  {n:38, typ:'folge',       titel:'Fünf rückwärts',           p:{laengen:[4,4,5], rueckwaerts:true, vorschau:1}},
+  {n:39, typ:'muster',      titel:'Die versteckte Regel',     p:{quelle:'schwer', anzahl:4}},
+  {n:40, typ:'geschichte',  titel:'Großmutters Rezept',       p:{welche:'rezept', fragen:4, vorschau:46}},
+
+  /* --- Der Sternenhimmel --- */
+  {n:41, typ:'palast',      titel:'Sechs Plätze, sechs Dinge', p:{orte:6, vorschau:3.2}},
+  {n:42, typ:'stroop',      titel:'Die Regel wechselt',       p:{runden:14, regel:'wechsel', zeit:6}, tol:[2,5]},
+  {n:43, typ:'liste',       titel:'Sieben Wörter',            p:{feld:'werkstatt', anzahl:7, auswahl:14, vorschau:16}},
+  {n:44, typ:'positionen',  titel:'Fünf Lichter',             p:{spalten:5, zeilen:4, zellen:5, runden:3, vorschau:4}},
+  {n:45, typ:'kette',       titel:'Fünf Schritte im Kopf',    p:{kette:'fuenf', vorschau:1.9}},
+  {n:46, typ:'nback',       titel:'Zwei zurück',              p:{n:2, reize:16, tempo:2.4}, tol:[2,5]},
+  {n:47, typ:'anagramm',    titel:'Lange Wörter',             p:{quelle:'schwer', anzahl:3}},
+  {n:48, typ:'code',        titel:'Die lange Geheimschrift',  p:{zeichen:6, stellen:4, runden:2, vorschau:13}},
+  {n:49, typ:'interferenz', titel:'Merken trotz allem',       p:{feld:'reise', anzahl:6, auswahl:14, vorschau:15, stoerung:8}},
+  {n:50, typ:'pruefung',    titel:'Die Sternenprüfung',       p:{teile:[
+        {typ:'folge',      p:{laengen:[5,6], rueckwaerts:true, vorschau:1}},
+        {typ:'positionen', p:{spalten:4, zeilen:4, zellen:5, runden:2, vorschau:4}},
+        {typ:'liste',      p:{feld:'markt', anzahl:6, auswahl:14, vorschau:13}}
+      ]}, tol:[1,3]},
+
+  /* --- Die Dachkammer: länger behalten, in der richtigen Folge --- */
+  {n:51, typ:'passen',      titel:'Nadel und Faden',          p:{spalten:4, zeilen:2, vorschau:6}},
+  {n:52, typ:'liste',       titel:'Der Zettel in der Reihe',  p:{feld:'kueche', anzahl:5, auswahl:10, vorschau:15, reihenfolge:true}, tol:[1,3]},
+  {n:53, typ:'folge',       titel:'Der Größe nach',           p:{laengen:[4,5], sortieren:true, vorschau:1}, tol:[1,3]},
+  {n:54, typ:'geschichte',  titel:'Der Umzug der Nachbarn',   p:{welche:'umzug', fragen:4, vorschau:46}},
+  {n:55, typ:'zuordnung',   titel:'Name, Beruf, Stadt',       p:{dreifach:true, anzahl:4, vorschau:24}, tol:[1,3]},
+  {n:56, typ:'positionen',  titel:'Sechs Lichter',            p:{spalten:5, zeilen:4, zellen:6, runden:3, vorschau:4}, tol:[1,4]},
+  {n:57, typ:'interferenz', titel:'Erst die Lichter, dann die Wörter', p:{feld:'markt', anzahl:6, auswahl:14, vorschau:15, stoerTyp:'positionen', stoerP:{spalten:4, zeilen:4, zellen:4, runden:2, vorschau:4}}, tol:[1,4]},
+  {n:58, typ:'wortkette',   titel:'Fünf Glieder',             p:{schritte:5}},
+  {n:59, typ:'paare',       titel:'Zwanzig auf dem Dachboden', p:{spalten:5, zeilen:4, vorschau:3.6}, tol:[1,3]},
+  {n:60, typ:'kette',       titel:'Sechs Schritte im Kopf',   p:{kette:'sechs', vorschau:1.9}},
+
+  /* --- Der Uhrenladen: Takt und Tempo --- */
+  {n:61, typ:'uhrzeit',     titel:'Der kurze Zeiger',         p:{anzahl:3, arten:['lesen','spaeter']}},
+  {n:62, typ:'stroop',      titel:'Schneller Regelwechsel',   p:{runden:14, regel:'wechsel', zeit:4.5}, tol:[2,5]},
+  {n:63, typ:'sammelkorb',  titel:'Der Korb unter Zeitdruck', p:{treffer:7, sekunden:34}, tol:[1,4]},
+  {n:64, typ:'code',        titel:'Fünf Zeichen',             p:{zeichen:5, stellen:4, runden:3, vorschau:10}, tol:[1,3]},
+  {n:65, typ:'nback',       titel:'Zwei zurück, im Trab',     p:{n:2, reize:20, tempo:1.8}, tol:[2,5]},
+  {n:66, typ:'geldbeutel',  titel:'An der Kasse',             p:{anzahl:3}, tol:[1,3]},
+  {n:67, typ:'folge',       titel:'Sechs im Flug',            p:{laengen:[6,6], vorschau:.7}, tol:[1,2]},
+  {n:68, typ:'leuchten',    titel:'Sieben Laternen',          p:{spalten:3, zeilen:3, laengen:[5,6,7]}, tol:[1,4]},
+  {n:69, typ:'uhrzeit',     titel:'Vor und zurück',           p:{anzahl:4, arten:['spaeter','vorher']}, tol:[1,3]},
+  {n:70, typ:'muster',      titel:'Die harte Reihe',          p:{quelle:'hart', anzahl:4}, tol:[1,3]},
+
+  /* --- Das Kartenzimmer: Wege und Plätze --- */
+  {n:71, typ:'wegplan',     titel:'Fünf Schritte durchs Gitter', p:{gitter:4, schritte:5, runden:2, vorschau:5}, tol:[1,4]},
+  {n:72, typ:'positionen',  titel:'Sechs im großen Feld',     p:{spalten:6, zeilen:5, zellen:6, runden:3, vorschau:4}, tol:[1,4]},
+  {n:73, typ:'leuchten',    titel:'Die Kette rückwärts',      p:{spalten:3, zeilen:3, laengen:[3,4,4], rueckwaerts:true}, tol:[1,4]},
+  {n:74, typ:'paare',       titel:'Vierundzwanzig Karten',    p:{spalten:6, zeilen:4, vorschau:4}, tol:[2,5]},
+  {n:75, typ:'suchbild',    titel:'Acht und drei Fehler',     p:{spalten:8, unterschiede:3}},
+  {n:76, typ:'wegplan',     titel:'Sieben Schritte',          p:{gitter:5, schritte:7, runden:2, vorschau:5}, tol:[1,4]},
+  {n:77, typ:'palast',      titel:'Acht Plätze in der Wohnung', p:{orte:8, vorschau:3}, tol:[1,4]},
+  {n:78, typ:'reihenfolge', titel:'Acht in Folge',            p:{anzahl:8, vorschau:10}, tol:[1,3]},
+  {n:79, typ:'positionen',  titel:'Sieben Fenster',           p:{spalten:5, zeilen:5, zellen:7, runden:2, vorschau:4}, tol:[1,4]},
+  {n:80, typ:'passen',      titel:'Zehn Paare, die sich suchen', p:{spalten:5, zeilen:4, vorschau:5}, tol:[2,5]},
+
+  /* --- Der Lesesaal: Wörter, Texte, Störungen --- */
+  {n:81, typ:'wortgitter',  titel:'Vier im Gewimmel',         p:{gitter:6, anzahl:4, sekunden:75}, tol:[1,3]},
+  {n:82, typ:'liste',       titel:'Neun Wörter von der See',  p:{feld:'reise', anzahl:9, auswahl:18, vorschau:18}, tol:[2,5]},
+  {n:83, typ:'sprichwort',  titel:'Die alten Sprüche',        p:{quelle:'schwer', anzahl:5}, tol:[1,3]},
+  {n:84, typ:'geschichte',  titel:'Das Gewitter',             p:{welche:'gewitter', fragen:5, vorschau:52}, tol:[1,3]},
+  {n:85, typ:'anagramm',    titel:'Zwölf Buchstaben',         p:{quelle:'hart', anzahl:3}, tol:[1,3]},
+  {n:86, typ:'wortgitter',  titel:'Fünf im großen Gitter',    p:{gitter:7, anzahl:5, sekunden:80}, tol:[1,3]},
+  {n:87, typ:'liste',       titel:'Das Nähkörbchen der Reihe nach', p:{feld:'naehkorb', anzahl:6, auswahl:12, vorschau:16, reihenfolge:true}, tol:[1,4]},
+  {n:88, typ:'interferenz', titel:'Sieben Wörter, dazwischen Zahlen', p:{feld:'werkstatt', anzahl:7, auswahl:14, vorschau:16, stoerTyp:'muster', stoerP:{quelle:'schwer', anzahl:3}}, tol:[1,4]},
+  {n:89, typ:'oddone',      titel:'Fünfmal die Ausnahme',     p:{anzahl:5, alle:true}, tol:[1,2]},
+  {n:90, typ:'geschichte',  titel:'Das Rezept, später gefragt', p:{welche:'rezept', fragen:5, vorschau:46, stoerTyp:'sammelkorb', stoerP:{treffer:5, sekunden:40}}, tol:[1,4]},
+
+  /* --- Der Leuchtturm: das obere Ende --- */
+  {n:91, typ:'folge',       titel:'Sieben rückwärts',         p:{laengen:[6,6,7], rueckwaerts:true, vorschau:.9}, tol:[1,3]},
+  {n:92, typ:'nback',       titel:'Drei zurück',              p:{n:3, reize:20, tempo:2.4}, tol:[3,6]},
+  {n:93, typ:'positionen',  titel:'Acht Lichter auf einmal',  p:{spalten:6, zeilen:5, zellen:8, runden:2, vorschau:4}, tol:[2,5]},
+  {n:94, typ:'kette',       titel:'Sieben Schritte im Kopf',  p:{kette:'sieben', vorschau:1.8}},
+  {n:95, typ:'liste',       titel:'Sieben aus dem Garten, der Reihe nach', p:{feld:'garten', anzahl:7, auswahl:14, vorschau:17, reihenfolge:true}, tol:[2,5]},
+  {n:96, typ:'stroop',      titel:'Achtzehn Durchgänge',      p:{runden:18, regel:'wechsel', zeit:4}, tol:[3,6]},
+  {n:97, typ:'code',        titel:'Sechs Zeichen, fünf Stellen', p:{zeichen:6, stellen:5, runden:3, vorschau:9}, tol:[1,3]},
+  {n:98, typ:'wegplan',     titel:'Neun Schritte',            p:{gitter:5, schritte:9, runden:2, vorschau:5.5}, tol:[2,5]},
+  {n:99, typ:'zuordnung',   titel:'Sechs Personen, drei Angaben', p:{dreifach:true, anzahl:6, vorschau:28}, tol:[2,5]},
+  {n:100, typ:'pruefung',   titel:'Die Leuchtturmprüfung',    p:{name:'Leuchtturmprüfung', teile:[
+        {typ:'folge',      p:{laengen:[6,7], rueckwaerts:true, vorschau:1}},
+        {typ:'positionen', p:{spalten:5, zeilen:5, zellen:6, runden:2, vorschau:4}},
+        {typ:'liste',      p:{feld:'markt', anzahl:6, auswahl:12, vorschau:14, reihenfolge:true}},
+        {typ:'nback',      p:{n:2, reize:16, tempo:2.2}}
+      ]}, tol:[2,5]}
+];
+
+/* Die Rastplätze: kein Punktestand, keine Sterne — eine Frage zum Erzählen.
+   Erinnerungspflege (Biografiearbeit) ist in der Betreuung ein eigenes,
+   gut eingeführtes Verfahren; hier ist sie die Pause zwischen den Aufgaben. */
+const RASTPLAETZE = [
+  {id:'r1', abschnitt:1, frage:'Wie hieß deine erste Lehrerin oder dein erster Lehrer?',
+   dazu:'Und wie sah das Klassenzimmer aus — wo hast du gesessen?'},
+  {id:'r2', abschnitt:2, frage:'Was hat es bei dir zu Hause sonntags zu essen gegeben?',
+   dazu:'Wer hat gekocht, wer hat den Tisch gedeckt?'},
+  {id:'r3', abschnitt:3, frage:'Wie sah dein Weg zur Schule aus?',
+   dazu:'Geh ihn im Kopf noch einmal ab — an welcher Ecke ging es links?'},
+  {id:'r4', abschnitt:4, frage:'Was war dein erstes eigenes Fahrzeug?',
+   dazu:'Farbe, Geräusch, Geruch — woran erinnerst du dich zuerst?'},
+  {id:'r5', abschnitt:5, frage:'Welcher Geruch holt dich sofort in die Kindheit zurück?',
+   dazu:'Manchmal ist es Bohnerwachs, manchmal nasses Laub.'},
+  {id:'r6', abschnitt:6, frage:'Was stand bei euch auf dem Dachboden?',
+   dazu:'Kisten, Koffer, ein altes Rad — was davon gibt es heute noch?'},
+  {id:'r7', abschnitt:7, frage:'Wie hat der Tag früher angefangen?',
+   dazu:'Wer stand zuerst auf, was war das erste Geräusch im Haus?'},
+  {id:'r8', abschnitt:8, frage:'Welchen Weg könntest du heute noch blind gehen?',
+   dazu:'Vom Bahnhof nach Hause, zur Schule, zum Markt.'},
+  {id:'r9', abschnitt:9, frage:'Welches Buch oder welche Geschichte hat dich begleitet?',
+   dazu:'Wer hat sie dir gegeben — und wie ging sie aus?'},
+  {id:'r10', abschnitt:10, frage:'Worauf bist du in deinem Leben richtig stolz?',
+   dazu:'Etwas, das keiner sieht, zählt genauso.'}
+];
+</script>
+
+<script>
+/* =========================================================
+   Die Denkstube — Werkzeug
+   ========================================================= */
+
+const $ = (s, r=document) => r.querySelector(s);
+const ABBRUCH = {abbruch:true};
+
+function mach(tag, cls, text){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(text !== undefined && text !== null) e.textContent = text;
+  return e;
+}
+function mischen(a){
+  const b = a.slice();
+  for(let i=b.length-1; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [b[i],b[j]] = [b[j],b[i]]; }
+  return b;
+}
+function waehle(a, k){ return mischen(a).slice(0, k); }
+function zufall(n){ return Math.floor(Math.random()*n); }
+function istDunkel(){
+  const t = document.documentElement.getAttribute('data-theme');
+  if(t === 'dark') return true;
+  if(t === 'light') return false;
+  return !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+}
+
+/* ---------- Töne ---------- */
+let tonWerk = null;
+function ton(art){
+  if(!E.ton) return;
+  try{
+    tonWerk = tonWerk || new (window.AudioContext || window.webkitAudioContext)();
+    if(tonWerk.state === 'suspended') tonWerk.resume();
+    const noten = art === 'gut'    ? [[660,0,.10],[880,.10,.14]]
+                : art === 'nein'   ? [[196,0,.20]]
+                : art === 'fertig' ? [[523,0,.12],[659,.12,.12],[784,.24,.22]]
+                : art === 'tick'   ? [[520,0,.06]]
+                :                    [[440,0,.07]];
+    noten.forEach(([hz, ab, dauer]) => {
+      const o = tonWerk.createOscillator(), g = tonWerk.createGain();
+      o.type = 'sine'; o.frequency.value = hz;
+      const t0 = tonWerk.currentTime + ab;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.linearRampToValueAtTime(0.09, t0 + .02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dauer);
+      o.connect(g); g.connect(tonWerk.destination);
+      o.start(t0); o.stop(t0 + dauer + .04);
+    });
+  }catch(e){ /* kein Ton, kein Problem */ }
+}
+
+/* =========================================================
+   Laufzeit einer Aufgabe
+   ========================================================= */
+
+let lauf = 0;
+let haken = [];
+
+function abbrechen(){
+  lauf++;
+  haken.forEach(h => { try{ h(); }catch(e){} });
+  haken = [];
+}
+
+function machApi(){
+  const g = lauf;
+  const api = {
+    fehlerZahl: 0,
+    pruefe(){ if(g !== lauf) throw ABBRUCH; },
+    zeit(sek){ return Math.round(sek * 1000 * (E.zeit ? 1.5 : 1)); },
+    warten(fn){
+      return new Promise((res, rej) => {
+        haken.push(() => rej(ABBRUCH));
+        fn(res);
+      });
+    },
+    warte(ms){
+      return new Promise((res, rej) => {
+        haken.push(() => rej(ABBRUCH));
+        setTimeout(() => { if(g !== lauf) rej(ABBRUCH); else res(); }, ms);
+      });
+    },
+    klick(knoepfe){
+      return api.warten(res => knoepfe.forEach((k, i) => { k.onclick = () => res(i); }));
+    },
+    klickOderZeit(knoepfe, ms){
+      return api.warten(res => {
+        const t = setTimeout(() => res(-1), ms);
+        knoepfe.forEach((k, i) => { k.onclick = () => { clearTimeout(t); res(i); }; });
+      });
+    },
+    anweisung(t){ $('#spiel-anweisung').textContent = t; },
+    unter(t){ $('#spiel-unterzeile').textContent = t || ''; },
+    zaehler(t){ $('#spiel-zaehler').textContent = t || ''; },
+    etikett(t){ $('#spiel-etikett').textContent = t; },
+    fehler(n=1){ api.fehlerZahl += n; },
+    ton,
+    buehne(){ const b = $('#buehne'); b.innerHTML = ''; return b; },
+    merken(ms, text){
+      const balken = $('#spiel-balken');
+      const innen = balken.firstElementChild;
+      balken.hidden = false;
+      innen.style.transition = 'none';
+      innen.style.transform = 'scaleX(1)';
+      requestAnimationFrame(() => {
+        innen.style.transition = 'transform ' + ms + 'ms linear';
+        innen.style.transform = 'scaleX(0)';
+      });
+      const knopf = mach('button', 'knopf knopf-still', text || 'Ich habe es');
+      $('#buehne').appendChild(knopf);
+      return new Promise((res, rej) => {
+        let vorbei = false;
+        const aufraeumen = () => {
+          balken.hidden = true;
+          innen.style.transition = 'none';
+          innen.style.transform = 'scaleX(1)';
+          knopf.remove();
+        };
+        const ende = () => {
+          if(vorbei) return;
+          vorbei = true;
+          clearTimeout(t);
+          aufraeumen();
+          if(g !== lauf) rej(ABBRUCH); else res();
+        };
+        haken.push(() => { if(!vorbei){ vorbei = true; clearTimeout(t); aufraeumen(); rej(ABBRUCH); } });
+        const t = setTimeout(ende, ms);
+        knopf.onclick = ende;
+      });
+    }
+  };
+  return api;
+}
+
+/* ---------- gemeinsame Bausteine ---------- */
+
+async function frageStellen(api, text, optionen, richtig, opt){
+  opt = opt || {};
+  const b = opt.anhaengen ? $('#buehne') : api.buehne();
+  api.anweisung(text);
+  if(opt.unter !== undefined) api.unter(opt.unter);
+  const paare = mischen(optionen.map((o, i) => ({o, i})));
+  const neuRichtig = paare.findIndex(x => x.i === richtig);
+  const kasten = mach('div', 'wahl' + (opt.zwei ? ' zwei' : ''));
+  const knoepfe = paare.map(x => {
+    const k = mach('button', 'wahl-knopf', x.o);
+    kasten.appendChild(k);
+    return k;
+  });
+  b.appendChild(kasten);
+  const i = await api.klick(knoepfe);
+  knoepfe.forEach(k => { k.disabled = true; k.onclick = null; });
+  const gut = i === neuRichtig;
+  knoepfe[i].classList.add(gut ? 'richtig' : 'falsch');
+  if(!gut) knoepfe[neuRichtig].classList.add('richtig');
+  api.ton(gut ? 'gut' : 'nein');
+  if(opt.warum) api.unter((gut ? '' : 'Richtig wäre: ' + optionen[richtig] + '. ') + opt.warum);
+  else if(!gut) api.unter('Richtig wäre: ' + optionen[richtig] + '.');
+  else api.unter('Stimmt.');
+  await api.warte(gut ? 750 : (opt.warum ? 2600 : 1600));
+  return gut;
+}
+
+async function zahlEingabe(api, stellen, hinweis){
+  const b = $('#buehne');
+  const anzeige = mach('div', 'anzeige', '');
+  anzeige.setAttribute('aria-live', 'polite');
+  const tast = mach('div', 'tastatur');
+  b.appendChild(anzeige);
+  if(hinweis) b.appendChild(mach('p', 'klein zart', hinweis));
+  b.appendChild(tast);
+  let wert = '';
+  const platzhalter = () => { anzeige.textContent = wert || '·'.repeat(stellen); };
+  platzhalter();
+  const tasten = [];
+  ['1','2','3','4','5','6','7','8','9'].forEach(z => tasten.push(mach('button', null, z)));
+  const weg = mach('button', null, '←');
+  const null0 = mach('button', null, '0');
+  const ok = mach('button', null, '✓');
+  tasten.push(weg, null0, ok);
+  tasten.forEach(t => tast.appendChild(t));
+  return api.warten(res => {
+    tasten.forEach(t => {
+      t.onclick = () => {
+        const z = t.textContent;
+        if(z === '←'){ wert = wert.slice(0, -1); ton('tick'); }
+        else if(z === '✓'){ if(wert.length){ res(wert); return; } }
+        else if(wert.length < stellen){ wert += z; ton('tick'); }
+        platzhalter();
+        if(wert.length === stellen){ ok.style.background = 'var(--akzent-weich)'; ok.style.borderColor = 'var(--akzent)'; }
+        else { ok.style.background = ''; ok.style.borderColor = ''; }
+      };
+    });
+  });
+}
+
+function zettel(worte){
+  const z = mach('div', 'merkzettel');
+  worte.forEach(w => z.appendChild(mach('span', null, w)));
+  return z;
+}
+
+function dingReihe(dinge, mitWort){
+  const r = mach('div', 'karten-reihe');
+  dinge.forEach(d => {
+    const k = mach('div', 'dingchen');
+    k.appendChild(mach('em', null, d.e));
+    if(mitWort !== false) k.appendChild(mach('span', null, d.w));
+    r.appendChild(k);
+  });
+  return r;
+}
+
+function ziffernfolge(laenge){
+  const f = [];
+  while(f.length < laenge){
+    const z = 1 + zufall(9);
+    if(f.length && f[f.length-1] === z) continue;
+    f.push(z);
+  }
+  return f;
+}
+
+/* =========================================================
+   Die Spielarten
+   ========================================================= */
+
+const SPIELE = {};
+
+/* --- Kartenpaare --- */
+SPIELE.paare = async function(api, p){
+  const anzahl = p.spalten * p.zeilen;
+  const symbole = waehle(SYMBOLE, anzahl / 2);
+  const karten = mischen(symbole.concat(symbole));
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', p.spalten);
+  const felder = karten.map(s => {
+    const f = mach('button', 'feldchen', s);
+    gitter.appendChild(f);
+    return f;
+  });
+  b.appendChild(gitter);
+  api.anweisung('Schau dir die Karten gut an.');
+  api.unter('Gleich werden sie umgedreht — wo liegt was?');
+  await api.merken(api.zeit(p.vorschau));
+  felder.forEach(f => f.classList.add('ruecken'));
+  const paare = anzahl / 2;
+  api.anweisung('Finde die Paare.');
+  api.unter('Zwei Karten antippen.');
+  let erste = null, gefunden = 0;
+  api.zaehler('0 von ' + paare + ' Paaren');
+  while(gefunden < paare){
+    const i = await api.klick(felder);
+    const f = felder[i];
+    if(!f.classList.contains('ruecken') || f === erste) continue;
+    f.classList.remove('ruecken');
+    f.classList.add('offen');
+    if(!erste){ erste = f; continue; }
+    const a = erste, c = f;
+    erste = null;
+    if(a.textContent === c.textContent){
+      a.className = 'feldchen gefunden';
+      c.className = 'feldchen gefunden';
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + paare + ' Paaren');
+      api.unter(gefunden === paare ? 'Alle gefunden.' : 'Passt.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      api.unter('Nicht dasselbe.');
+      if(!document.documentElement.getAttribute('data-ruhe')) c.classList.add('wackel');
+      await api.warte(850);
+      [a, c].forEach(k => { k.className = 'feldchen ruecken'; });
+    }
+  }
+};
+
+/* --- Ziffernfolge, vorwärts oder rückwärts --- */
+SPIELE.folge = async function(api, p){
+  const runden = p.laengen.length;
+  for(let r = 0; r < runden; r++){
+    const laenge = p.laengen[r];
+    const folge = ziffernfolge(laenge);
+    const b = api.buehne();
+    const gross = mach('div', 'grosszeichen', '');
+    b.appendChild(gross);
+    api.zaehler('Runde ' + (r+1) + ' von ' + runden);
+    api.anweisung(p.sortieren ? 'Merken — später der Größe nach eingeben.'
+                : p.rueckwaerts ? 'Merken — später rückwärts eingeben.' : 'Merken.');
+    api.unter(laenge + ' Ziffern, eine nach der anderen.');
+    await api.warte(500);
+    for(const z of folge){
+      gross.textContent = z;
+      gross.classList.remove('puls');
+      void gross.offsetWidth;
+      gross.classList.add('puls');
+      await api.warte(api.zeit(p.vorschau));
+      gross.textContent = '';
+      await api.warte(170);
+    }
+    const soll = (p.sortieren ? folge.slice().sort((a, c) => a - c)
+                : p.rueckwaerts ? folge.slice().reverse() : folge).join('');
+    api.buehne();
+    api.anweisung(p.sortieren ? 'Jetzt der Größe nach eintippen.'
+                : p.rueckwaerts ? 'Jetzt rückwärts eintippen.' : 'Jetzt eintippen.');
+    api.unter(p.sortieren ? 'Die kleinste Ziffer zuerst — im Kopf sortieren.'
+            : p.rueckwaerts ? 'Die letzte Ziffer zuerst.' : 'In derselben Reihenfolge.');
+    const ein = await zahlEingabe(api, laenge);
+    if(ein === soll){
+      api.ton('gut');
+      api.unter('Richtig.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      api.unter('Richtig wäre ' + soll.split('').join(' ') + ' gewesen.');
+    }
+    await api.warte(ein === soll ? 800 : 2200);
+  }
+};
+
+/* --- Lichterkette --- */
+SPIELE.leuchten = async function(api, p){
+  const anzahl = p.spalten * p.zeilen;
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', p.spalten);
+  const felder = [];
+  for(let i = 0; i < anzahl; i++){
+    const f = mach('button', 'feldchen', '');
+    gitter.appendChild(f);
+    felder.push(f);
+  }
+  b.appendChild(gitter);
+  const runden = p.laengen.length;
+  for(let r = 0; r < runden; r++){
+    const laenge = p.laengen[r];
+    const folge = [];
+    while(folge.length < laenge){
+      const i = zufall(anzahl);
+      if(folge.length && folge[folge.length-1] === i) continue;
+      folge.push(i);
+    }
+    api.zaehler('Runde ' + (r+1) + ' von ' + runden);
+    api.anweisung('Schau zu.');
+    api.unter(laenge + ' Lichter gehen nacheinander an.');
+    await api.warte(650);
+    for(const i of folge){
+      felder[i].classList.add('an');
+      ton('tick');
+      await api.warte(api.zeit(.52));
+      felder[i].classList.remove('an');
+      await api.warte(220);
+    }
+    const ziel = p.rueckwaerts ? folge.slice().reverse() : folge;
+    api.anweisung(p.rueckwaerts ? 'Jetzt du — aber von hinten nach vorn.' : 'Jetzt du — in derselben Reihenfolge.');
+    api.unter(p.rueckwaerts ? 'Das letzte Licht zuerst.' : '');
+    for(let s = 0; s < ziel.length; s++){
+      const i = await api.klick(felder);
+      if(i === ziel[s]){
+        felder[i].classList.add('an');
+        ton('tick');
+        await api.warte(220);
+        felder[i].classList.remove('an');
+      }else{
+        api.fehler();
+        api.ton('nein');
+        felder[i].classList.add('wackel');
+        felder[ziel[s]].classList.add('an');
+        api.unter('Dieses hier wäre richtig gewesen.');
+        await api.warte(1100);
+        felder[i].classList.remove('wackel');
+        felder[ziel[s]].classList.remove('an');
+        break;
+      }
+      if(s === ziel.length - 1){
+        api.ton('gut');
+        api.unter('Ganze Kette richtig.');
+        await api.warte(700);
+      }
+    }
+  }
+};
+
+/* --- Muster von Plätzen --- */
+SPIELE.positionen = async function(api, p){
+  const anzahl = p.spalten * p.zeilen;
+  for(let r = 0; r < p.runden; r++){
+    const b = api.buehne();
+    const gitter = mach('div', 'gitter');
+    gitter.style.setProperty('--spalten', p.spalten);
+    const felder = [];
+    for(let i = 0; i < anzahl; i++){
+      const f = mach('button', 'feldchen', '');
+      gitter.appendChild(f);
+      felder.push(f);
+    }
+    b.appendChild(gitter);
+    const plaetze = waehle(felder.map((f, i) => i), p.zellen);
+    api.zaehler('Runde ' + (r+1) + ' von ' + p.runden);
+    api.anweisung('Merke dir, welche Felder leuchten.');
+    api.unter(p.zellen + ' Felder, alle auf einmal.');
+    plaetze.forEach(i => felder[i].classList.add('an'));
+    await api.merken(api.zeit(p.vorschau));
+    plaetze.forEach(i => felder[i].classList.remove('an'));
+    api.anweisung('Tippe die Felder an.');
+    api.unter('Die Reihenfolge ist gleichgültig.');
+    const offen = plaetze.slice();
+    while(offen.length){
+      const i = await api.klick(felder);
+      const f = felder[i];
+      if(f.classList.contains('gefunden') || f.classList.contains('leise')) continue;
+      const k = offen.indexOf(i);
+      if(k >= 0){
+        offen.splice(k, 1);
+        f.classList.add('gefunden');
+        api.ton('gut');
+        api.unter(offen.length ? 'Noch ' + offen.length + '.' : 'Alle gefunden.');
+      }else{
+        api.fehler();
+        api.ton('nein');
+        f.classList.add('leise', 'wackel');
+        api.unter('Das war keins.');
+      }
+    }
+    await api.warte(700);
+  }
+};
+
+/* --- Wortliste --- */
+async function listeMerken(api, p){
+  const feld = WORTFELDER[p.feld];
+  const worte = waehle(feld.worte, p.anzahl);
+  const b = api.buehne();
+  b.appendChild(mach('p', 'etikett', feld.titel));
+  b.appendChild(zettel(worte));
+  api.anweisung('Merke dir diese ' + p.anzahl + ' Wörter.');
+  api.unter(p.reihenfolge ? 'Diesmal zählt auch die Reihenfolge — von links nach rechts.'
+                          : 'Ein Tipp: eine kleine Geschichte daraus machen.');
+  await api.merken(api.zeit(p.vorschau));
+  return {feld, worte};
+}
+async function listeAbfragen(api, p, worte, feld){
+  const rest = feld.worte.filter(w => worte.indexOf(w) < 0);
+  const auswahl = mischen(worte.concat(waehle(rest, p.auswahl - p.anzahl)));
+  const b = api.buehne();
+  api.anweisung('Welche Wörter waren dabei?');
+  api.unter('Es sind ' + p.anzahl + ' von ' + auswahl.length + '.');
+  const kasten = mach('div', 'wortwahl');
+  const knoepfe = auswahl.map(w => {
+    const k = mach('button', 'wahl-knopf', w);
+    kasten.appendChild(k);
+    return k;
+  });
+  b.appendChild(kasten);
+  let gefunden = 0;
+  api.zaehler('0 von ' + p.anzahl);
+  while(gefunden < p.anzahl){
+    const i = await api.klick(knoepfe);
+    const k = knoepfe[i];
+    if(k.disabled) continue;
+    k.disabled = true;
+    if(worte.indexOf(k.textContent) >= 0){
+      k.classList.add('richtig');
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + p.anzahl);
+    }else{
+      k.classList.add('falsch');
+      api.fehler();
+      api.ton('nein');
+      api.unter('Das stand nicht auf dem Zettel.');
+    }
+  }
+  api.unter('Alle wieder da.');
+  await api.warte(800);
+}
+/* Wiedergabe in der richtigen Reihenfolge — deutlich schwerer als Wiedererkennen */
+async function listeSeriell(api, p, worte, feld){
+  const rest = feld.worte.filter(w => worte.indexOf(w) < 0);
+  const auswahl = mischen(worte.concat(waehle(rest, 2)));
+  const b = api.buehne();
+  api.anweisung('In welcher Reihenfolge standen sie da?');
+  api.unter('Das erste Wort zuerst. Zwei Wörter gehörten gar nicht dazu.');
+  const kasten = mach('div', 'wortwahl');
+  const knoepfe = auswahl.map(w => {
+    const k = mach('button', 'wahl-knopf', w);
+    kasten.appendChild(k);
+    return k;
+  });
+  b.appendChild(kasten);
+  let dran = 0;
+  api.zaehler('0 von ' + worte.length);
+  while(dran < worte.length){
+    const i = await api.klick(knoepfe);
+    const k = knoepfe[i];
+    if(k.disabled) continue;
+    if(k.textContent === worte[dran]){
+      k.disabled = true;
+      k.classList.add('richtig');
+      k.textContent = (dran + 1) + '. ' + k.textContent;
+      dran++;
+      api.ton('gut');
+      api.zaehler(dran + ' von ' + worte.length);
+      api.unter(dran < worte.length ? 'Und welches kam danach?' : 'Genau diese Reihe war es.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      k.classList.add('wackel');
+      api.unter('Noch nicht dieses.');
+      await api.warte(420);
+      k.classList.remove('wackel');
+    }
+  }
+  await api.warte(800);
+}
+
+SPIELE.liste = async function(api, p){
+  const {feld, worte} = await listeMerken(api, p);
+  await api.warte(300);
+  if(p.reihenfolge) await listeSeriell(api, p, worte, feld);
+  else await listeAbfragen(api, p, worte, feld);
+};
+
+/* --- Was fehlt? --- */
+SPIELE.wasfehlt = async function(api, p){
+  for(let r = 0; r < p.runden; r++){
+    const dinge = waehle(DINGE, p.anzahl);
+    const b = api.buehne();
+    b.appendChild(dingReihe(dinge));
+    api.zaehler('Runde ' + (r+1) + ' von ' + p.runden);
+    api.anweisung('Sieh dir die Sachen an.');
+    api.unter('Eines davon verschwindet gleich.');
+    await api.merken(api.zeit(p.vorschau));
+    const wegIdx = zufall(dinge.length);
+    const weg = dinge[wegIdx];
+    const rest = mischen(dinge.filter((d, i) => i !== wegIdx));
+    const b2 = api.buehne();
+    b2.appendChild(dingReihe(rest));
+    const falsche = waehle(rest, 3).map(d => d.w);
+    await frageStellen(api, 'Was fehlt jetzt?', [weg.w].concat(falsche), 0, {anhaengen:true, zwei:true, unter:''})
+      || api.fehler();
+  }
+};
+
+/* Drei Angaben pro Person statt zwei — und am Ende eine Frage von hinten */
+async function zuordnungDreifach(api, p){
+  const leute = waehle(ZUORDNUNGEN.berufe.paare, p.anzahl).map(x => ({name:x[0], beruf:x[1]}));
+  const staedte = waehle(ZUORDNUNGEN.staedte.paare.map(x => x[1]), p.anzahl);
+  leute.forEach((l, i) => { l.stadt = staedte[i]; });
+  const b = api.buehne();
+  const liste = mach('div', 'stapel-eng');
+  leute.forEach(l => {
+    const z = mach('div');
+    z.style.background = 'var(--flaeche-2)';
+    z.style.borderRadius = 'var(--rund-klein)';
+    z.style.padding = '.6rem .9rem';
+    z.appendChild(mach('b', null, l.name));
+    z.appendChild(mach('div', 'leise klein', l.beruf + ' aus ' + l.stadt));
+    liste.appendChild(z);
+  });
+  b.appendChild(liste);
+  api.anweisung('Drei Angaben, ' + p.anzahl + ' Personen.');
+  api.unter('Name, Beruf und Stadt — am besten zu einem kleinen Bild verbinden.');
+  await api.merken(api.zeit(p.vorschau));
+  const andereBerufe = ZUORDNUNGEN.berufe.paare.map(x => x[1]).filter(w => leute.every(l => l.beruf !== w));
+  const andereStaedte = ZUORDNUNGEN.staedte.paare.map(x => x[1]).filter(w => leute.every(l => l.stadt !== w));
+  const gefragt = mischen(leute);
+  for(let i = 0; i < gefragt.length; i++){
+    const l = gefragt[i];
+    const nachBeruf = Math.random() < .5;
+    const richtig = nachBeruf ? l.beruf : l.stadt;
+    const falsch = nachBeruf
+      ? waehle(andereBerufe.concat(leute.map(x => x.beruf).filter(w => w !== richtig)), 3)
+      : waehle(andereStaedte.concat(leute.map(x => x.stadt).filter(w => w !== richtig)), 3);
+    api.zaehler('Frage ' + (i+1) + ' von ' + (gefragt.length + 1));
+    const gut = await frageStellen(api, nachBeruf ? 'Was ist ' + l.name + ' von Beruf?' : 'Wo wohnt ' + l.name + '?',
+      [richtig].concat(falsch), 0, {zwei:true, unter:''});
+    if(!gut) api.fehler();
+  }
+  const rueck = leute[zufall(leute.length)];
+  api.zaehler('Frage ' + (gefragt.length + 1) + ' von ' + (gefragt.length + 1));
+  const gut = await frageStellen(api, 'Und wer von ihnen wohnt in ' + rueck.stadt + '?',
+    [rueck.name].concat(leute.filter(l => l !== rueck).map(l => l.name).slice(0, 3)), 0,
+    {zwei:true, unter:'Diesmal andersherum gefragt.'});
+  if(!gut) api.fehler();
+}
+
+/* --- Namen und Dinge verknüpfen --- */
+SPIELE.zuordnung = async function(api, p){
+  if(p.dreifach) return zuordnungDreifach(api, p);
+  const pool = ZUORDNUNGEN[p.pool];
+  const paare = waehle(pool.paare, p.anzahl);
+  const b = api.buehne();
+  const liste = mach('div', 'stapel-eng');
+  paare.forEach(([a, c]) => {
+    const z = mach('div', 'zeile-weit');
+    z.style.background = 'var(--flaeche-2)';
+    z.style.borderRadius = 'var(--rund-klein)';
+    z.style.padding = '.6rem .9rem';
+    z.appendChild(mach('b', null, a));
+    z.appendChild(mach('span', 'leise', c));
+    liste.appendChild(z);
+  });
+  b.appendChild(liste);
+  api.anweisung('Merke dir, was zu wem gehört.');
+  api.unter('Stell dir die Person dabei bildlich vor.');
+  await api.merken(api.zeit(p.vorschau));
+  const andere = pool.paare.filter(x => paare.indexOf(x) < 0).map(x => x[1]);
+  const gefragt = mischen(paare);
+  for(let i = 0; i < gefragt.length; i++){
+    const [a, c] = gefragt[i];
+    const falsche = waehle(andere.concat(paare.map(x => x[1]).filter(w => w !== c)), 3);
+    api.zaehler('Frage ' + (i+1) + ' von ' + gefragt.length);
+    const gut = await frageStellen(api, pool.frage.replace('%a', a), [c].concat(falsche), 0, {zwei:true, unter:''});
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Reihenfolge --- */
+SPIELE.reihenfolge = async function(api, p){
+  const dinge = waehle(DINGE, p.anzahl);
+  const b = api.buehne();
+  const reihe = mach('div', 'karten-reihe');
+  dinge.forEach((d, i) => {
+    const k = mach('div', 'dingchen');
+    k.appendChild(mach('em', null, d.e));
+    k.appendChild(mach('span', 'zahl', (i+1) + '.'));
+    reihe.appendChild(k);
+  });
+  b.appendChild(reihe);
+  api.anweisung('Merke dir die Reihenfolge.');
+  api.unter('Erst das Erste, dann das Zweite …');
+  await api.merken(api.zeit(p.vorschau));
+  const gemischt = mischen(dinge.map((d, i) => ({d, i})));
+  const b2 = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', Math.min(4, p.anzahl));
+  const felder = gemischt.map(x => {
+    const f = mach('button', 'feldchen', x.d.e);
+    gitter.appendChild(f);
+    return f;
+  });
+  b2.appendChild(gitter);
+  api.anweisung('Tippe sie in der richtigen Reihenfolge an.');
+  api.unter('');
+  let dran = 0;
+  while(dran < p.anzahl){
+    const k = await api.klick(felder);
+    if(felder[k].classList.contains('gefunden')) continue;
+    if(gemischt[k].i === dran){
+      felder[k].className = 'feldchen gefunden nummer';
+      felder[k].textContent = (dran + 1) + '.';
+      dran++;
+      api.ton('gut');
+      api.zaehler(dran + ' von ' + p.anzahl);
+      api.unter(dran < p.anzahl ? 'Weiter — welches war Nummer ' + (dran+1) + '?' : 'Genau so war es.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      felder[k].classList.add('wackel');
+      api.unter('Noch nicht dieses.');
+      await api.warte(420);
+      felder[k].classList.remove('wackel');
+    }
+  }
+  await api.warte(700);
+};
+
+/* --- n zurück --- */
+SPIELE.nback = async function(api, p){
+  const alphabet = waehle(SYMBOLE, 6);
+  const reihe = [];
+  for(let i = 0; i < p.reize; i++){
+    if(i >= p.n && Math.random() < .32) reihe.push(reihe[i - p.n]);
+    else{
+      let z = alphabet[zufall(alphabet.length)];
+      if(i >= p.n && z === reihe[i - p.n]) z = alphabet[(alphabet.indexOf(z) + 1) % alphabet.length];
+      reihe.push(z);
+    }
+  }
+  const b = api.buehne();
+  const gross = mach('div', 'grosszeichen', '');
+  const knopf = mach('button', 'knopf knopf-haupt knopf-gross', 'Das war schon da');
+  b.appendChild(gross);
+  b.appendChild(knopf);
+  b.appendChild(mach('p', 'klein zart', 'Nur drücken, wenn das Zeichen dem von ' + (p.n === 1 ? 'einem Schritt' : p.n + ' Schritten') + ' vorher gleicht.'));
+  api.anweisung(p.n === 1 ? 'Gleich wie das Zeichen davor?' : 'Gleich wie das Zeichen ' + p.n + ' Schritte davor?');
+  api.unter('Es geht los …');
+  await api.warte(1200);
+  let treffer = 0, verpasst = 0, daneben = 0;
+  for(let i = 0; i < reihe.length; i++){
+    const ziel = i >= p.n && reihe[i] === reihe[i - p.n];
+    let gedrueckt = false;
+    knopf.onclick = () => {
+      if(gedrueckt) return;
+      gedrueckt = true;
+      if(ziel){ treffer++; api.ton('gut'); gross.style.color = 'var(--moos)'; }
+      else{ daneben++; api.ton('nein'); gross.style.color = 'var(--warnung)'; }
+    };
+    gross.style.color = '';
+    gross.textContent = reihe[i];
+    api.zaehler((i+1) + ' von ' + reihe.length);
+    await api.warte(api.zeit(p.tempo * .62));
+    gross.textContent = '';
+    gross.style.color = '';
+    await api.warte(api.zeit(p.tempo * .38));
+    if(ziel && !gedrueckt){ verpasst++; api.unter('Das war eines.'); }
+    else if(!ziel && gedrueckt) api.unter('Das war keines.');
+    else api.unter('');
+  }
+  knopf.onclick = null;
+  api.fehler(verpasst + daneben);
+  api.buehne().appendChild(zettel([
+    treffer + ' erkannt', verpasst + ' übersehen', daneben + ' zu viel gedrückt'
+  ]));
+  api.anweisung('Durch.');
+  api.unter('Diese Übung ist die anstrengendste im ganzen Weg.');
+  await api.warte(2400);
+};
+
+/* --- Rechenkette --- */
+SPIELE.kette = async function(api, p){
+  const k = KETTEN[p.kette];
+  const b = api.buehne();
+  const gross = mach('div', 'grosszeichen', '');
+  b.appendChild(gross);
+  api.anweisung('Rechne im Kopf mit.');
+  api.unter('Nichts aufschreiben — nur mitdenken.');
+  await api.warte(500);
+  gross.textContent = k.start;
+  await api.warte(api.zeit(p.vorschau));
+  let wert = k.start;
+  for(const [z, n] of k.schritte){
+    gross.textContent = '';
+    await api.warte(180);
+    gross.textContent = z + ' ' + n;
+    if(z === '+') wert += n;
+    else if(z === '−') wert -= n;
+    else if(z === '×') wert *= n;
+    else wert = wert / n;
+    await api.warte(api.zeit(p.vorschau));
+  }
+  const soll = String(wert);
+  api.buehne();
+  api.anweisung('Was kommt heraus?');
+  api.unter('');
+  const ein = await zahlEingabe(api, soll.length);
+  if(ein === soll){
+    api.ton('gut');
+    api.unter('Genau ' + soll + '.');
+  }else{
+    api.fehler();
+    api.ton('nein');
+    api.unter('Es waren ' + soll + '. Die Kette war: ' + k.start + ' ' + k.schritte.map(s => s[0] + ' ' + s[1]).join(' ') + '.');
+  }
+  await api.warte(ein === soll ? 900 : 3000);
+};
+
+/* --- Geschichte --- */
+SPIELE.geschichte = async function(api, p){
+  const g = GESCHICHTEN[p.welche];
+  const b = api.buehne();
+  const kasten = mach('div', 'geschichte');
+  g.text.forEach(t => kasten.appendChild(mach('p', null, t)));
+  b.appendChild(kasten);
+  api.anweisung(g.titel);
+  api.unter('Ruhig zweimal lesen. Auf die Einzelheiten achten.');
+  await api.merken(api.zeit(p.vorschau), 'Gelesen');
+  if(p.stoerTyp){
+    const gemerkt = api.fehlerZahl;
+    api.buehne();
+    api.anweisung('Erst noch etwas anderes.');
+    api.unter('Die Fragen kommen gleich — die Geschichte muss so lange warten.');
+    await api.warte(1600);
+    await SPIELE[p.stoerTyp](api, p.stoerP);
+    api.fehlerZahl = gemerkt;
+    api.buehne();
+    api.zaehler('');
+    api.anweisung('Und nun zurück zur Geschichte.');
+    api.unter('');
+    await api.warte(1800);
+  }
+  const fragen = g.fragen.slice(0, p.fragen);
+  for(let i = 0; i < fragen.length; i++){
+    api.zaehler('Frage ' + (i+1) + ' von ' + fragen.length);
+    const f = fragen[i];
+    const gut = await frageStellen(api, f.f, f.o, f.r, {zwei:f.o.every(o => o.length < 14), unter:''});
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Farbe sticht Wort --- */
+SPIELE.stroop = async function(api, p){
+  const dunkel = istDunkel();
+  const b = api.buehne();
+  const wort = mach('div', 'stroop-wort', '');
+  const kasten = mach('div', 'wahl zwei');
+  b.appendChild(wort);
+  b.appendChild(kasten);
+  const knoepfe = FARBEN.map(f => {
+    const k = mach('button', 'wahl-knopf', f.name);
+    kasten.appendChild(k);
+    return k;
+  });
+  for(let r = 0; r < p.runden; r++){
+    const wortIdx = zufall(FARBEN.length);
+    let farbIdx = zufall(FARBEN.length);
+    if(Math.random() < .78 && farbIdx === wortIdx) farbIdx = (farbIdx + 1 + zufall(3)) % FARBEN.length;
+    const regel = p.regel === 'wechsel' ? (Math.random() < .5 ? 'farbe' : 'wort') : 'farbe';
+    const richtig = regel === 'farbe' ? farbIdx : wortIdx;
+    wort.textContent = FARBEN[wortIdx].name.toUpperCase();
+    wort.style.color = dunkel ? FARBEN[farbIdx].dunkel : FARBEN[farbIdx].hell;
+    api.zaehler((r+1) + ' von ' + p.runden);
+    api.anweisung(regel === 'farbe' ? 'Welche FARBE hat das Wort?' : 'Welches WORT steht da?');
+    api.unter(regel === 'farbe' ? 'Nicht lesen — hinsehen.' : 'Jetzt lesen — die Farbe ist gleichgültig.');
+    knoepfe.forEach(k => { k.className = 'wahl-knopf'; k.disabled = false; });
+    const gewaehlt = await api.klickOderZeit(knoepfe, api.zeit(p.zeit));
+    knoepfe.forEach(k => { k.onclick = null; k.disabled = true; });
+    if(gewaehlt === richtig){
+      knoepfe[gewaehlt].classList.add('richtig');
+      api.ton('gut');
+      api.unter('');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      if(gewaehlt >= 0) knoepfe[gewaehlt].classList.add('falsch');
+      knoepfe[richtig].classList.add('richtig');
+      api.unter(gewaehlt < 0 ? 'Zu langsam — richtig war ' + FARBEN[richtig].name + '.' : 'Richtig war ' + FARBEN[richtig].name + '.');
+    }
+    await api.warte(gewaehlt === richtig ? 480 : 1200);
+    wort.textContent = '';
+    await api.warte(260);
+  }
+};
+
+/* --- Zahlenreihen --- */
+SPIELE.muster = async function(api, p){
+  const quelle = p.quelle === 'hart' ? MUSTER_HART : p.quelle === 'schwer' ? MUSTER_SCHWER : MUSTER_LEICHT;
+  const aufgaben = waehle(quelle, p.anzahl);
+  for(let i = 0; i < aufgaben.length; i++){
+    const a = aufgaben[i];
+    const b = api.buehne();
+    const reihe = mach('div', 'anzeige', a.reihe.join('  ') + '  ?');
+    b.appendChild(reihe);
+    api.zaehler('Aufgabe ' + (i+1) + ' von ' + aufgaben.length);
+    const gut = await frageStellen(api, 'Wie geht die Reihe weiter?', a.o.map(String), a.r, {
+      anhaengen:true, zwei:true, warum:a.warum, unter:'Welche Regel steckt dahinter?'
+    });
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Geheimschrift --- */
+SPIELE.code = async function(api, p){
+  const zeichen = waehle(CODE_ZEICHEN, p.zeichen);
+  const ziffern = waehle([1,2,3,4,5,6,7,8,9], p.zeichen);
+  const b = api.buehne();
+  const leg = mach('div', 'legende');
+  zeichen.forEach((z, i) => {
+    const d = mach('div');
+    d.appendChild(mach('b', null, z));
+    d.appendChild(mach('span', null, ziffern[i]));
+    leg.appendChild(d);
+  });
+  b.appendChild(leg);
+  api.anweisung('Merke dir, welches Zeichen welche Ziffer ist.');
+  api.unter('Gleich ist die Tabelle weg.');
+  await api.merken(api.zeit(p.vorschau));
+  for(let r = 0; r < p.runden; r++){
+    const folge = [];
+    for(let i = 0; i < p.stellen; i++) folge.push(zufall(p.zeichen));
+    const b2 = api.buehne();
+    const gross = mach('div', 'grosszeichen', folge.map(i => zeichen[i]).join(' '));
+    gross.style.color = 'var(--akzent)';
+    b2.appendChild(gross);
+    api.zaehler('Runde ' + (r+1) + ' von ' + p.runden);
+    api.anweisung('Welche Zahl steht da?');
+    api.unter('Zeichen für Zeichen übersetzen.');
+    const soll = folge.map(i => ziffern[i]).join('');
+    const ein = await zahlEingabe(api, p.stellen);
+    if(ein === soll){
+      api.ton('gut');
+      api.unter('Richtig.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      api.unter('Richtig wäre ' + soll.split('').join(' ') + ' gewesen.');
+    }
+    await api.warte(ein === soll ? 800 : 2200);
+  }
+};
+
+/* --- Merken trotz Ablenkung --- */
+SPIELE.interferenz = async function(api, p){
+  const {feld, worte} = await listeMerken(api, p);
+  api.anweisung('Und jetzt etwas ganz anderes.');
+  api.unter('Das Zwischenspiel zählt nicht mit — es soll nur ablenken.');
+  if(p.stoerTyp){
+    const gemerkt = api.fehlerZahl;
+    await api.warte(1200);
+    await SPIELE[p.stoerTyp](api, p.stoerP);
+    api.fehlerZahl = gemerkt;
+  }
+  for(let i = 0; i < (p.stoerTyp ? 0 : p.stoerung); i++){
+    const a = 3 + zufall(9), c = 2 + zufall(9);
+    const summe = a * c;
+    const falsch1 = summe + (1 + zufall(4));
+    const falsch2 = summe - (1 + zufall(4));
+    const b = api.buehne();
+    b.appendChild(mach('div', 'anzeige', a + ' × ' + c));
+    api.zaehler('Ablenkung ' + (i+1) + ' von ' + p.stoerung);
+    await frageStellen(api, 'Wie viel ist das?', [String(summe), String(falsch1), String(falsch2)], 0, {anhaengen:true, zwei:true, unter:''});
+  }
+  api.zaehler('');
+  api.anweisung('Und nun zurück zu den Wörtern.');
+  api.unter('Die von vorhin — sie sind noch da.');
+  await api.warte(1500);
+  await listeAbfragen(api, p, worte, feld);
+};
+
+/* --- Buchstabensalat --- */
+SPIELE.anagramm = async function(api, p){
+  const quelle = p.quelle === 'hart' ? ANAGRAMME_HART : p.quelle === 'schwer' ? ANAGRAMME_SCHWER : ANAGRAMME_LEICHT;
+  const aufgaben = waehle(quelle, p.anzahl);
+  for(let a = 0; a < aufgaben.length; a++){
+    const {wort, hinweis} = aufgaben[a];
+    let versuche = 0, fertig = false;
+    while(!fertig){
+      let gemischt = mischen(wort.split(''));
+      if(gemischt.join('') === wort) gemischt = mischen(gemischt);
+      const b = api.buehne();
+      const schlitze = mach('div', 'schlitze');
+      const buchstaben = mach('div', 'buchstaben');
+      b.appendChild(schlitze);
+      b.appendChild(buchstaben);
+      api.zaehler('Wort ' + (a+1) + ' von ' + aufgaben.length);
+      api.anweisung('Welches Wort steckt darin?');
+      api.unter(hinweis);
+      const slots = wort.split('').map(() => {
+        const s = mach('div', 'schlitz', '');
+        schlitze.appendChild(s);
+        return s;
+      });
+      const tasten = gemischt.map(ch => {
+        const t = mach('button', null, ch);
+        buchstaben.appendChild(t);
+        return t;
+      });
+      let gelegt = [];
+      const zeichnen = () => {
+        slots.forEach((s, i) => {
+          s.textContent = gelegt[i] ? gelegt[i].ch : '';
+          s.className = 'schlitz' + (gelegt[i] ? ' voll' : '');
+        });
+      };
+      const ergebnis = await api.warten(res => {
+        tasten.forEach((t, i) => {
+          t.onclick = () => {
+            if(t.classList.contains('weg') || gelegt.length >= slots.length) return;
+            t.classList.add('weg');
+            gelegt.push({ch:t.textContent, taste:t});
+            ton('tick');
+            zeichnen();
+            if(gelegt.length === slots.length) res(gelegt.map(x => x.ch).join(''));
+          };
+        });
+        slots.forEach((s, i) => {
+          s.onclick = () => {
+            if(!gelegt[i]) return;
+            const letzte = gelegt.splice(i, 1)[0];
+            letzte.taste.classList.remove('weg');
+            ton('tick');
+            zeichnen();
+          };
+        });
+      });
+      if(ergebnis === wort){
+        slots.forEach(s => s.style.background = 'var(--moos-weich)');
+        api.ton('gut');
+        api.unter('Richtig: ' + wort);
+        fertig = true;
+        await api.warte(1000);
+      }else{
+        versuche++;
+        api.fehler();
+        api.ton('nein');
+        if(versuche >= 2){
+          api.unter('Das Wort war: ' + wort);
+          fertig = true;
+          await api.warte(2400);
+        }else{
+          api.unter('Noch nicht. Probier es ein zweites Mal.');
+          await api.warte(1600);
+        }
+      }
+    }
+  }
+};
+
+/* --- Was passt nicht dazu? --- */
+SPIELE.oddone = async function(api, p){
+  const aufgaben = waehle(p.alle ? ODDONE.concat(ODDONE_MEHR) : ODDONE, p.anzahl);
+  for(let i = 0; i < aufgaben.length; i++){
+    const a = aufgaben[i];
+    api.buehne();
+    api.zaehler('Aufgabe ' + (i+1) + ' von ' + aufgaben.length);
+    const gut = await frageStellen(api, 'Was passt nicht dazu?', a.o, a.r, {zwei:true, warum:a.warum, unter:''});
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Sprichwörter --- */
+SPIELE.sprichwort = async function(api, p){
+  const aufgaben = waehle(p.quelle === 'schwer' ? SPRICHWOERTER_SCHWER : SPRICHWOERTER, p.anzahl);
+  for(let i = 0; i < aufgaben.length; i++){
+    const s = aufgaben[i];
+    api.buehne();
+    api.zaehler('Spruch ' + (i+1) + ' von ' + aufgaben.length);
+    const gut = await frageStellen(api, s.satz, s.o, s.r, {
+      zwei:true, unter:'Wie endet der Satz?',
+      warum:'Das ganze Sprichwort: „' + s.satz.replace('…', s.o[s.r]) + '."'
+    });
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Wortkette --- */
+SPIELE.wortkette = async function(api, p){
+  const kette = WORTKETTEN[zufall(WORTKETTEN.length)];
+  const schritte = Math.min(p.schritte, kette.length - 1);
+  const schoenSchreiben = w => w.charAt(0) + w.slice(1).toLowerCase();
+  for(let i = 1; i <= schritte; i++){
+    const vorn = kette[i-1], richtig = kette[i];
+    const b = api.buehne();
+    b.appendChild(zettel(kette.slice(0, i).map(w => schoenSchreiben(w))));
+    api.zaehler('Glied ' + i + ' von ' + schritte);
+    const gut = await frageStellen(api, 'Was passt hinten an „' + schoenSchreiben(vorn) + '"?',
+      [schoenSchreiben(richtig)].concat(waehle(STOERER, 3)), 0, {
+        anhaengen:true, zwei:true, unter:'Zusammen soll ein bekanntes Wort entstehen.',
+        warum:schoenSchreiben(vorn) + ' + ' + schoenSchreiben(richtig) + ' = ' + schoenSchreiben(vorn) + richtig.toLowerCase() + '.'
+      });
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Sammelkorb --- */
+SPIELE.sammelkorb = async function(api, p){
+  const korb = (p.welcher !== undefined && KOERBE[p.welcher]) ? KOERBE[p.welcher] : KOERBE[zufall(KOERBE.length)];
+  const ziel = waehle(korb.treffer, p.treffer);
+  const daneben = waehle(korb.rest, 9);
+  const alle = mischen(ziel.concat(daneben));
+  const b = api.buehne();
+  const kasten = mach('div', 'wortwahl');
+  const knoepfe = alle.map(w => {
+    const k = mach('button', 'wahl-knopf', w);
+    kasten.appendChild(k);
+    return k;
+  });
+  b.appendChild(kasten);
+  api.anweisung(korb.frage);
+  api.unter('Alle ' + ziel.length + ' passenden antippen — die Uhr läuft mit.');
+  const ms = api.zeit(p.sekunden);
+  const bal = $('#spiel-balken'), inn = bal.firstElementChild;
+  bal.hidden = false;
+  inn.style.transition = 'none';
+  inn.style.transform = 'scaleX(1)';
+  requestAnimationFrame(() => { inn.style.transition = 'transform ' + ms + 'ms linear'; inn.style.transform = 'scaleX(0)'; });
+  const schluss = Date.now() + ms;
+  let gefunden = 0;
+  api.zaehler('0 von ' + ziel.length);
+  while(gefunden < ziel.length && Date.now() < schluss){
+    const i = await api.klickOderZeit(knoepfe, Math.max(0, schluss - Date.now()));
+    if(i < 0) break;
+    const k = knoepfe[i];
+    if(k.disabled) continue;
+    k.disabled = true;
+    if(ziel.indexOf(k.textContent) >= 0){
+      k.classList.add('richtig');
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + ziel.length);
+    }else{
+      k.classList.add('falsch');
+      api.fehler();
+      api.ton('nein');
+      api.unter('Das gehört nicht dazu.');
+    }
+  }
+  bal.hidden = true;
+  inn.style.transition = 'none';
+  inn.style.transform = 'scaleX(1)';
+  const fehlend = ziel.filter(w => knoepfe.some(k => k.textContent === w && !k.disabled));
+  if(fehlend.length){
+    api.fehler(fehlend.length);
+    knoepfe.forEach(k => { if(fehlend.indexOf(k.textContent) >= 0) k.classList.add('richtig'); });
+    api.unter('Die Zeit ist um — das hätte noch gepasst: ' + fehlend.join(', ') + '.');
+    api.ton('nein');
+  }else{
+    api.unter('Korb voll, alles richtig.');
+    api.ton('gut');
+  }
+  knoepfe.forEach(k => { k.disabled = true; k.onclick = null; });
+  await api.warte(fehlend.length ? 2800 : 900);
+};
+
+/* --- Gedächtnispalast (Loci) --- */
+SPIELE.palast = async function(api, p){
+  const orte = ORTE.slice(0, p.orte);
+  const dinge = waehle(DINGE, p.orte);
+  const b = api.buehne();
+  const bild = mach('div', 'grosszeichen', '');
+  const satz = mach('p', 'anweisung', '');
+  satz.style.textAlign = 'center';
+  b.appendChild(bild);
+  b.appendChild(satz);
+  api.anweisung('Ein Gang durch die Wohnung');
+  api.unter('Lege jedes Ding im Kopf an seinen Platz — und sieh es dort richtig liegen.');
+  await api.warte(2200);
+  for(let i = 0; i < orte.length; i++){
+    bild.textContent = dinge[i].e;
+    satz.textContent = dinge[i].w + ' ' + orte[i];
+    api.zaehler('Platz ' + (i+1) + ' von ' + orte.length);
+    await api.warte(api.zeit(p.vorschau));
+    bild.textContent = '';
+    satz.textContent = '';
+    await api.warte(220);
+  }
+  const fragen = mischen(orte.map((o, i) => ({o, w:dinge[i].w})));
+  for(let i = 0; i < fragen.length; i++){
+    const f = fragen[i];
+    const falsche = waehle(dinge.map(d => d.w).filter(w => w !== f.w).concat(DINGE.map(d => d.w).filter(w => dinge.every(x => x.w !== w))), 3);
+    api.zaehler('Frage ' + (i+1) + ' von ' + fragen.length);
+    const gut = await frageStellen(api, 'Was lag ' + f.o + '?', [f.w].concat(falsche), 0, {zwei:true, unter:'Geh den Weg im Kopf noch einmal ab.'});
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Suchbild --- */
+SPIELE.suchbild = async function(api, p){
+  const m = p.spalten;
+  const oben = waehle(SYMBOLE, m);
+  const unten = oben.slice();
+  const frei = SYMBOLE.filter(s => oben.indexOf(s) < 0);
+  const stellen = waehle(oben.map((s, i) => i), p.unterschiede);
+  stellen.forEach((idx, k) => { unten[idx] = frei[k]; });
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', m);
+  oben.forEach(s => {
+    const f = mach('div', 'feldchen');
+    f.textContent = s;
+    f.style.cursor = 'default';
+    gitter.appendChild(f);
+  });
+  const felder = unten.map(s => {
+    const f = mach('button', 'feldchen', s);
+    gitter.appendChild(f);
+    return f;
+  });
+  b.appendChild(gitter);
+  b.appendChild(mach('p', 'klein zart', 'Die obere Reihe bleibt, wie sie ist. In der unteren haben sich ' + p.unterschiede + ' Dinge verändert.'));
+  api.anweisung('Was ist unten anders?');
+  api.unter('Die geänderten Felder in der unteren Reihe antippen.');
+  let gefunden = 0;
+  api.zaehler('0 von ' + p.unterschiede);
+  while(gefunden < p.unterschiede){
+    const i = await api.klick(felder);
+    const f = felder[i];
+    if(f.classList.contains('gefunden') || f.classList.contains('leise')) continue;
+    if(stellen.indexOf(i) >= 0){
+      f.classList.add('gefunden');
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + p.unterschiede);
+      api.unter(gefunden === p.unterschiede ? 'Alle gefunden.' : 'Richtig — weiter suchen.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      f.classList.add('leise', 'wackel');
+      api.unter('Das ist oben genauso.');
+    }
+  }
+  await api.warte(800);
+};
+
+/* --- Zeitleiste --- */
+SPIELE.zeitleiste = async function(api, p){
+  const aufgaben = waehle(p.lang ? ZEITLEISTEN_LANG : ZEITLEISTEN, p.anzahl);
+  for(let a = 0; a < aufgaben.length; a++){
+    const auf = aufgaben[a];
+    const b = api.buehne();
+    const gemischt = mischen(auf.dinge.map((d, i) => ({d, i})));
+    const kasten = mach('div', 'wahl');
+    const knoepfe = gemischt.map(x => {
+      const k = mach('button', 'wahl-knopf', x.d);
+      kasten.appendChild(k);
+      return k;
+    });
+    b.appendChild(kasten);
+    api.zaehler('Aufgabe ' + (a+1) + ' von ' + aufgaben.length);
+    api.anweisung(auf.frage);
+    api.unter('Der Reihe nach antippen: das Älteste zuerst.');
+    let dran = 0;
+    while(dran < gemischt.length){
+      const i = await api.klick(knoepfe);
+      if(knoepfe[i].classList.contains('richtig')) continue;
+      if(gemischt[i].i === dran){
+        knoepfe[i].classList.add('richtig');
+        knoepfe[i].textContent = (dran + 1) + '. ' + gemischt[i].d;
+        dran++;
+        api.ton('gut');
+      }else{
+        api.fehler();
+        api.ton('nein');
+        knoepfe[i].classList.add('wackel');
+        api.unter('Etwas war noch früher dran.');
+        await api.warte(420);
+        knoepfe[i].classList.remove('wackel');
+      }
+    }
+    api.unter(auf.warum);
+    await api.warte(2800);
+  }
+};
+
+/* --- Rastplatz: erzählen statt punkten --- */
+SPIELE.rastplatz = async function(api, p){
+  const r = RASTPLAETZE.find(x => x.id === p.id) || RASTPLAETZE[0];
+  const b = api.buehne();
+  api.anweisung(r.frage);
+  api.unter(r.dazu);
+  api.zaehler('Rastplatz');
+  const frueher = (Z.rast && Z.rast[r.id]) || '';
+  if(frueher){
+    const alt = mach('div', 'geschichte');
+    alt.appendChild(mach('p', 'etikett', 'Das hast du zuletzt erzählt'));
+    alt.appendChild(mach('p', null, frueher));
+    b.appendChild(alt);
+  }
+  const feld = mach('textarea', 'schreibfeld');
+  feld.id = 'rast-' + r.id;
+  feld.rows = 4;
+  feld.placeholder = 'Aufschreiben, wenn du magst — oder einfach nur daran denken.';
+  feld.value = frueher;
+  b.appendChild(feld);
+  b.appendChild(mach('p', 'klein zart', 'Hier gibt es keine Punkte und keine richtige Antwort. Was du schreibst, bleibt auf diesem Gerät.'));
+  const knopf = mach('button', 'knopf knopf-haupt knopf-gross', 'Fertig erzählt');
+  b.appendChild(knopf);
+  await api.klick([knopf]);
+  Z.rast = Z.rast || {};
+  if(feld.value.trim()) Z.rast[r.id] = feld.value.trim();
+  api.ton('gut');
+};
+
+/* --- Paare, die zusammengehören --- */
+SPIELE.passen = async function(api, p){
+  const anzahl = p.spalten * p.zeilen;
+  const paare = waehle(PASS_PAARE, anzahl / 2);
+  const karten = mischen([].concat.apply([], paare.map((x, i) => [{w:x[0], k:i}, {w:x[1], k:i}])));
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', p.spalten);
+  const felder = karten.map(k => {
+    const f = mach('button', 'feldchen wortfeld', k.w);
+    f.dataset.k = k.k;
+    gitter.appendChild(f);
+    return f;
+  });
+  b.appendChild(gitter);
+  api.anweisung('Diesmal gehören die Paare zusammen.');
+  api.unter('Nadel und Faden, Schloss und Schlüssel — schau sie dir an.');
+  await api.merken(api.zeit(p.vorschau));
+  felder.forEach(f => f.classList.add('ruecken'));
+  api.anweisung('Was gehört zusammen?');
+  api.unter('Zwei Karten antippen.');
+  let erste = null, gefunden = 0;
+  api.zaehler('0 von ' + (anzahl/2) + ' Paaren');
+  while(gefunden < anzahl / 2){
+    const i = await api.klick(felder);
+    const f = felder[i];
+    if(!f.classList.contains('ruecken') || f === erste) continue;
+    f.classList.remove('ruecken');
+    f.classList.add('offen');
+    if(!erste){ erste = f; continue; }
+    const a = erste, c = f;
+    erste = null;
+    if(a.dataset.k === c.dataset.k){
+      a.className = 'feldchen wortfeld gefunden';
+      c.className = 'feldchen wortfeld gefunden';
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + (anzahl/2) + ' Paaren');
+      api.unter(a.textContent + ' und ' + c.textContent + ' — passt.');
+    }else{
+      api.fehler();
+      api.ton('nein');
+      api.unter('Die beiden gehören nicht zusammen.');
+      if(!document.documentElement.getAttribute('data-ruhe')) c.classList.add('wackel');
+      await api.warte(950);
+      [a, c].forEach(k => { k.className = 'feldchen wortfeld ruecken'; });
+    }
+  }
+};
+
+/* --- Wegplan: Pfeile merken, dann den Weg gehen --- */
+function wegBauen(n, schritte){
+  for(let versuch = 0; versuch < 40; versuch++){
+    let x = zufall(n), y = zufall(n);
+    const weg = [{x, y}], pfeile = [];
+    let stecken = false;
+    while(pfeile.length < schritte && !stecken){
+      const moeglich = [];
+      if(y > 0)   moeglich.push(['o', x, y-1]);
+      if(y < n-1) moeglich.push(['u', x, y+1]);
+      if(x > 0)   moeglich.push(['l', x-1, y]);
+      if(x < n-1) moeglich.push(['r', x+1, y]);
+      const frei = moeglich.filter(m => !weg.some(w => w.x === m[1] && w.y === m[2]));
+      if(!frei.length){ stecken = true; break; }
+      const z = frei[zufall(frei.length)];
+      pfeile.push(z[0]);
+      x = z[1]; y = z[2];
+      weg.push({x, y});
+    }
+    if(pfeile.length === schritte) return {weg, pfeile};
+  }
+  return null;
+}
+SPIELE.wegplan = async function(api, p){
+  const n = p.gitter;
+  for(let r = 0; r < (p.runden || 2); r++){
+    const plan = wegBauen(n, p.schritte);
+    if(!plan) return;
+    const b = api.buehne();
+    const pfeilzeile = mach('div', 'grosszeichen', plan.pfeile.map(d => PFEILE[d]).join(' '));
+    pfeilzeile.style.letterSpacing = '.1em';
+    pfeilzeile.style.fontSize = 'clamp(2rem, 9vw, 3rem)';
+    b.appendChild(pfeilzeile);
+    api.zaehler('Weg ' + (r+1) + ' von ' + (p.runden || 2));
+    api.anweisung('Merke dir den Weg.');
+    api.unter(plan.pfeile.length + ' Schritte — gleich gehst du sie auf dem Plan.');
+    await api.merken(api.zeit(p.vorschau));
+    const b2 = api.buehne();
+    const gitter = mach('div', 'gitter');
+    gitter.style.setProperty('--spalten', n);
+    const felder = [];
+    for(let i = 0; i < n*n; i++){
+      const f = mach('button', 'feldchen', '');
+      gitter.appendChild(f);
+      felder.push(f);
+    }
+    b2.appendChild(gitter);
+    const idx = z => z.y * n + z.x;
+    felder[idx(plan.weg[0])].classList.add('gewaehlt');
+    felder[idx(plan.weg[0])].textContent = '●';
+    api.anweisung('Geh den Weg — Feld für Feld.');
+    api.unter('Der Punkt ist der Anfang.');
+    let schritt = 1;
+    while(schritt < plan.weg.length){
+      const i = await api.klick(felder);
+      if(felder[i].classList.contains('gefunden') || felder[i].classList.contains('gewaehlt')) continue;
+      if(i === idx(plan.weg[schritt])){
+        felder[i].className = 'feldchen gefunden nummer';
+        felder[i].textContent = schritt;
+        schritt++;
+        api.ton('gut');
+        api.unter(schritt < plan.weg.length ? 'Und weiter — ' + PFEILE[plan.pfeile[schritt-1]] + ' war der nächste Schritt.' : 'Genau dieser Weg war es.');
+      }else{
+        api.fehler();
+        api.ton('nein');
+        felder[i].classList.add('wackel');
+        api.unter('Von da aus ging es woanders hin.');
+        await api.warte(450);
+        felder[i].classList.remove('wackel');
+      }
+    }
+    await api.warte(900);
+  }
+};
+
+/* --- Die Uhr --- */
+function uhrBild(h, m){
+  const c = 100, r = 88;
+  let teile = '<circle cx="100" cy="100" r="' + r + '" fill="var(--flaeche)" stroke="var(--rand-stark)" stroke-width="3"/>';
+  for(let i = 0; i < 12; i++){
+    const a = i * Math.PI / 6;
+    const aussen = r - 7, innen = r - (i % 3 === 0 ? 20 : 14);
+    teile += '<line x1="' + (c + Math.sin(a)*aussen).toFixed(1) + '" y1="' + (c - Math.cos(a)*aussen).toFixed(1) +
+             '" x2="' + (c + Math.sin(a)*innen).toFixed(1) + '" y2="' + (c - Math.cos(a)*innen).toFixed(1) +
+             '" stroke="var(--tinte-zart)" stroke-width="' + (i % 3 === 0 ? 4 : 2) + '" stroke-linecap="round"/>';
+  }
+  [[12,0],[3,90],[6,180],[9,270]].forEach(([zahl, grad]) => {
+    const a = grad * Math.PI / 180, d = r - 34;
+    teile += '<text x="' + (c + Math.sin(a)*d).toFixed(1) + '" y="' + (c - Math.cos(a)*d + 6).toFixed(1) +
+             '" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="20" fill="var(--tinte-leise)">' + zahl + '</text>';
+  });
+  const ma = m * Math.PI / 30, ha = ((h % 12) + m/60) * Math.PI / 6;
+  teile += '<line x1="100" y1="100" x2="' + (c + Math.sin(ha)*46).toFixed(1) + '" y2="' + (c - Math.cos(ha)*46).toFixed(1) +
+           '" stroke="var(--tinte)" stroke-width="7" stroke-linecap="round"/>';
+  teile += '<line x1="100" y1="100" x2="' + (c + Math.sin(ma)*68).toFixed(1) + '" y2="' + (c - Math.cos(ma)*68).toFixed(1) +
+           '" stroke="var(--akzent)" stroke-width="4" stroke-linecap="round"/>';
+  teile += '<circle cx="100" cy="100" r="5" fill="var(--tinte)"/>';
+  return '<svg viewBox="0 0 200 200" width="210" height="210" role="img" aria-label="Analoge Uhr">' + teile + '</svg>';
+}
+const MINWORT = {5:'fünf', 10:'zehn', 20:'zwanzig'};
+function sprichZeit(h, m){
+  const st = ((h + 11) % 12) + 1, naechste = (st % 12) + 1;
+  if(m === 0)  return ZAHLWORT[st] + ' Uhr';
+  if(m === 15) return 'Viertel nach ' + ZAHLWORT[st];
+  if(m === 30) return 'halb ' + ZAHLWORT[naechste];
+  if(m === 45) return 'Viertel vor ' + ZAHLWORT[naechste];
+  if(m === 25) return 'fünf vor halb ' + ZAHLWORT[naechste];
+  if(m === 35) return 'fünf nach halb ' + ZAHLWORT[naechste];
+  if(m < 30)   return MINWORT[m] + ' nach ' + ZAHLWORT[st];
+  return MINWORT[60 - m] + ' vor ' + ZAHLWORT[naechste];
+}
+function plusMin(h, m, d){
+  let g = ((h % 12) * 60 + m + d) % 720;
+  if(g < 0) g += 720;
+  const nh = Math.floor(g / 60), nm = g % 60;
+  return [nh === 0 ? 12 : nh, nm];
+}
+SPIELE.uhrzeit = async function(api, p){
+  const arten = p.arten || ['lesen', 'spaeter'];
+  for(let i = 0; i < p.anzahl; i++){
+    const h = 1 + zufall(12), m = 5 * zufall(12);
+    const art = arten[zufall(arten.length)];
+    const abstand = 5 * (2 + zufall(10));
+    const [zh, zm] = art === 'lesen' ? [h, m] : plusMin(h, m, art === 'vorher' ? -abstand : abstand);
+    const b = api.buehne();
+    const kasten = mach('div', 'uhrkasten');
+    kasten.innerHTML = uhrBild(h, m);
+    b.appendChild(kasten);
+    const richtig = sprichZeit(zh, zm);
+    const kandidaten = [
+      sprichZeit.apply(null, plusMin(zh, zm, 5)),
+      sprichZeit.apply(null, plusMin(zh, zm, -5)),
+      sprichZeit.apply(null, plusMin(zh, zm, 60)),
+      sprichZeit.apply(null, plusMin(zh, zm, 30)),
+      sprichZeit(((Math.round(zm/5) + 11) % 12) + 1, (zh % 12) * 5)
+    ].filter(x => x !== richtig);
+    const falsch = [];
+    for(const k of mischen(kandidaten)){ if(falsch.indexOf(k) < 0) falsch.push(k); if(falsch.length === 3) break; }
+    api.zaehler('Uhr ' + (i+1) + ' von ' + p.anzahl);
+    const frage = art === 'lesen' ? 'Wie viel Uhr ist es?'
+                : art === 'vorher' ? 'Was hat die Uhr vor ' + abstand + ' Minuten gezeigt?'
+                : 'Was zeigt die Uhr in ' + abstand + ' Minuten?';
+    const gut = await frageStellen(api, frage, [richtig].concat(falsch), 0, {
+      anhaengen:true, zwei:true,
+      unter:art === 'lesen' ? 'Der kurze Zeiger ist die Stunde.' : 'Erst ablesen, dann im Kopf weiterdrehen.'
+    });
+    if(!gut) api.fehler();
+  }
+};
+
+/* --- Der Geldbeutel --- */
+function euro(x){ return x.toFixed(2).replace('.', ',') + ' €'; }
+SPIELE.geldbeutel = async function(api, p){
+  for(let i = 0; i < p.anzahl; i++){
+    const waren = waehle(GELDWAREN, 2 + zufall(2));
+    const zeilen = waren.map(w => ({w:w.w, m:1 + zufall(2), p:w.p}));
+    const summe = Math.round(zeilen.reduce((s, z) => s + z.m * z.p, 0) * 100) / 100;
+    const b = api.buehne();
+    const zettel2 = mach('div', 'kassenzettel');
+    zeilen.forEach(z => {
+      const d = mach('div');
+      d.appendChild(mach('span', null, z.m + ' × ' + z.w));
+      d.appendChild(mach('span', null, euro(z.p)));
+      zettel2.appendChild(d);
+    });
+    b.appendChild(zettel2);
+    api.zaehler('Einkauf ' + (i+1) + ' von ' + p.anzahl);
+    const abweichungen = [0.10, 0.20, 0.50, 1.00, 1.10];
+    const falschSumme = [];
+    for(const a of mischen(abweichungen)){
+      const v = Math.round((summe + (Math.random() < .5 ? a : -a)) * 100) / 100;
+      if(v > 0 && falschSumme.indexOf(euro(v)) < 0 && euro(v) !== euro(summe)) falschSumme.push(euro(v));
+      if(falschSumme.length === 3) break;
+    }
+    const gut1 = await frageStellen(api, 'Was kostet das zusammen?', [euro(summe)].concat(falschSumme), 0,
+      {anhaengen:true, zwei:true, unter:'Im Kopf zusammenzählen — die Mengen nicht vergessen.'});
+    if(!gut1) api.fehler();
+    const schein = summe < 10 ? 10 : 20;
+    const rueck = Math.round((schein - summe) * 100) / 100;
+    const falschRueck = [];
+    for(const a of mischen(abweichungen)){
+      const v = Math.round((rueck + (Math.random() < .5 ? a : -a)) * 100) / 100;
+      if(v > 0 && falschRueck.indexOf(euro(v)) < 0 && euro(v) !== euro(rueck)) falschRueck.push(euro(v));
+      if(falschRueck.length === 3) break;
+    }
+    api.buehne().appendChild(mach('div', 'anzeige', euro(summe)));
+    const gut2 = await frageStellen(api, 'Du gibst ' + schein + ' Euro. Wie viel kommt zurück?',
+      [euro(rueck)].concat(falschRueck), 0, {anhaengen:true, zwei:true, unter:''});
+    if(!gut2) api.fehler();
+  }
+};
+
+/* --- Wortsuche im Buchstabengitter --- */
+const FUELLER = 'EEEEEENNNNNIIIIISSSSRRRRTTTTAAAADDHHGGLLOOMMBBWWFFKKZZPUUVJ';
+function gitterBauen(n, worte){
+  const feld = new Array(n*n).fill('');
+  const gelegt = [];
+  for(const w of worte){
+    let platziert = false;
+    for(let versuch = 0; versuch < 80 && !platziert; versuch++){
+      const quer = Math.random() < .5;
+      const max = n - w.length;
+      if(max < 0) break;
+      const start = quer ? {x:zufall(max+1), y:zufall(n)} : {x:zufall(n), y:zufall(max+1)};
+      const zellen = [];
+      let geht = true;
+      for(let k = 0; k < w.length; k++){
+        const x = quer ? start.x + k : start.x;
+        const y = quer ? start.y : start.y + k;
+        const i = y*n + x;
+        if(feld[i] && feld[i] !== w[k]){ geht = false; break; }
+        zellen.push(i);
+      }
+      if(!geht) continue;
+      zellen.forEach((i, k) => { feld[i] = w[k]; });
+      gelegt.push({wort:w, zellen});
+      platziert = true;
+    }
+  }
+  for(let i = 0; i < feld.length; i++) if(!feld[i]) feld[i] = FUELLER[zufall(FUELLER.length)];
+  return {feld, gelegt};
+}
+SPIELE.wortgitter = async function(api, p){
+  const n = p.gitter;
+  const kandidaten = GITTERWOERTER.filter(w => w.length <= n && w.length >= 4);
+  let bau = null;
+  for(let v = 0; v < 15; v++){
+    const versuch = gitterBauen(n, waehle(kandidaten, p.anzahl));
+    if(!bau || versuch.gelegt.length > bau.gelegt.length) bau = versuch;
+    if(bau.gelegt.length === p.anzahl) break;
+  }
+  const feld = bau.feld, gelegt = bau.gelegt;
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', n);
+  const felder = feld.map(ch => {
+    const f = mach('button', 'feldchen buchstabe', ch);
+    gitter.appendChild(f);
+    return f;
+  });
+  b.appendChild(gitter);
+  const wortleiste = mach('div', 'suchworte');
+  const chips = {};
+  gelegt.forEach(g => {
+    const s = mach('span', null, g.wort);
+    chips[g.wort] = s;
+    wortleiste.appendChild(s);
+  });
+  b.appendChild(wortleiste);
+  b.appendChild(mach('p', 'klein zart', 'Ersten und letzten Buchstaben eines Wortes antippen. Die Wörter stehen waagerecht oder senkrecht.'));
+  api.anweisung('Finde die Wörter.');
+  api.unter('Alle ' + gelegt.length + ' sind im Gitter versteckt.');
+  const ms = api.zeit(p.sekunden);
+  const bal = $('#spiel-balken'), inn = bal.firstElementChild;
+  bal.hidden = false;
+  inn.style.transition = 'none';
+  inn.style.transform = 'scaleX(1)';
+  requestAnimationFrame(() => { inn.style.transition = 'transform ' + ms + 'ms linear'; inn.style.transform = 'scaleX(0)'; });
+  const schluss = Date.now() + ms;
+  const offen = gelegt.slice();
+  let ersteZelle = null;
+  api.zaehler('0 von ' + gelegt.length);
+  while(offen.length && Date.now() < schluss){
+    const i = await api.klickOderZeit(felder, Math.max(0, schluss - Date.now()));
+    if(i < 0) break;
+    if(felder[i].classList.contains('gefunden') && ersteZelle === null) continue;
+    if(ersteZelle === null){
+      ersteZelle = i;
+      felder[i].classList.add('start');
+      continue;
+    }
+    const a = ersteZelle, c = i;
+    felder[a].classList.remove('start');
+    ersteZelle = null;
+    if(a === c) continue;
+    const ax = a % n, ay = Math.floor(a / n), cx = c % n, cy = Math.floor(c / n);
+    let zellen = null;
+    if(ay === cy){
+      const von = Math.min(ax, cx), bis = Math.max(ax, cx);
+      zellen = [];
+      for(let x = von; x <= bis; x++) zellen.push(ay*n + x);
+      if(cx < ax) zellen.reverse();
+    }else if(ax === cx){
+      const von = Math.min(ay, cy), bis = Math.max(ay, cy);
+      zellen = [];
+      for(let y = von; y <= bis; y++) zellen.push(y*n + ax);
+      if(cy < ay) zellen.reverse();
+    }
+    if(!zellen){
+      api.unter('Nur waagerecht oder senkrecht — nicht schräg.');
+      api.ton('nein');
+      continue;
+    }
+    const wort = zellen.map(z => felder[z].textContent).join('');
+    const treffer = offen.find(g => g.wort === wort || g.wort === wort.split('').reverse().join(''));
+    if(treffer){
+      offen.splice(offen.indexOf(treffer), 1);
+      treffer.zellen.forEach(z => felder[z].classList.add('gefunden'));
+      chips[treffer.wort].classList.add('gefunden');
+      api.ton('gut');
+      api.zaehler((gelegt.length - offen.length) + ' von ' + gelegt.length);
+      api.unter(treffer.wort + ' — gefunden.');
+    }else{
+      api.ton('nein');
+      api.unter('Da steht keins der Wörter.');
+    }
+  }
+  bal.hidden = true;
+  inn.style.transition = 'none';
+  inn.style.transform = 'scaleX(1)';
+  if(offen.length){
+    api.fehler(offen.length);
+    offen.forEach(g => { g.zellen.forEach(z => felder[z].classList.add('an')); chips[g.wort].style.borderBottom = '2px solid var(--kupfer)'; });
+    api.unter('Die Zeit ist um. Diese standen noch drin: ' + offen.map(g => g.wort).join(', ') + '.');
+    await api.warte(3200);
+  }else{
+    api.unter('Alle Wörter gefunden.');
+    await api.warte(900);
+  }
+};
+
+/* --- Die Prüfung --- */
+SPIELE.pruefung = async function(api, p){
+  for(let i = 0; i < p.teile.length; i++){
+    const teil = p.teile[i];
+    api.etikett((p.name || 'Prüfung') + ' · Teil ' + (i+1) + ' von ' + p.teile.length);
+    api.buehne();
+    await api.warte(400);
+    await SPIELE[teil.typ](api, teil.p);
+  }
+};
+</script>
+
+<script>
+/* =========================================================
+   Die Denkstube — App
+   ========================================================= */
+
+const SCHLUESSEL = 'merkweg.v1';
+let E = {schrift:1, zeit:false, ton:true, ruhe:false, offen:false, ziel:12};
+let Z = {sterne:{}, letzterTag:'', folge:0, heuteTag:'', heuteAnzahl:0, heuteSek:0, gespielt:0, rast:{}};
+let aktuell = null;
+let ansichtJetzt = 'start';
+
+function heuteStr(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function gesternStr(){
+  const d = new Date(Date.now() - 864e5);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function sichern(){
+  try{ localStorage.setItem(SCHLUESSEL, JSON.stringify({E, Z})); }catch(e){}
+}
+function holen(){
+  try{
+    const rohe = localStorage.getItem(SCHLUESSEL);
+    if(!rohe) return;
+    const d = JSON.parse(rohe);
+    if(d && d.E) E = Object.assign(E, d.E);
+    if(d && d.Z) Z = Object.assign(Z, d.Z);
+  }catch(e){}
+}
+
+function einstellungenAnwenden(){
+  document.documentElement.style.setProperty('--skala', E.schrift);
+  if(E.ruhe) document.documentElement.setAttribute('data-ruhe', '1');
+  else document.documentElement.removeAttribute('data-ruhe');
+  $('#schalter-zeit').setAttribute('aria-pressed', E.zeit ? 'true' : 'false');
+  $('#schalter-ton').setAttribute('aria-pressed', E.ton ? 'true' : 'false');
+  $('#schalter-ruhe').setAttribute('aria-pressed', E.ruhe ? 'true' : 'false');
+  $('#schalter-offen').setAttribute('aria-pressed', E.offen ? 'true' : 'false');
+  $('#wahl-schrift').querySelectorAll('button').forEach(b => {
+    b.setAttribute('aria-pressed', String(Number(b.dataset.wert) === Number(E.schrift)));
+  });
+  $('#wahl-ziel').querySelectorAll('button').forEach(b => {
+    b.setAttribute('aria-pressed', String(Number(b.dataset.wert) === Number(E.ziel)));
+  });
+}
+
+/* Minuten von heute — der Tag wird beim ersten Blick zurückgesetzt */
+function heuteSek(){
+  if(Z.heuteTag !== heuteStr()){ Z.heuteTag = heuteStr(); Z.heuteAnzahl = 0; Z.heuteSek = 0; }
+  return Z.heuteSek || 0;
+}
+function zielErreicht(){ return E.ziel > 0 && heuteSek() >= E.ziel * 60; }
+
+/* ---------- Fortschritt ---------- */
+function sterneVon(n){ return Z.sterne[n] || 0; }
+function sterneGesamt(){ return LEVEL.reduce((s, l) => s + sterneVon(l.n), 0); }
+function geschafft(){ return LEVEL.filter(l => sterneVon(l.n) > 0).length; }
+function offenBis(){
+  let h = 1;
+  for(const l of LEVEL){ if(sterneVon(l.n) > 0) h = Math.max(h, l.n + 1); }
+  return Math.min(h, LEVEL.length);
+}
+function istOffen(n){ return E.offen || n <= offenBis(); }
+function levelVon(n){ return LEVEL.find(l => l.n === n); }
+function abschnittVon(n){ return ABSCHNITTE.find(a => n >= a.von && n <= a.bis); }
+function naechstes(){
+  const l = LEVEL.find(l => sterneVon(l.n) === 0);
+  return l ? l.n : LEVEL.length;
+}
+function sternText(voll, von){
+  let s = '';
+  for(let i = 0; i < von; i++) s += i < voll ? '★' : '☆';
+  return s;
+}
+
+/* ---------- Ansichten ---------- */
+const ANSICHTEN = {
+  start:  {id:'#ansicht-start',  titel:'Die Denkstube', zurueck:false},
+  karte:  {id:'#ansicht-karte',  titel:'Die Wegkarte', zurueck:true},
+  spiel:  {id:'#ansicht-spiel',  titel:'',             zurueck:true},
+  ergebnis:{id:'#ansicht-ergebnis', titel:'Geschafft', zurueck:true},
+  mehr:   {id:'#ansicht-mehr',   titel:'Einstellungen',zurueck:true},
+  wissen: {id:'#ansicht-wissen', titel:'Für den Kopf', zurueck:true}
+};
+function zeigeAnsicht(name){
+  ansichtJetzt = name;
+  Object.keys(ANSICHTEN).forEach(k => { $(ANSICHTEN[k].id).hidden = (k !== name); });
+  const a = ANSICHTEN[name];
+  if(a.titel) $('#leiste-titel').textContent = a.titel;
+  $('#zurueck').hidden = !a.zurueck;
+  $('#knopf-karte').hidden = (name === 'spiel');
+  $('#knopf-mehr').hidden = (name === 'spiel');
+  window.scrollTo(0, 0);
+  if(name === 'start') zeichneStart();
+  if(name === 'karte') zeichneKarte();
+  if(name === 'mehr') zeichneMehr();
+}
+
+/* ---------- Startseite ---------- */
+function zeichneStart(){
+  const stunde = new Date().getHours();
+  const gruss = stunde < 5 ? 'Gute Nacht' : stunde < 11 ? 'Guten Morgen' : stunde < 14 ? 'Guten Tag' : stunde < 18 ? 'Schönen Nachmittag' : 'Guten Abend';
+  $('#gruss').textContent = gruss + '.';
+
+  const alleFertig = geschafft() === LEVEL.length;
+  const n = naechstes();
+  const l = levelVon(n);
+  const ab = abschnittVon(n);
+  if(alleFertig){
+    $('#weiter-abschnitt').textContent = 'Alle hundert geschafft';
+    $('#weiter-feld').textContent = 'bunt gemischt';
+    $('#weiter-titel').textContent = 'Die Tagesrunde';
+    $('#weiter-text').textContent = 'Drei Aufgaben, jeden Tag neu zusammengestellt';
+    $('#weiter-knopf').textContent = 'Runde starten';
+    $('#weiter-knopf').onclick = () => starteLevel(bauTagesrunde());
+  }else{
+    $('#weiter-abschnitt').textContent = ab.name;
+    $('#weiter-feld').textContent = FELDER[l.typ];
+    $('#weiter-titel').textContent = l.titel;
+    $('#weiter-text').textContent = 'Level ' + l.n + ' von ' + LEVEL.length + (sterneVon(n) > 0 ? ' — noch einmal' : '');
+    $('#weiter-knopf').textContent = geschafft() === 0 ? 'Die Stube betreten' : 'Weiter üben';
+    $('#weiter-knopf').onclick = () => starteLevel(naechstes());
+  }
+  $('#gruss-zeile').textContent = geschafft() === 0
+    ? 'Ein kleiner Spaziergang für den Kopf — ' + (E.ziel > 0 ? E.ziel + ' Minuten am Tag genügen.' : 'so lange, wie es guttut.')
+    : alleFertig
+      ? 'Der ganze Weg ist gegangen. Jetzt hält die Tagesrunde alles wach.'
+      : 'Weiter geht es am ' + ab.name.replace('Der ','').replace('Die ','').replace('Das ','') + '.';
+
+  const sek = heuteSek();
+  const min = Math.floor(sek / 60);
+  const anzahl = Z.heuteAnzahl || 0;
+  const voll = zielErreicht();
+  $('#ziel-zahl').textContent = E.ziel > 0
+    ? min + ' von ' + E.ziel + ' Minuten'
+    : (min === 1 ? '1 Minute heute' : min + ' Minuten heute');
+  $('#ziel-spur').classList.toggle('offen', !voll);
+  $('#ziel-balken').style.width = (E.ziel > 0 ? Math.min(100, Math.round(sek / (E.ziel*60) * 100)) : (min ? 100 : 0)) + '%';
+  $('#pensum-text').textContent =
+      E.ziel === 0 ? (anzahl === 0 ? 'Kein Tagesziel eingestellt — übe so lange, wie es dir guttut.' : anzahl + ' Aufgaben heute.')
+    : voll ? 'Das Tagesziel ist erfüllt. Mehr darf sein, muss aber nicht — morgen wieder ist mehr wert als heute länger.'
+    : sek === 0 ? 'Noch nichts heute. ' + E.ziel + ' Minuten, dann ist Feierabend.'
+    : 'Noch etwa ' + Math.max(1, Math.ceil((E.ziel*60 - sek)/60)) + ' Minuten, dann ist das Ziel voll.';
+
+  $('#wert-level').textContent = geschafft();
+  $('#wert-level-text').textContent = 'von ' + LEVEL.length + ' Leveln';
+  $('#wert-sterne').textContent = sterneGesamt();
+  $('#wert-sterne-text').textContent = 'von ' + (LEVEL.length * 3) + ' Sternen';
+  $('#wert-tage').textContent = Z.folge || 0;
+
+  zeichneFelder();
+}
+
+function zeichneFelder(){
+  const namen = [];
+  const summe = {}, voll = {};
+  LEVEL.forEach(l => {
+    const f = GRUPPEN[l.typ] || FELDER[l.typ];
+    if(namen.indexOf(f) < 0){ namen.push(f); summe[f] = 0; voll[f] = 0; }
+    summe[f]++;
+    if(sterneVon(l.n) > 0) voll[f]++;
+  });
+  namen.sort((a, b) => summe[b] - summe[a] || a.localeCompare(b, 'de'));
+  const kasten = $('#felder');
+  kasten.innerHTML = '';
+  namen.forEach(f => {
+    const zeile = mach('div', 'feld-zeile');
+    zeile.appendChild(mach('span', null, f));
+    zeile.appendChild(mach('span', 'wieviel', voll[f] + ' / ' + summe[f]));
+    const spur = mach('div', 'spur');
+    const innen = mach('i');
+    innen.style.width = Math.round(voll[f] / summe[f] * 100) + '%';
+    spur.appendChild(innen);
+    zeile.appendChild(spur);
+    kasten.appendChild(zeile);
+  });
+}
+
+/* ---------- Wegkarte ---------- */
+function zeichneKarte(){
+  const liste = $('#karte-liste');
+  liste.innerHTML = '';
+  ABSCHNITTE.forEach(ab => {
+    const gruppe = mach('div', 'stapel-eng');
+    const kopf = mach('div', 'abschnitt-kopf');
+    const h = mach('h2', null, ab.name);
+    const zaehler = LEVEL.filter(l => l.n >= ab.von && l.n <= ab.bis && sterneVon(l.n) > 0).length;
+    kopf.appendChild(h);
+    kopf.appendChild(mach('span', 'klein zart', zaehler + ' / ' + (ab.bis - ab.von + 1)));
+    gruppe.appendChild(kopf);
+    gruppe.appendChild(mach('p', 'klein leise', ab.satz));
+    const punkte = mach('div', 'wegpunkte');
+    for(let n = ab.von; n <= ab.bis; n++){
+      const l = levelVon(n);
+      const s = sterneVon(n);
+      const auf = istOffen(n);
+      const p = mach('button', 'wegpunkt ' + (s > 0 ? 'geschafft' : auf ? (n === naechstes() ? 'offen' : '') : 'zu'));
+      p.appendChild(mach('span', null, String(n)));
+      p.appendChild(mach('small', auf ? 'sterne' : 'zart', auf ? sternText(s, 3) : 'zu'));
+      p.title = auf ? l.titel + ' — ' + FELDER[l.typ] : 'Erst das Level davor';
+      p.setAttribute('aria-label', 'Level ' + n + ': ' + (auf ? l.titel : 'noch verschlossen'));
+      if(auf) p.onclick = () => starteLevel(n);
+      punkte.appendChild(p);
+    }
+    gruppe.appendChild(punkte);
+    const rast = RASTPLAETZE.find(r => r.abschnitt === ABSCHNITTE.indexOf(ab) + 1);
+    if(rast && istOffen(ab.von)){
+      const rk = mach('button', 'rastknopf');
+      rk.appendChild(mach('em', null, '❀'));
+      const txt = mach('span');
+      txt.appendChild(mach('b', null, 'Rastplatz'));
+      txt.appendChild(mach('span', 'klein', rast.frage));
+      txt.firstChild.style.fontWeight = '600';
+      txt.lastChild.style.display = 'block';
+      rk.appendChild(txt);
+      rk.onclick = () => starteLevel({
+        n:'rast-' + rast.id, typ:'rastplatz', titel:'Rastplatz', ohneSterne:true,
+        etikett:'Rastplatz · ohne Punkte', p:{id:rast.id}
+      });
+      gruppe.appendChild(rk);
+    }
+    const karte = mach('div', 'karte');
+    karte.appendChild(gruppe);
+    liste.appendChild(karte);
+  });
+}
+
+/* ---------- Einstellungen ---------- */
+function zeichneMehr(){
+  const g = geschafft();
+  $('#mehr-fortschritt').textContent = g === 0
+    ? 'Noch kein Level geschafft.'
+    : g + ' von ' + LEVEL.length + ' Leveln geschafft, ' + sterneGesamt() + ' von ' + (LEVEL.length*3) + ' Sternen gesammelt.';
+  einstellungenAnwenden();
+}
+
+/* ---------- Ein Level spielen ---------- */
+async function starteLevel(was){
+  const l = (was && typeof was === 'object') ? was : levelVon(was);
+  if(!l || !SPIELE[l.typ]) return;
+  aktuell = l;
+  abbrechen();
+  zeigeAnsicht('spiel');
+  $('#leiste-titel').textContent = l.titel;
+  $('#spiel-etikett').textContent = l.etikett || ('Level ' + l.n + ' · ' + FELDER[l.typ]);
+  $('#spiel-zaehler').textContent = '';
+  $('#spiel-anweisung').textContent = 'Gleich geht es los …';
+  $('#spiel-unterzeile').textContent = '';
+  $('#spiel-balken').hidden = true;
+  $('#buehne').innerHTML = '';
+  const api = machApi();
+  const start = Date.now();
+  try{
+    await api.warte(320);
+    await SPIELE[l.typ](api, l.p);
+    ton('fertig');
+    fertigLevel(l, api.fehlerZahl, Date.now() - start);
+  }catch(e){
+    if(e !== ABBRUCH) console.error(e);
+  }
+}
+
+function fertigLevel(l, fehler, ms){
+  const ohne = !!l.ohneSterne;
+  const tol = l.tol || [0, 2];
+  const s = fehler <= tol[0] ? 3 : fehler <= tol[1] ? 2 : 1;
+  const sek = Math.round(ms / 1000);
+  const heute = heuteStr();
+
+  if(!ohne && typeof l.n === 'number'){
+    if(!Z.sterne[l.n] || s > Z.sterne[l.n]) Z.sterne[l.n] = s;
+  }
+  heuteSek();
+  const zielSchonVoll = zielErreicht();
+  Z.heuteSek = (Z.heuteSek || 0) + sek;
+  Z.heuteAnzahl = (Z.heuteAnzahl || 0) + 1;
+  Z.gespielt = (Z.gespielt || 0) + 1;
+  if(Z.letzterTag !== heute){
+    Z.folge = (Z.letzterTag === gesternStr()) ? (Z.folge || 0) + 1 : 1;
+    Z.letzterTag = heute;
+  }
+  sichern();
+
+  const sterneKasten = $('#ergebnis-sterne');
+  sterneKasten.innerHTML = '';
+  if(ohne){
+    sterneKasten.appendChild(mach('span', null, l.typ === 'rastplatz' ? '❀' : '✦✦✦'));
+  }else{
+    for(let i = 0; i < 3; i++) sterneKasten.appendChild(mach('span', i < s ? null : 'leer', '★'));
+  }
+
+  $('#ergebnis-lob').textContent = ohne
+    ? (l.typ === 'rastplatz' ? 'Danke fürs Erzählen.' : 'Runde gelaufen.')
+    : s === 3 ? ['Fehlerfrei.','Ohne einen Fehler.','Das war sauber.'][zufall(3)]
+    : s === 2 ? ['Gut gemacht.','Das saß fast perfekt.','Sehr ordentlich.'][zufall(3)]
+    : ['Geschafft.','Durch — und das zählt.','Angekommen.'][zufall(3)];
+
+  const zeitText = sek < 60 ? sek + ' Sekunden' : Math.floor(sek/60) + ' Minuten ' + (sek%60) + ' Sekunden';
+  $('#ergebnis-zahlen').textContent = (l.typ === 'rastplatz' ? zeitText : (
+      (fehler === 0 ? 'Kein Fehler' : fehler === 1 ? 'Ein Fehler' : fehler + ' Fehler') + ' · ' + zeitText
+    )) + (E.zeit ? ' · mit verlängerter Merkzeit' : '');
+
+  const notiz = $('#ergebnis-notiz');
+  notiz.innerHTML = '';
+  notiz.appendChild(mach('b', null, 'Was das übt: ' + FELDER[l.typ]));
+  notiz.appendChild(mach('span', null, NOTIZEN[l.typ]));
+
+  /* Tagesziel: freundlich Schluss sagen, ohne die Tür zuzumachen */
+  const schluss = $('#ergebnis-schluss');
+  const weiter = $('#ergebnis-weiter');
+  const pause = $('#ergebnis-pause');
+  const minHeute = Math.round((Z.heuteSek || 0) / 60);
+  schluss.innerHTML = '';
+  schluss.hidden = true;
+  weiter.className = 'knopf knopf-haupt';
+  pause.className = 'knopf knopf-still';
+  if(E.ziel > 0 && zielErreicht()){
+    schluss.hidden = false;
+    schluss.appendChild(mach('b', null, zielSchonVoll ? 'Zugabe.' : 'Das reicht für heute.'));
+    schluss.appendChild(mach('span', null, zielSchonVoll
+      ? 'Das Tagesziel war schon voll — was jetzt kommt, ist aus Freude. Auch gut.'
+      : minHeute + ' Minuten sind geübt. Morgen wieder zehn Minuten bringen mehr als heute noch zwanzig — das Gemerkte setzt sich in der Pause.'));
+    if(!zielSchonVoll){
+      weiter.className = 'knopf';
+      pause.className = 'knopf knopf-haupt knopf-gross';
+    }
+  }
+
+  const naechste = (typeof l.n === 'number') ? levelVon(l.n + 1) : null;
+  weiter.textContent = naechste ? 'Weiter: ' + naechste.titel : 'Zur Wegkarte';
+  weiter.onclick = () => naechste ? starteLevel(naechste.n) : zeigeAnsicht('karte');
+  $('#ergebnis-nochmal').hidden = (l.typ === 'rastplatz');
+  $('#ergebnis-nochmal').textContent = l.wieder ? 'Neue Runde' : 'Noch einmal';
+  $('#ergebnis-nochmal').onclick = () => starteLevel(l.wieder ? l.wieder() : l);
+  pause.textContent = (E.ziel > 0 && zielErreicht()) ? 'Für heute Schluss' : 'Für heute genug';
+  zeigeAnsicht('ergebnis');
+}
+
+/* ---------- Die Tagesrunde: drei gemischte Aufgaben, ohne Sterne ---------- */
+function bauTagesrunde(){
+  const offenLevel = LEVEL.filter(l => istOffen(l.n) && l.typ !== 'pruefung');
+  const quelle = offenLevel.length >= 4 ? offenLevel : LEVEL.slice(0, 8);
+  const gemischt = mischen(quelle);
+  const teile = [], genommen = [];
+  for(const l of gemischt){
+    const gruppe = GRUPPEN[l.typ] || l.typ;
+    if(genommen.indexOf(gruppe) >= 0) continue;
+    genommen.push(gruppe);
+    teile.push({typ:l.typ, p:l.p});
+    if(teile.length === 3) break;
+  }
+  while(teile.length < 3 && gemischt.length){
+    const l = gemischt[zufall(gemischt.length)];
+    teile.push({typ:l.typ, p:l.p});
+  }
+  return {
+    n:'runde', typ:'pruefung', titel:'Die Tagesrunde', ohneSterne:true,
+    etikett:'Tagesrunde · bunt gemischt', p:{teile, name:'Tagesrunde'}, wieder:bauTagesrunde
+  };
+}
+
+/* ---------- Bedienung ---------- */
+$('#zurueck').onclick = () => {
+  if(ansichtJetzt === 'spiel'){ abbrechen(); zeigeAnsicht('karte'); }
+  else if(ansichtJetzt === 'wissen') zeigeAnsicht('start');
+  else zeigeAnsicht('start');
+};
+$('#knopf-karte').onclick = () => zeigeAnsicht('karte');
+$('#knopf-mehr').onclick = () => zeigeAnsicht('mehr');
+$('#weiter-knopf').onclick = () => starteLevel(naechstes());
+$('#knopf-runde').onclick = () => starteLevel(bauTagesrunde());
+$('#knopf-wissen').onclick = () => zeigeAnsicht('wissen');
+$('#knopf-wissen-2').onclick = () => zeigeAnsicht('wissen');
+$('#wissen-zurueck').onclick = () => zeigeAnsicht('start');
+$('#ergebnis-pause').onclick = () => zeigeAnsicht('start');
+
+function schalter(id, feld){
+  $(id).onclick = () => {
+    E[feld] = !E[feld];
+    if(feld === 'ton' && E.ton) ton('gut');
+    sichern();
+    einstellungenAnwenden();
+  };
+}
+schalter('#schalter-zeit', 'zeit');
+schalter('#schalter-ton', 'ton');
+schalter('#schalter-ruhe', 'ruhe');
+schalter('#schalter-offen', 'offen');
+
+$('#wahl-schrift').querySelectorAll('button').forEach(b => {
+  b.onclick = () => { E.schrift = Number(b.dataset.wert); sichern(); einstellungenAnwenden(); };
+});
+$('#wahl-ziel').querySelectorAll('button').forEach(b => {
+  b.onclick = () => { E.ziel = Number(b.dataset.wert); sichern(); einstellungenAnwenden(); };
+});
+
+$('#knopf-loeschen').onclick = () => {
+  const k = $('#knopf-loeschen');
+  if(k.dataset.sicher !== '1'){
+    k.dataset.sicher = '1';
+    k.textContent = 'Wirklich alles zurücksetzen?';
+    setTimeout(() => { if(k.dataset.sicher === '1'){ k.dataset.sicher = ''; k.textContent = 'Fortschritt zurücksetzen'; } }, 5000);
+    return;
+  }
+  const erzaehlt = Z.rast || {};
+  Z = {sterne:{}, letzterTag:'', folge:0, heuteTag:'', heuteAnzahl:0, heuteSek:0, gespielt:0, rast:erzaehlt};
+  k.dataset.sicher = '';
+  k.textContent = 'Fortschritt zurücksetzen';
+  sichern();
+  zeichneMehr();
+  zeigeAnsicht('start');
+};
+
+/* ---------- Start ---------- */
+function anfangen(zustand){
+  holen();
+  if(zustand && zustand.Z) Z = Object.assign(Z, zustand.Z);
+  if(zustand && zustand.E) E = Object.assign(E, zustand.E);
+  einstellungenAnwenden();
+  zeigeAnsicht(zustand && zustand.ansicht && zustand.ansicht !== 'spiel' ? zustand.ansicht : 'start');
+}
+
+try{
+  if(window.claude && window.claude.hot){
+    window.claude.hot.snapshot(() => ({Z, E, ansicht: ansichtJetzt === 'spiel' ? 'karte' : ansichtJetzt}));
+  }
+}catch(e){}
+
+if(window.claude && window.claude.hot && window.claude.hot.ready){
+  window.claude.hot.ready(anfangen);
+}else{
+  anfangen((window.claude && window.claude.hot && window.claude.hot.data) || null);
+}
+</script>
