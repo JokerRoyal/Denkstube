@@ -24,7 +24,7 @@ import io, os, re, shutil, struct, zlib, math, zipfile
 HIER = os.path.dirname(os.path.abspath(__file__))
 QUELLE = os.path.join(HIER, 'der-merkweg.html')
 ZIEL = os.path.join(HIER, 'docs')
-VERSION = '5'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
+VERSION = '7'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
 
 # ---------------------------------------------------------------- PNG-Symbole
 
@@ -187,6 +187,19 @@ self.addEventListener('fetch', e => {
   const anfrage = e.request;
   if(anfrage.method !== 'GET') return;
   e.respondWith((async () => {
+    /* Die Seite selbst zuerst aus dem Netz holen, damit eine neue Fassung
+       sofort ankommt — ohne Netz sofort aus dem Geraet. Alles andere
+       (Symbole, Schriften) bleibt umgekehrt: erst Geraet, dann Netz. */
+    if(anfrage.mode === 'navigate'){
+      try{
+        const frisch = await fetch(anfrage);
+        if(frisch && frisch.ok){
+          const c = await caches.open(CACHE);
+          c.put('./index.html', frisch.clone()).catch(() => {});
+          return frisch;
+        }
+      }catch(err){ /* offline: unten weiter */ }
+    }
     const treffer = await caches.match(anfrage, {ignoreSearch:true});
     if(treffer) return treffer;
     try{
