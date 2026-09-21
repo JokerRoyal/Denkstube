@@ -1,7 +1,7 @@
 /* Die Denkstube — Service Worker.
    Kern der App wird beim ersten Öffnen abgelegt, danach zuerst aus dem Gerät
    beantwortet. Schriften und alles Weitere wandern beim ersten Gebrauch dazu. */
-const CACHE = 'denkstube-v8';
+const CACHE = 'denkstube-v9';
 const KERN = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -29,7 +29,9 @@ self.addEventListener('fetch', e => {
        (Symbole, Schriften) bleibt umgekehrt: erst Geraet, dann Netz. */
     if(anfrage.mode === 'navigate'){
       try{
-        const frisch = await fetch(anfrage);
+        /* cache:'reload' geht am Browser- und am GitHub-Zwischenspeicher vorbei —
+           sonst bekommt man bis zu zehn Minuten lang die alte Seite. */
+        const frisch = await fetch(anfrage.url, {cache:'reload'});
         if(frisch && frisch.ok){
           const c = await caches.open(CACHE);
           c.put('./index.html', frisch.clone()).catch(() => {});

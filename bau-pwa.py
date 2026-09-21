@@ -24,7 +24,7 @@ import io, os, re, shutil, struct, zlib, math, zipfile
 HIER = os.path.dirname(os.path.abspath(__file__))
 QUELLE = os.path.join(HIER, 'der-merkweg.html')
 ZIEL = os.path.join(HIER, 'docs')
-VERSION = '8'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
+VERSION = '9'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
 
 # ---------------------------------------------------------------- PNG-Symbole
 
@@ -192,7 +192,9 @@ self.addEventListener('fetch', e => {
        (Symbole, Schriften) bleibt umgekehrt: erst Geraet, dann Netz. */
     if(anfrage.mode === 'navigate'){
       try{
-        const frisch = await fetch(anfrage);
+        /* cache:'reload' geht am Browser- und am GitHub-Zwischenspeicher vorbei —
+           sonst bekommt man bis zu zehn Minuten lang die alte Seite. */
+        const frisch = await fetch(anfrage.url, {cache:'reload'});
         if(frisch && frisch.ok){
           const c = await caches.open(CACHE);
           c.put('./index.html', frisch.clone()).catch(() => {});
