@@ -4385,11 +4385,17 @@ function zeigeDuell(name){
 }
 
 /* ---------- Karte verschicken und einsammeln ---------- */
-function wettMeldung(id, text){
+function wettMeldung(id, text, laut){
   const e = $(id);
   e.textContent = text;
-  e.style.color = 'var(--moos)';
-  setTimeout(() => { if(e.textContent === text) e.textContent = ''; }, 6000);
+  if(laut){
+    e.className = 'hinweiskasten';
+    setTimeout(() => { if(e.textContent === text){ e.textContent = ''; e.className = 'klein'; } }, 30000);
+  }else{
+    e.className = 'klein';
+    e.style.color = 'var(--moos)';
+    setTimeout(() => { if(e.textContent === text) e.textContent = ''; }, 8000);
+  }
 }
 
 function karteLink(){
@@ -4403,24 +4409,49 @@ function karteLink(){
 }
 
 async function karteTeilen(){
-  const link = karteLink(), code = karteCode(meineWerte());
-  const st = karteStand(meineWerte());
+  const mein = meineWerte();
+  if(!Object.keys(mein.sterne).length){
+    wettMeldung('#wett-teilen-meldung', 'Spiel zuerst ein Level — sonst ist die Karte leer.', true);
+    return;
+  }
+  const link = karteLink(), code = karteCode(mein);
+  const st = karteStand(mein);
   const text = meinName() + ' in der Denkstube: ' + st.sterne + ' Sterne aus ' + st.level + ' Leveln.'
     + (st.schnitt ? ' Im Schnitt ' + st.schnitt + ' Sekunden je Aufgabe.' : '') + ' Schaffst du mehr?';
+
+  /* Erster Weg: das Teilen-Fenster des Handys */
+  let grund = '';
   if(navigator.share && link){
     try{
       await navigator.share({title:'Die Denkstube', text, url:link});
+      wettMeldung('#wett-teilen-meldung', 'Karte verschickt.');
       return;
     }catch(e){
-      if(e && e.name === 'AbortError') return;
+      grund = (e && e.name) ? e.name : 'Fehler';
     }
+  }else{
+    grund = navigator.share ? 'ohne Link' : 'kein Teilen-Fenster';
   }
+
+  /* Zweiter Weg: in die Ablage legen */
   try{
     await navigator.clipboard.writeText(link || code);
-    wettMeldung('#wett-teilen-meldung', link ? 'Link kopiert — jetzt in WhatsApp einfügen.' : 'Code kopiert.');
-  }catch(e){
-    wettMeldung('#wett-teilen-meldung', 'Bitte den Code unten von Hand kopieren.');
-  }
+    wettMeldung('#wett-teilen-meldung', link
+      ? 'Link in die Ablage kopiert — jetzt in WhatsApp einfügen.'
+      : 'Code in die Ablage kopiert — jetzt in WhatsApp einfügen.');
+    return;
+  }catch(e){ /* dritter Weg */ }
+
+  /* Dritter Weg: markieren, damit von Hand kopiert werden kann */
+  const feld = link ? $('#wett-link') : $('#wett-code');
+  try{
+    feld.focus();
+    feld.select();
+    feld.scrollIntoView({block:'center', behavior:'smooth'});
+  }catch(e){}
+  wettMeldung('#wett-teilen-meldung',
+    'Dieses Fenster lässt das Verschicken nicht zu (' + grund + '). Der Text unten ist schon markiert: '
+    + 'mit Strg+C kopieren (am Handy: langes Antippen → Kopieren) und in WhatsApp einfügen.', true);
 }
 
 function karteAusLink(){
@@ -4465,10 +4496,14 @@ $('#wett-teilen').onclick = () => karteTeilen();
 $('#wett-kopieren').onclick = async () => {
   try{
     await navigator.clipboard.writeText($('#wett-code').value);
-    wettMeldung('#wett-teilen-meldung', 'Code kopiert.');
+    wettMeldung('#wett-teilen-meldung', 'Code in die Ablage kopiert.');
   }catch(e){
-    $('#wett-code').select();
-    wettMeldung('#wett-teilen-meldung', 'Markiert — jetzt mit Strg+C oder „Kopieren\" sichern.');
+    const feld = $('#wett-code');
+    feld.focus();
+    feld.select();
+    wettMeldung('#wett-teilen-meldung',
+      'Dieses Fenster lässt das Kopieren nicht zu. Der Code ist markiert: mit Strg+C sichern '
+      + '(am Handy: langes Antippen → Kopieren).', true);
   }
 };
 $('#wett-name').oninput = () => {

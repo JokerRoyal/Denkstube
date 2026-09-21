@@ -1,7 +1,7 @@
 /* Die Denkstube — Service Worker.
    Kern der App wird beim ersten Öffnen abgelegt, danach zuerst aus dem Gerät
    beantwortet. Schriften und alles Weitere wandern beim ersten Gebrauch dazu. */
-const CACHE = 'denkstube-v12';
+const CACHE = 'denkstube-v13';
 const KERN = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
