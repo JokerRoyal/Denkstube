@@ -24,7 +24,7 @@ import io, os, re, shutil, struct, zlib, math, zipfile
 HIER = os.path.dirname(os.path.abspath(__file__))
 QUELLE = os.path.join(HIER, 'der-merkweg.html')
 ZIEL = os.path.join(HIER, 'docs')
-VERSION = '7'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
+VERSION = '8'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
 
 # ---------------------------------------------------------------- PNG-Symbole
 

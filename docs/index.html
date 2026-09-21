@@ -4447,6 +4447,18 @@ function anfangen(zustand){
   einstellungenAnwenden();
   wartendeKarte = karteAusLink();
   if(wartendeKarte){ zeigeAnsicht('wett'); return; }
+  /* Manche Browser haengen den Link-Anhang erst nach dem Laden an, und wer den
+     Link antippt, waehrend die App schon offen ist, loest nur ein hashchange
+     aus. Beides hier abfangen. */
+  const kartePruefen = () => {
+    if(wartendeKarte) return;
+    const w = karteAusLink();
+    if(!w) return;
+    wartendeKarte = w;
+    if(ansichtJetzt === 'start' || ansichtJetzt === 'wett') zeigeAnsicht('wett');
+  };
+  window.addEventListener('hashchange', kartePruefen);
+  setTimeout(kartePruefen, 700);
   zeigeAnsicht(zustand && zustand.ansicht && zustand.ansicht !== 'spiel' ? zustand.ansicht : 'start');
 }
 
