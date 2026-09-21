@@ -349,6 +349,18 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
 .rastknopf span{flex:1;}
 .hinweiskasten{background:var(--kupfer-weich); color:var(--kupfer); border-radius:var(--rund-klein);
   padding:.8rem 1rem; font-size:.9rem;}
+.installkarte{background:var(--kupfer-weich); border:1px solid var(--kupfer); border-radius:var(--rund);
+  padding:1.05rem; display:flex; flex-direction:column; gap:.6rem;}
+.installkarte h3{color:var(--kupfer);}
+.installkarte p{font-size:.92rem; color:var(--tinte-leise);}
+.installkarte .knopf-haupt{background:var(--kupfer); border-color:var(--kupfer); color:#fffdf7;}
+:root[data-stube="dunkel"] .installkarte .knopf-haupt, :root[data-theme="dark"] .installkarte .knopf-haupt{color:#241c0e;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .installkarte .knopf-haupt{color:#241c0e;}}
+.installkarte .schritt{display:grid; grid-template-columns:1.6rem 1fr; gap:.5rem; align-items:start; font-size:.92rem;}
+.installkarte .schritt b{font-family:"IBM Plex Mono",monospace; color:var(--kupfer);}
+.linkfeld{width:100%; font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--tinte-leise);
+  background:var(--flaeche-2); border:1px solid var(--rand); border-radius:var(--rund-klein);
+  padding:.55rem .7rem;}
 
 /* ---------- Zweite Hälfte: Wortkarten, Uhr, Kassenzettel, Buchstabengitter ---------- */
 .feldchen.wortfeld{aspect-ratio:auto; min-height:3.9rem; font-size:.84rem; line-height:1.15;
@@ -607,6 +619,14 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
         <p class="leise" id="gruss-zeile">Ein kleiner Spaziergang für den Kopf &ndash; zwölf Minuten am Tag genügen.</p>
       </div>
 
+      <div class="installkarte" id="installkarte" hidden>
+        <h3 id="install-titel">Auf den Startbildschirm legen</h3>
+        <p id="install-text"></p>
+        <div id="install-schritte"></div>
+        <button class="knopf knopf-haupt knopf-gross" id="install-knopf" hidden>App installieren</button>
+        <button class="knopf knopf-still" id="install-spaeter" style="min-height:2.4rem">Später</button>
+      </div>
+
       <div class="weiter-karte stapel-eng">
         <div class="zeile-weit">
           <span class="etikett" id="weiter-abschnitt">Der Kiesweg</span>
@@ -711,7 +731,11 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
           <button class="knopf knopf-haupt" id="wett-teilen">Link verschicken</button>
           <button class="knopf" id="wett-kopieren">Code kopieren</button>
         </div>
+        <button class="knopf" id="wett-whatsapp">Per WhatsApp schicken</button>
         <p class="klein" id="wett-teilen-meldung" style="min-height:1.2em"></p>
+        <label class="klein zart" for="wett-link">Dein Link zum Mitnehmen</label>
+        <input class="linkfeld" id="wett-link" readonly aria-label="Dein Link">
+        <label class="klein zart" for="wett-code" style="margin-top:.3rem">… oder derselbe Inhalt als Code</label>
         <textarea class="codefeld" id="wett-code" readonly rows="3" aria-label="Deine Ergebniskarte als Code"></textarea>
       </div>
 
@@ -3867,6 +3891,7 @@ function zeichneStart(){
   $('#wert-tage').textContent = Z.folge || 0;
 
   zeichneFelder();
+  zeichneInstall();
 }
 
 function zeichneFelder(){
@@ -4122,6 +4147,64 @@ function bauTagesrunde(){
 }
 
 /* =========================================================
+   Aufs Handy legen — eigener Installationsknopf, statt auf den
+   Vorschlag des Browsers zu warten (der bleibt nach einem
+   Deinstallieren eine Weile aus).
+   ========================================================= */
+
+let installEreignis = null;
+let installSpaeter = false;   /* nur für diesen Besuch, damit kein Sackgassen-Schalter entsteht */
+
+function laeuftAlsApp(){
+  try{
+    return (window.matchMedia && matchMedia('(display-mode: standalone)').matches)
+        || (window.matchMedia && matchMedia('(display-mode: fullscreen)').matches)
+        || navigator.standalone === true;
+  }catch(e){ return false; }
+}
+function istApfel(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function zeichneInstall(){
+  const karte = $('#installkarte');
+  if(!karte) return;
+  const kannUeberhaupt = location.protocol.indexOf('http') === 0
+    && !!document.querySelector('link[rel="manifest"]');
+  if(!kannUeberhaupt || laeuftAlsApp() || installSpaeter){
+    karte.hidden = true;
+    return;
+  }
+  karte.hidden = false;
+  const knopf = $('#install-knopf');
+  const schritte = $('#install-schritte');
+  schritte.innerHTML = '';
+  if(installEreignis){
+    $('#install-text').textContent = 'Ein Tipp, und die Denkstube liegt als eigene App mit Blüten-Symbol auf dem Startbildschirm — danach läuft sie ohne Internet.';
+    knopf.hidden = false;
+  }else{
+    knopf.hidden = true;
+    $('#install-text').textContent = istApfel()
+      ? 'So kommt die Denkstube als App auf den Startbildschirm (im Browser Safari):'
+      : 'So kommt die Denkstube als App auf den Startbildschirm (im Browser Chrome):';
+    const liste = istApfel()
+      ? [['1.', 'Unten in der Leiste auf das Teilen-Symbol tippen — das Quadrat mit dem Pfeil nach oben.'],
+         ['2.', 'In der Liste nach unten wischen bis „Zum Home-Bildschirm".'],
+         ['3.', 'Oben rechts auf „Hinzufügen" tippen.']]
+      : [['1.', 'Oben rechts auf die drei Punkte ⋮ tippen.'],
+         ['2.', 'Auf „App installieren" tippen — oder „Zum Startbildschirm hinzufügen".'],
+         ['3.', 'Steht dort nichts davon: die Seite einmal neu laden und wieder nachsehen.']];
+    liste.forEach(([nr, text]) => {
+      const z = mach('div', 'schritt');
+      z.appendChild(mach('b', null, nr));
+      z.appendChild(mach('span', null, text));
+      schritte.appendChild(z);
+    });
+  }
+}
+
+/* =========================================================
    Wettstreit — ohne Server: jeder verschickt eine Ergebniskarte
    ========================================================= */
 
@@ -4194,6 +4277,11 @@ function zeichneWett(){
   $('#wett-name').value = Z.name || '';
   const mein = meineWerte();
   $('#wett-code').value = karteCode(mein);
+  const link = karteLink();
+  $('#wett-link').value = link || '(nur in der Fassung auf dem Handy — hier stattdessen den Code nehmen)';
+  $('#wett-link').onclick = () => $('#wett-link').select();
+  $('#wett-code').onclick = () => $('#wett-code').select();
+  $('#wett-whatsapp').hidden = !link;
 
   const einladung = $('#wett-einladung');
   if(wartendeKarte){
@@ -4240,6 +4328,14 @@ function zeichneWett(){
     liste.appendChild(z);
   });
   $('#wett-anzahl').textContent = alle.length > 1 ? alle.length + ' in der Liste' : 'noch nur du';
+  if(alle.length === 1){
+    const leer = mach('p', 'klein leise');
+    leer.style.paddingTop = '.5rem';
+    leer.textContent = Object.keys(mein.sterne).length
+      ? 'Noch ist niemand sonst dabei. Schick deine Karte unten an Mama — sobald ihre Karte zurückkommt, steht hier das Duell.'
+      : 'Spiel zuerst ein Level, damit deine Karte Sterne und Zeiten enthält. Dann kannst du sie verschicken.';
+    liste.appendChild(leer);
+  }
 }
 
 /* ---------- Duell: Level für Level ---------- */
@@ -4339,11 +4435,17 @@ function karteAusLink(){
 }
 
 function karteAufnehmen(w){
-  if(!w) return;
+  if(!w) return true;
   Z.karten = Z.karten || {};
+  /* Eigene Karte auf dem eigenen Gerät: die bringt nichts, darum abfangen */
+  const meine = karteCode(meineWerte());
+  if(karteCode(Object.assign({stand:heuteStr()}, w, {name:meinName()})) === meine){
+    return false;
+  }
   if(w.name === meinName()) w.name = w.name + ' (Gast)';
   Z.karten[w.name] = w;
   sichern();
+  return true;
 }
 
 /* ---------- Bedienung ---------- */
@@ -4388,11 +4490,44 @@ $('#wett-uebernehmen').onclick = () => {
   wettMeldung('#wett-meldung', w.name + ' steht jetzt in der Bestenliste.');
 };
 $('#wett-annehmen').onclick = () => {
-  karteAufnehmen(wartendeKarte);
+  const ging = karteAufnehmen(wartendeKarte);
   wartendeKarte = null;
   zeichneWett();
-  wettMeldung('#wett-meldung', 'Aufgenommen. Tippe auf „Duell", um zu vergleichen.');
+  wettMeldung('#wett-meldung', ging
+    ? 'Aufgenommen. Tippe auf „Duell", um zu vergleichen.'
+    : 'Das ist deine eigene Karte — die brauchst du auf diesem Gerät nicht.');
 };
+$('#wett-whatsapp').onclick = () => {
+  const link = karteLink();
+  if(!link) return;
+  const st = karteStand(meineWerte());
+  const text = meinName() + ' in der Denkstube: ' + st.sterne + ' Sterne aus ' + st.level
+    + ' Leveln. Tipp den Link an, dann stehen wir beide in der Bestenliste: ' + link;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+};
+$('#install-knopf').onclick = async () => {
+  if(!installEreignis) return;
+  try{
+    installEreignis.prompt();
+    await installEreignis.userChoice;
+  }catch(e){ /* dann eben über das Menü */ }
+  installEreignis = null;
+  zeichneInstall();
+};
+$('#install-spaeter').onclick = () => {
+  installSpaeter = true;
+  zeichneInstall();
+};
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  installEreignis = e;
+  zeichneInstall();
+});
+window.addEventListener('appinstalled', () => {
+  installEreignis = null;
+  installSpaeter = true;
+  zeichneInstall();
+});
 $('#wett-ablehnen').onclick = () => { wartendeKarte = null; zeichneWett(); };
 $('#knopf-wissen-2').onclick = () => zeigeAnsicht('wissen');
 $('#wissen-zurueck').onclick = () => zeigeAnsicht('start');

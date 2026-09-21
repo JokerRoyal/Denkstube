@@ -56,11 +56,22 @@ Ausführlich steht das in der Antwort im Chat; kurz:
 
 ### b) Auf dem Handy installieren
 
-**Android (Chrome):** Adresse öffnen → Menü ⋮ → **„App installieren"** bzw.
-„Zum Startbildschirm hinzufügen" → bestätigen.
+**Am einfachsten:** Adresse öffnen — gleich oben steht die Karte
+**„Auf den Startbildschirm legen"** mit dem Knopf **App installieren**. Antippen,
+bestätigen, fertig. Die Karte verschwindet von selbst, sobald die App installiert
+ist, und taucht in der installierten App nie auf.
 
-**iPhone (Safari — wichtig, nicht Chrome):** Adresse öffnen → Teilen-Symbol
-(Quadrat mit Pfeil) → **„Zum Home-Bildschirm"** → „Hinzufügen".
+Fehlt der Knopf, steht in derselben Karte die Anleitung fürs jeweilige Handy:
+
+**Android (Chrome):** Menü ⋮ → **„App installieren"** bzw. „Zum Startbildschirm
+hinzufügen".
+
+**iPhone (Safari — wichtig, nicht Chrome):** Teilen-Symbol (Quadrat mit Pfeil)
+→ **„Zum Home-Bildschirm"** → „Hinzufügen".
+
+**Nach einem Deinstallieren** zeigt Chrome seinen eigenen Installationsvorschlag
+eine Weile nicht mehr an. Der Knopf in der App geht diesen Weg direkt; falls auch
+er fehlt, die Seite einmal neu laden oder den Menü-Weg oben nehmen.
 
 ### c) Einmal online starten, dann Flugmodus prüfen
 
