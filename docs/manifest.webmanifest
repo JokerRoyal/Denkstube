@@ -1,0 +1,19 @@
+{
+  "name": "Die Denkstube",
+  "short_name": "Denkstube",
+  "description": "Gedächtnistraining in hundert Stationen — ruhig, bunt, ohne Internet.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eaeee2",
+  "theme_color": "#eaeee2",
+  "categories": ["games", "health", "education"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
