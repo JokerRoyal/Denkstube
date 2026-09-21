@@ -4275,7 +4275,7 @@ function zeichneWett(){
   const mein = meineWerte();
   $('#wett-code').value = karteCode(mein);
   const link = karteLink();
-  $('#wett-link').value = link || '(nur in der Fassung auf dem Handy — hier stattdessen den Code nehmen)';
+  $('#wett-link').value = link || 'Einen Link gibt es nur in der App unter jokerroyal.github.io/Denkstube/ — hier stattdessen den Code unten verschicken.';
   $('#wett-link').onclick = () => $('#wett-link').select();
   $('#wett-code').onclick = () => $('#wett-code').select();
   $('#wett-whatsapp').hidden = !link;
@@ -4393,10 +4393,13 @@ function wettMeldung(id, text){
 }
 
 function karteLink(){
-  const code = karteCode(meineWerte());
-  const basis = (location.protocol.indexOf('http') === 0)
-    ? location.origin + location.pathname : '';
-  return basis ? basis + '#karte=' + code : '';
+  /* Einen Link gibt es nur in der echten Handy-Fassung. In der Claude-Vorschau
+     waere es eine claude.ai-Adresse, die sonst niemand oeffnen kann — dann
+     lieber ehrlich keinen Link anbieten und den Code nehmen. */
+  const echteApp = !!document.querySelector('link[rel="manifest"]')
+    && location.protocol.indexOf('http') === 0;
+  if(!echteApp) return '';
+  return location.origin + location.pathname + '#karte=' + karteCode(meineWerte());
 }
 
 async function karteTeilen(){
