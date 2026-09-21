@@ -4,9 +4,8 @@ Gedächtnistraining in hundert Stationen — ruhig, bunt, ohne Internet.
 Eine einzige Seite ohne Server: alle Aufgaben, Wortlisten und Geschichten
 stecken in der Datei, gerechnet wird im Gerät. Nichts verlässt das Handy.
 
-**Zum Spielen:** `https://DEIN-GITHUB-NAME.github.io/denkstube/`
-(die Adresse gilt, sobald GitHub Pages eingeschaltet ist — siehe unten;
-DEIN-GITHUB-NAME bitte einmal ersetzen)
+**Zum Spielen:** <https://jokerroyal.github.io/Denkstube-/>
+(gilt, sobald GitHub Pages eingeschaltet ist — siehe unten)
 
 ## Was hier liegt
 
@@ -32,7 +31,7 @@ Auf dem Handy kommt die neue Fassung beim nächsten Start von allein an.
 ## GitHub Pages einschalten (einmalig)
 
 Im Repository: **Settings → Pages → Source: „Deploy from a branch"**,
-Branch `master`, Ordner **`/docs`** → *Save*. Nach einer Minute läuft die App
+Branch `main`, Ordner **`/docs`** → *Save*. Nach einer Minute läuft die App
 unter der Adresse oben.
 
 Das Repository muss dafür **öffentlich** sein (Pages für private Repositories
