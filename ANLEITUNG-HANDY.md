@@ -43,7 +43,7 @@ Nötig ist eine Adresse mit `https`. Zwei einfache Möglichkeiten:
 
 **GitHub Pages** (dauerhaft, kostenlos — empfohlen)
 Ausführlich steht das in der Antwort im Chat; kurz:
-1. Repository ist angelegt: <https://github.com/JokerRoyal/Denkstube->
+1. Repository ist angelegt: <https://github.com/JokerRoyal/Denkstube>
 2. Im Projektordner ist schon alles eingerichtet (Branch `main`, Remote `origin`).
    Hochladen:
    ```
@@ -52,7 +52,7 @@ Ausführlich steht das in der Antwort im Chat; kurz:
 3. Im Repository: **Settings → Pages → Source: „Deploy from a branch"**,
    Branch `main`, Ordner **`/docs`** → Save.
 4. Nach einer Minute läuft sie unter
-   <https://jokerroyal.github.io/Denkstube-/>
+   <https://jokerroyal.github.io/Denkstube/>
 
 ### b) Auf dem Handy installieren
 

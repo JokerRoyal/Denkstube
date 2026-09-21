@@ -4,7 +4,7 @@ Gedächtnistraining in hundert Stationen — ruhig, bunt, ohne Internet.
 Eine einzige Seite ohne Server: alle Aufgaben, Wortlisten und Geschichten
 stecken in der Datei, gerechnet wird im Gerät. Nichts verlässt das Handy.
 
-**Zum Spielen:** <https://jokerroyal.github.io/Denkstube-/>
+**Zum Spielen:** <https://jokerroyal.github.io/Denkstube/>
 (gilt, sobald GitHub Pages eingeschaltet ist — siehe unten)
 
 ## Was hier liegt
