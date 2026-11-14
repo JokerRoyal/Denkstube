@@ -497,6 +497,10 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
 .hoerzeile .was b{display:block;}
 .hoerzeile .was span{font-size:.8rem; color:var(--tinte-leise);}
 
+.tafel{max-width:100%; max-height:11rem; border-radius:var(--rund-klein); background:#fdfcf7; padding:.35rem;
+  border:1px solid var(--rand);}
+.tafel.gross{max-height:15rem;}
+.tafelquelle{font-size:.68rem; color:var(--tinte-zart); letter-spacing:.02em;}
 .fotoplatz{
   display:flex; flex-direction:column; align-items:center; gap:.5rem;
   border:1px dashed var(--rand-stark); border-radius:var(--rund-klein); padding:.8rem;
@@ -1154,6 +1158,7 @@ const FELDER = {
   kpaare:      'Drogenliste: Wirkstoffe',
   kkorb:       'Drogenliste: Wirkstoffe sammeln',
   kpruefung:   'Drogenliste: Prüfungsrunde',
+  kbild:       'Drogenliste: Pflanzen erkennen',
   pruefung:    'Alles zusammen'
 };
 
@@ -1215,6 +1220,7 @@ const NOTIZEN = {
   kgruppe:     'Blatt, Blüte, Frucht, Kraut, Rinde, Samen oder Wurzel: die Einteilung nach dem verwendeten Pflanzenteil ist das Gerüst der ganzen Liste.',
   kpaare:      'Droge und Wirkstoff als Paar — hier zählt nur, was eindeutig ist, damit nichts Falsches gelernt wird.',
   kkorb:       'Von der anderen Seite gedacht: nicht „was ist drin", sondern „wo ist es drin". Das sitzt im Zweifel sicherer.',
+  kbild:       'Die Pflanze am Bild erkennen. Die Tafeln stammen aus Köhlers Medizinal-Pflanzen von 1887 — jede einzelne über den Wikipedia-Artikel der Art geholt und geprüft, damit nichts verwechselt wird.',
   kpruefung:   'Zwanzig gemischte Fragen wie in der Prüfung, danach die Auswertung nach Gruppen — damit du siehst, was noch wackelt.',
   silben:      'Ein langes Wort aus seinen Silben wieder zusammenbauen. Das trainiert den Zugriff auf die Wortform — dieselbe Stelle, an der es hakt, wenn ein Wort „auf der Zunge liegt".'
 };
@@ -1711,77 +1717,77 @@ const DROGENGRUPPEN = [
 
 const DROGEN = [
   /* --- Blattdrogen --- */
-  {n:'Bärentraubenblätter', g:'blatt', w:['Gerbstoffe','Arbutin'],
+  {n:'Bärentraubenblätter', g:'blatt', b:'baerentraube.jpg', q:'k', w:['Gerbstoffe','Arbutin'],
    a:'harndesinfizierend'},
-  {n:'Birkenblätter', g:'blatt', w:['Flavonoide','Gerbstoffe'],
+  {n:'Birkenblätter', g:'blatt', b:'birke.jpg', q:'a', w:['Flavonoide','Gerbstoffe'],
    a:'harntreibend'},
-  {n:'Melissenblätter', g:'blatt', w:['ätherisches Öl'],
+  {n:'Melissenblätter', g:'blatt', b:'melisse.jpg', q:'k', w:['ätherisches Öl'],
    a:'bei nervöser Unruhe bzw. Schlafstörungen, krampflösend bei nervösen Magen-Darm-Beschwerden'},
-  {n:'Pfefferminzblätter', g:'blatt', w:['ätherisches Öl'],
+  {n:'Pfefferminzblätter', g:'blatt', b:'pfefferminze.jpg', q:'k', w:['ätherisches Öl'],
    a:'krampflösend bei Magen-Darm-Beschwerden'},
-  {n:'Rosmarinblätter', g:'blatt', w:['ätherisches Öl','Gerbstoffe'],
+  {n:'Rosmarinblätter', g:'blatt', b:'rosmarin.jpg', q:'k', w:['ätherisches Öl','Gerbstoffe'],
    a:'Herz-Kreislaufanregend bzw. durchblutungsfördernd als Badezusatz, innerlich: krampflösend bei Magen-Darm-Beschwerden'},
-  {n:'Salbeiblätter', g:'blatt', w:['ätherisches Öl','Gerbstoff'],
+  {n:'Salbeiblätter', g:'blatt', b:'salbei.jpg', q:'k', w:['ätherisches Öl','Gerbstoff'],
    a:'entzündungshemmend in Mund- und Rachen, schweißhemmend und bei Magen-Darm-Beschwerden'},
   {n:'Weißdornblätter mit Blüten', g:'blatt', w:['Flavonoide'],
    a:'Herz-Kreislauf stärkend'},
 
   /* --- Blütendrogen --- */
-  {n:'Arnikablüten', g:'bluete', w:['ätherisches Öl','Flavonoide'],
+  {n:'Arnikablüten', g:'bluete', b:'arnika.jpg', q:'k', w:['ätherisches Öl','Flavonoide'],
    a:'nur äußerlich bei Prellungen und Verstauchungen'},
-  {n:'Gewürznelken', g:'bluete', w:['ätherisches Öl'],
+  {n:'Gewürznelken', g:'bluete', b:'gewuerznelke.jpg', q:'k', w:['ätherisches Öl'],
    a:'schmerzlindernd, entzündungshemmend in Mundschleimhaut (Zahnschmerzen)'},
-  {n:'Holunderblüten', g:'bluete', w:['Flavonoide','wenig äth. Öl u. Gerbstoffe'],
+  {n:'Holunderblüten', g:'bluete', b:'holunder.jpg', q:'k', w:['Flavonoide','wenig äth. Öl u. Gerbstoffe'],
    a:'schweißtreibend bei Erkältung'},
-  {n:'Hopfenzapfen', g:'bluete', w:['ätherisches Öl','Bitterstoffe'],
+  {n:'Hopfenzapfen', g:'bluete', b:'hopfen.jpg', q:'k', w:['ätherisches Öl','Bitterstoffe'],
    a:'Unruhezustände, Schlafstörungen, appetitanregend'},
-  {n:'Kamillenblüten', g:'bluete', w:['ätherisches Öl','Flavonoide','Azulene'],
+  {n:'Kamillenblüten', g:'bluete', b:'kamille.jpg', q:'k', w:['ätherisches Öl','Flavonoide','Azulene'],
    a:'krampflösend bei Magen-Darm-Beschwerden, entzündungshemmend bei Haut- u. Schleimhautentzündungen, als Inhalation bei Erkrankung der Atemwege'},
-  {n:'Lavendelblüten', g:'bluete', w:['ätherisches Öl'],
+  {n:'Lavendelblüten', g:'bluete', b:'lavendel.jpg', q:'k', w:['ätherisches Öl'],
    a:'bei Einschlafstörungen und Unruhezuständen'},
-  {n:'Lindenblüten', g:'bluete', w:['Schleim','Flavonoide'],
+  {n:'Lindenblüten', g:'bluete', b:'linde.jpg', q:'k', w:['Schleim','Flavonoide'],
    a:'schweißtreibend bei fiebriger Erkältung, Linderung von Hustenreiz'},
-  {n:'Malvenblüten', g:'bluete', w:['Schleim'],
+  {n:'Malvenblüten', g:'bluete', b:'malve.jpg', q:'k', w:['Schleim'],
    a:'reizlindernd bei Husten'},
-  {n:'Ringelblumenblüten', g:'bluete', w:['Flavonoide','ätherisches Öl'],
+  {n:'Ringelblumenblüten', g:'bluete', b:'ringelblume.jpg', q:'k', w:['Flavonoide','ätherisches Öl'],
    a:'äußerlich bei Entzündungen von Haut- u. Schleimhaut, sowie bei Riss-, Quetsch- und Brandwunden'},
 
   /* --- Fruchtdrogen --- */
-  {n:'Anisfrüchte', g:'frucht', w:['ätherisches Öl'],
+  {n:'Anisfrüchte', g:'frucht', b:'anis.jpg', q:'k', w:['ätherisches Öl'],
    a:'krampflösend bei Magen-Darm-Beschwerden, schleimlösend bei Husten'},
-  {n:'Fenchelfrüchte', g:'frucht', w:['ätherisches Öl'],
+  {n:'Fenchelfrüchte', g:'frucht', b:'fenchel.jpg', q:'k', w:['ätherisches Öl'],
    a:'krampflösend bei Blähungen, schleimlösend bei Husten'},
-  {n:'Hagebuttenfrüchte', g:'frucht', w:['Vitamin C (Ascorbinsäure)'],
+  {n:'Hagebuttenfrüchte', g:'frucht', b:'hagebutte.jpg', q:'a', w:['Vitamin C (Ascorbinsäure)'],
    a:'vorbeugend bei Erkältungskrankheiten, immunstärkend'},
   {n:'Heidelbeeren', g:'frucht', w:['Gerbstoffe'],
    a:'gegen leichten Durchfall'},
-  {n:'Kümmelfrüchte', g:'frucht', w:['ätherisches Öl'],
+  {n:'Kümmelfrüchte', g:'frucht', b:'kuemmel.jpg', q:'k', w:['ätherisches Öl'],
    a:'bei Völlegefühl und Blähungen, krampflösend, verdauungsfördernd'},
-  {n:'Wacholderbeeren', g:'frucht', w:['ätherisches Öl','Gerbstoffe'],
+  {n:'Wacholderbeeren', g:'frucht', b:'wacholder.jpg', q:'k', w:['ätherisches Öl','Gerbstoffe'],
    a:'harntreibend, Sodbrennen, Völlegefühl'},
 
   /* --- Krautdrogen --- */
-  {n:'Brennnesselkraut', g:'kraut', w:['Kieselsäure','Mineralstoffe'],
+  {n:'Brennnesselkraut', g:'kraut', b:'brennnessel.jpg', q:'a', w:['Kieselsäure','Mineralstoffe'],
    a:'harntreibend, Anregung des Stoffwechsels'},
-  {n:'Löwenzahnwurzel mit Kraut', g:'kraut', w:['Bitterstoffe'],
+  {n:'Löwenzahnwurzel mit Kraut', g:'kraut', b:'loewenzahn.jpg', q:'k', w:['Bitterstoffe'],
    a:'verdauungsfördernd, appetitanregend, bei Galle- u. Leberbeschwerden, leicht harntreibend'},
-  {n:'Mistelkraut', g:'kraut', w:['Flavonoide'],
+  {n:'Mistelkraut', g:'kraut', b:'mistel.jpg', q:'k', w:['Flavonoide'],
    a:'Stärkung der Herz- und Kreislauffunktion, allgemeine Arterienverkalkung'},
-  {n:'Schachtelhalmkraut', g:'kraut', w:['Kieselsäure','Flavonoide'],
+  {n:'Schachtelhalmkraut', g:'kraut', b:'schachtelhalm.jpg', q:'a', w:['Kieselsäure','Flavonoide'],
    a:'harntreibend, zur Wundheilung äußerlich oder als Badezusatz'},
-  {n:'Schafgarbenkraut', g:'kraut', w:['ätherisches Öl','Bitterstoffe'],
+  {n:'Schafgarbenkraut', g:'kraut', b:'schafgarbe.jpg', q:'a', w:['ätherisches Öl','Bitterstoffe'],
    a:'bei leichten Magen-Darm-Beschwerden, appetitanregend, entzündungshemmend'},
   {n:'Spitzwegerichkraut', g:'kraut', w:['Schleim','Gerbstoffe'],
    a:'reizlindernd bei Husten'},
-  {n:'Tausendgüldenkraut', g:'kraut', w:['Bitterstoffe'],
+  {n:'Tausendgüldenkraut', g:'kraut', b:'tausendgueldenkraut.jpg', q:'k', w:['Bitterstoffe'],
    a:'bei Appetitlosigkeit und mangelnder Bildung von Magensaft u. Gallenflüssigkeit'},
-  {n:'Thymiankraut', g:'kraut', w:['ätherisches Öl'],
+  {n:'Thymiankraut', g:'kraut', b:'thymian.jpg', q:'k', w:['ätherisches Öl'],
    a:'krampflösend und schleimlösend bei Husten u. Bronchitis'},
-  {n:'Wermutkraut', g:'kraut', w:['Bitterstoffe','ätherisches Öl'],
+  {n:'Wermutkraut', g:'kraut', b:'wermut.jpg', q:'k', w:['Bitterstoffe','ätherisches Öl'],
    a:'appetitanregend, Magensaftbildend, bei Magenbeschwerden u. Verdauungsstörungen'},
 
   /* --- Rindendrogen --- */
-  {n:'Eichenrinde', g:'rinde', w:['Gerbstoffe'],
+  {n:'Eichenrinde', g:'rinde', b:'eiche.jpg', q:'k', w:['Gerbstoffe'],
    a:'äußerlich gegen Frostbeulen, Fußschweiß u. Ausschlägen, als Badezusatz oder Spülung bei entzündlichen Hautkrankheiten'},
 
   /* --- Samendrogen --- */
@@ -1789,19 +1795,19 @@ const DROGEN = [
    a:'Quellstoff-Abführmittel'},
   {n:'Kürbissamen', g:'samen', w:['Fettes Öl','Vitamin E'],
    a:'unterstützend bei Blasenschwäche und Prostatabeschwerden'},
-  {n:'Leinsamen', g:'samen', w:['Schleim','fettes Öl','Ballaststoffe'],
+  {n:'Leinsamen', g:'samen', b:'lein.jpg', q:'k', w:['Schleim','fettes Öl','Ballaststoffe'],
    a:'Quellstoff-Abführmittel, bei entzündlichen Magen- und Darmerkrankungen'},
 
   /* --- Wurzeldrogen --- */
-  {n:'Baldrianwurzel', g:'wurzel', w:['ätherisches Öl','Valepotriate (farbloses Öl)'],
+  {n:'Baldrianwurzel', g:'wurzel', b:'baldrian.jpg', q:'k', w:['ätherisches Öl','Valepotriate (farbloses Öl)'],
    a:'beruhigend bei allgemeiner Nervosität, Unruhe und Einschlafstörungen'},
-  {n:'Eibischwurzel', g:'wurzel', w:['Schleim','Pektine'],
+  {n:'Eibischwurzel', g:'wurzel', b:'eibisch.jpg', q:'k', w:['Schleim','Pektine'],
    a:'reizlindernd bei Husten, Reizungen des Mund- u. Rachenraums'},
-  {n:'Enzianwurzel', g:'wurzel', w:['Bitterstoffe'],
+  {n:'Enzianwurzel', g:'wurzel', b:'enzian.jpg', q:'k', w:['Bitterstoffe'],
    a:'appetitanregend, verdauungsfördernd, fördert Magensaftbildung, bei fiebrigen Erkältungskrankheiten'},
-  {n:'Primelwurzel', g:'wurzel', w:['Saponine'],
+  {n:'Primelwurzel', g:'wurzel', b:'primel.jpg', q:'a', w:['Saponine'],
    a:'auswurffördernd u. schleimlösend bei Husten u. Bronchitis'},
-  {n:'Süßholzwurzel', g:'wurzel', w:['Saponine','Flavonoide'],
+  {n:'Süßholzwurzel', g:'wurzel', b:'suessholz.jpg', q:'k', w:['Saponine','Flavonoide'],
    a:'auswurffördernd u. schleimlösend bei Husten u. Bronchitis'}
 ];
 
@@ -4217,6 +4223,32 @@ SPIELE.kkorb = async function(api, p){
   }
 };
 
+SPIELE.kbild = async function(api, p){
+  const mitTafel = mischen(DROGEN.filter(d => d.b));
+  let gestellt = 0, i = 0;
+  while(gestellt < p.anzahl && i < mitTafel.length){
+    const d = mitTafel[i++];
+    if(!(await bildVorhanden(d))) continue;
+    gestellt++;
+    const b = api.buehne();
+    const kasten = mach('div', 'lernkarte');
+    kasten.style.minHeight = '0';
+    kasten.appendChild(tafelBild(d, 'tafel gross'));
+    kasten.appendChild(tafelQuelle(d));
+    b.appendChild(kasten);
+    api.zaehler('Tafel ' + gestellt + ' von ' + p.anzahl);
+    const gut = await frageStellen(api, 'Welche Pflanze ist das?',
+      [d.n].concat(andereAus(d, 'n', 3)), 0, {anhaengen:true, zwei:true, unter:'Die Drogennamen stehen zur Wahl.'});
+    if(!gut) api.fehler();
+  }
+  if(!gestellt){
+    api.buehne();
+    api.anweisung('Hier fehlen die Tafeln.');
+    api.unter('Diese Übung gibt es nur in der App unter jokerroyal.github.io/Denkstube/.');
+    await api.warte(2600);
+  }
+};
+
 SPIELE.kpruefung = async function(api, p){
   const arten = ['anwendung', 'droge', 'wirkstoff', 'gruppe'];
   const fragen = waehle(DROGEN, Math.min(p.anzahl, DROGEN.length));
@@ -5060,6 +5092,44 @@ function karteAufnehmen(w){
    ========================================================= */
 
 function drogeVon(name){ return DROGEN.find(d => d.n === name); }
+
+/* Die Pflanzentafeln liegen als Dateien neben der App (nur in der Fassung
+   auf dem Handy). Fehlt eine, tritt still das Gruppensymbol an ihre Stelle. */
+const tafelBekannt = {};
+let tafelnDa = null;
+function tafelBild(d, klasse){
+  if(!d.b) return null;
+  const img = document.createElement('img');
+  img.className = klasse || 'tafel';
+  img.alt = 'Pflanzentafel zu ' + d.n;
+  img.loading = 'lazy';
+  img.onerror = () => { const q = img.nextElementSibling; if(q && q.classList.contains('tafelquelle')) q.remove(); img.remove(); };
+  img.src = 'bilder/' + d.b;
+  return img;
+}
+function tafelQuelle(d){
+  return mach('p', 'tafelquelle', (d && d.q === 'a')
+    ? 'Historische Pflanzentafel — gemeinfrei'
+    : 'Tafel aus Köhlers Medizinal-Pflanzen, 1887 — gemeinfrei');
+}
+function bildVorhanden(d){
+  if(!d.b) return Promise.resolve(false);
+  if(d.b in tafelBekannt) return Promise.resolve(tafelBekannt[d.b]);
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => { tafelBekannt[d.b] = true; res(true); };
+    img.onerror = () => { tafelBekannt[d.b] = false; res(false); };
+    img.src = 'bilder/' + d.b;
+  });
+}
+async function tafelnPruefen(){
+  const proben = DROGEN.filter(d => d.b).slice(0, 4);
+  for(const d of proben){
+    if(await bildVorhanden(d)){ tafelnDa = true; return true; }
+  }
+  tafelnDa = false;
+  return false;
+}
 function gruppeVon(id){ return DROGENGRUPPEN.find(g => g.id === id); }
 
 function gruppenZeichen(gid, gross){
@@ -5186,6 +5256,10 @@ function zeichneKraut(){
     {typ:'kkorb', p:{anzahl:2, sekunden:45}, titel:'Der Wirkstoff-Korb', satz:'Alle Drogen mit einem bestimmten Wirkstoff einsammeln.'},
     {typ:'kpruefung', p:{anzahl:20}, titel:'Prüfungsrunde', satz:'Zwanzig gemischte Fragen, danach die Auswertung nach Gruppen.'}
   ];
+  if(tafelnDa !== false){
+    uebungen.splice(4, 0, {typ:'kbild', p:{anzahl:8}, titel:'Welche Pflanze ist das?',
+      satz:'Die alte Pflanzentafel zeigen, den Drogennamen wählen.'});
+  }
   const kasten = $('#kraut-uebungen');
   kasten.innerHTML = '';
   uebungen.forEach(u => {
@@ -5266,6 +5340,8 @@ function zeichneKasten(){
   karte.appendChild(mach('p', 'name', d.n));
   if(kastenGedreht){
     karte.appendChild(mach('div', 'trennlinie'));
+    const tafel = tafelBild(d);
+    if(tafel){ karte.appendChild(tafel); karte.appendChild(tafelQuelle(d)); }
     const w = mach('div');
     w.appendChild(mach('p', 'feldname', 'Hauptwirkstoff'));
     w.appendChild(mach('p', 'wirkstoff', d.w.join(', ')));
@@ -5342,6 +5418,8 @@ function zeichneKkarte(){
   karte.appendChild(gruppenZeichen(d.g, true));
   karte.appendChild(mach('p', 'gruppe', g.name + ' · ' + g.teil));
   karte.appendChild(mach('p', 'name', d.n));
+  const tafel = tafelBild(d, 'tafel gross');
+  if(tafel){ karte.appendChild(tafel); karte.appendChild(tafelQuelle(d)); }
   karte.appendChild(mach('div', 'trennlinie'));
   const w = mach('div');
   w.appendChild(mach('p', 'feldname', 'Hauptwirkstoff'));
@@ -5586,6 +5664,7 @@ function anfangen(zustand){
   if(zustand && zustand.Z) Z = Object.assign(Z, zustand.Z);
   if(zustand && zustand.E) E = Object.assign(E, zustand.E);
   einstellungenAnwenden();
+  tafelnPruefen().then(() => { if(ansichtJetzt === 'kraut') zeichneKraut(); });
   wartendeKarte = karteAusLink();
   if(wartendeKarte){ zeigeAnsicht('wett'); return; }
   /* Manche Browser haengen den Link-Anhang erst nach dem Laden an, und wer den

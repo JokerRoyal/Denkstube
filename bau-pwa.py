@@ -24,7 +24,7 @@ import io, os, re, shutil, struct, zlib, math, zipfile
 HIER = os.path.dirname(os.path.abspath(__file__))
 QUELLE = os.path.join(HIER, 'der-merkweg.html')
 ZIEL = os.path.join(HIER, 'docs')
-VERSION = '14'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
+VERSION = '15'          # bei jeder Änderung hochzählen: erneuert den Cache im Gerät
 
 # ---------------------------------------------------------------- PNG-Symbole
 
@@ -166,12 +166,17 @@ SW = '''/* Die Denkstube — Service Worker.
    beantwortet. Schriften und alles Weitere wandern beim ersten Gebrauch dazu. */
 const CACHE = 'denkstube-v%VERSION%';
 const KERN = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+/* Die Pflanzentafeln kommen beim ersten Oeffnen mit ins Geraet, damit die
+   Kraeuterkammer auch ohne Netz Bilder zeigt. */
+const TAFELN = [%TAFELN%];
 
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
     await Promise.all(KERN.map(u => c.add(new Request(u, {cache:'reload'})).catch(() => {})));
     self.skipWaiting();
+    /* Tafeln im Hintergrund nachladen — sie sollen die Installation nicht aufhalten */
+    Promise.all(TAFELN.map(u => c.add(u).catch(() => {})));
   })());
 });
 
@@ -231,7 +236,12 @@ def bauen():
     os.makedirs(ZIEL, exist_ok=True)
     io.open(os.path.join(ZIEL, 'index.html'), 'w', encoding='utf-8').write(seite)
     io.open(os.path.join(ZIEL, 'manifest.webmanifest'), 'w', encoding='utf-8').write(MANIFEST)
-    io.open(os.path.join(ZIEL, 'sw.js'), 'w', encoding='utf-8').write(SW.replace('%VERSION%', VERSION))
+    tafeln = []
+    bilderordner = os.path.join(ZIEL, 'bilder')
+    if os.path.isdir(bilderordner):
+        tafeln = ["'./bilder/%s'" % n for n in sorted(os.listdir(bilderordner)) if n.endswith('.jpg')]
+    io.open(os.path.join(ZIEL, 'sw.js'), 'w', encoding='utf-8').write(
+        SW.replace('%VERSION%', VERSION).replace('%TAFELN%', ', '.join(tafeln)))
     for g in (192, 512):
         png_schreiben(os.path.join(ZIEL, 'icon-%d.png' % g), g, g, symbol(g))
 
@@ -245,11 +255,22 @@ def bauen():
     zipname = os.path.join(HIER, 'Denkstube-pwa.zip')
     with zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED) as z:
         for name in sorted(os.listdir(ZIEL)):
-            z.write(os.path.join(ZIEL, name), name)
+            voll = os.path.join(ZIEL, name)
+            if os.path.isdir(voll):
+                for datei in sorted(os.listdir(voll)):
+                    z.write(os.path.join(voll, datei), name + '/' + datei)
+            else:
+                z.write(voll, name)
 
     print('Paket gebaut:')
     for d in sorted(os.listdir(ZIEL)):
-        print('  docs/%-23s %7d Bytes' % (d, os.path.getsize(os.path.join(ZIEL, d))))
+        voll = os.path.join(ZIEL, d)
+        if os.path.isdir(voll):
+            dateien = [f for f in os.listdir(voll) if f.endswith('.jpg')]
+            groesse = sum(os.path.getsize(os.path.join(voll, f)) for f in dateien)
+            print('  docs/%-23s %7d Bytes in %d Tafeln' % (d + '/', groesse, len(dateien)))
+        else:
+            print('  docs/%-23s %7d Bytes' % (d, os.path.getsize(voll)))
     print('  %-28s %7d Bytes' % ('Denkstube-pwa.zip', os.path.getsize(zipname)))
     print('  %-28s %7d Bytes' % ('Die-Denkstube-offline.html',
                                  os.path.getsize(os.path.join(HIER, 'Die-Denkstube-offline.html'))))

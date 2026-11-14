@@ -1,14 +1,19 @@
 /* Die Denkstube — Service Worker.
    Kern der App wird beim ersten Öffnen abgelegt, danach zuerst aus dem Gerät
    beantwortet. Schriften und alles Weitere wandern beim ersten Gebrauch dazu. */
-const CACHE = 'denkstube-v14';
+const CACHE = 'denkstube-v15';
 const KERN = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+/* Die Pflanzentafeln kommen beim ersten Oeffnen mit ins Geraet, damit die
+   Kraeuterkammer auch ohne Netz Bilder zeigt. */
+const TAFELN = ['./bilder/anis.jpg', './bilder/arnika.jpg', './bilder/baerentraube.jpg', './bilder/baldrian.jpg', './bilder/birke.jpg', './bilder/brennnessel.jpg', './bilder/eibisch.jpg', './bilder/eiche.jpg', './bilder/enzian.jpg', './bilder/fenchel.jpg', './bilder/gewuerznelke.jpg', './bilder/hagebutte.jpg', './bilder/holunder.jpg', './bilder/hopfen.jpg', './bilder/kamille.jpg', './bilder/kuemmel.jpg', './bilder/lavendel.jpg', './bilder/lein.jpg', './bilder/linde.jpg', './bilder/loewenzahn.jpg', './bilder/malve.jpg', './bilder/melisse.jpg', './bilder/mistel.jpg', './bilder/pfefferminze.jpg', './bilder/primel.jpg', './bilder/ringelblume.jpg', './bilder/rosmarin.jpg', './bilder/salbei.jpg', './bilder/schachtelhalm.jpg', './bilder/schafgarbe.jpg', './bilder/suessholz.jpg', './bilder/tausendgueldenkraut.jpg', './bilder/thymian.jpg', './bilder/wacholder.jpg', './bilder/wermut.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
     await Promise.all(KERN.map(u => c.add(new Request(u, {cache:'reload'})).catch(() => {})));
     self.skipWaiting();
+    /* Tafeln im Hintergrund nachladen — sie sollen die Installation nicht aufhalten */
+    Promise.all(TAFELN.map(u => c.add(u).catch(() => {})));
   })());
 });
 
