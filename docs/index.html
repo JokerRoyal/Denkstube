@@ -429,6 +429,91 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
 .emblem.m{color:var(--moos);} .emblem.k{color:var(--kupfer);} .emblem.a{color:var(--akzent);}
 .abschnitt-kopf{gap:.55rem;}
 
+/* ================= Die Kräuterkammer ================= */
+.tueren{display:grid; grid-template-columns:1fr 1fr; gap:.6rem;}
+.tuer{
+  display:flex; flex-direction:column; align-items:flex-start; gap:.15rem;
+  padding:.85rem .9rem; border-radius:var(--rund); cursor:pointer; text-align:left;
+  border:1px solid var(--rand); background:var(--flaeche); color:var(--tinte);
+}
+.tuer:hover{border-color:var(--akzent);}
+.tuer[aria-pressed="true"]{border-color:var(--akzent); background:var(--akzent-weich);}
+.tuer em{font-style:normal; display:block; width:1.9rem; height:1.9rem; color:var(--moos);}
+.tuer b{font-family:Fraunces, Georgia, serif; font-size:1rem; line-height:1.2;}
+.tuer span{font-size:.76rem; color:var(--tinte-leise);}
+
+.gruppenzeichen{width:2.6rem; height:2.6rem; flex:none; display:block;}
+.gruppenzeichen.gross{width:4.6rem; height:4.6rem;}
+.gz-blatt{color:var(--moos);} .gz-bluete{color:var(--akzent);} .gz-frucht{color:var(--kupfer);}
+.gz-kraut{color:var(--moos);} .gz-rinde{color:var(--kupfer);} .gz-samen{color:var(--tinte-leise);}
+.gz-wurzel{color:var(--kupfer);}
+
+.lernkarte{
+  background:var(--flaeche); border:1px solid var(--rand); border-radius:var(--rund);
+  box-shadow:var(--schatten); padding:1.2rem 1.1rem; display:flex; flex-direction:column;
+  gap:.9rem; align-items:center; text-align:center; min-height:16rem; justify-content:center;
+}
+.lernkarte .name{font-family:Fraunces, Georgia, serif; font-size:1.5rem; font-weight:600; text-wrap:balance;}
+.lernkarte .gruppe{font-size:.74rem; text-transform:uppercase; letter-spacing:.1em; color:var(--tinte-zart); font-weight:600;}
+.lernkarte .trennlinie{width:3rem; height:2px; background:var(--rand-stark); border-radius:2px;}
+.lernkarte .feldname{font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--tinte-zart); font-weight:600; margin-bottom:.1rem;}
+.lernkarte .wirkstoff{font-family:"IBM Plex Mono", monospace; font-size:.95rem; color:var(--akzent-tief);}
+.lernkarte .anwendung{font-size:1.02rem; line-height:1.55;}
+.lernkarte .foto{max-height:9rem; border-radius:var(--rund-klein); object-fit:cover;}
+
+.kasten-knoepfe{display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem;}
+.kasten-knoepfe button{
+  min-height:3.4rem; border-radius:var(--rund-klein); cursor:pointer; font-weight:600; font-size:.92rem;
+  border:1px solid var(--rand); background:var(--flaeche); padding:.4rem .3rem; line-height:1.2;
+}
+.kasten-knoepfe button small{display:block; font-weight:400; font-size:.7rem; color:var(--tinte-zart);}
+.kasten-knoepfe .nochnicht:hover{border-color:var(--warnung); color:var(--warnung);}
+.kasten-knoepfe .fast:hover{border-color:var(--kupfer); color:var(--kupfer);}
+.kasten-knoepfe .sitzt:hover{border-color:var(--moos); color:var(--moos);}
+
+.drogenzeile{
+  display:grid; grid-template-columns:2.6rem 1fr auto; gap:.7rem; align-items:center;
+  width:100%; padding:.55rem .2rem; border:0; border-bottom:1px solid var(--rand);
+  background:transparent; color:var(--tinte); cursor:pointer; text-align:left;
+}
+.drogenzeile:last-child{border-bottom:0;}
+.drogenzeile:hover{background:var(--flaeche-2);}
+.drogenzeile b{font-weight:600; font-size:.98rem;}
+.drogenzeile span{display:block; font-size:.8rem; color:var(--tinte-leise);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.drogenzeile .fach{font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--tinte-zart);
+  border:1px solid var(--rand); border-radius:999px; padding:.1rem .5rem;}
+.drogenzeile .fach.voll{color:var(--moos); border-color:var(--moos);}
+
+.hoerknopf{
+  min-width:3rem; min-height:3rem; border-radius:999px; border:1px solid var(--rand);
+  background:var(--flaeche); cursor:pointer; font-size:1.1rem; display:grid; place-items:center;
+}
+.hoerknopf:hover{border-color:var(--akzent); color:var(--akzent);}
+.hoerknopf.laeuft{background:var(--akzent-weich); border-color:var(--akzent); color:var(--akzent-tief);}
+.hoerzeile{display:flex; align-items:center; gap:.7rem; padding:.5rem 0; border-bottom:1px solid var(--rand);}
+.hoerzeile:last-child{border-bottom:0;}
+.hoerzeile .was{flex:1;}
+.hoerzeile .was b{display:block;}
+.hoerzeile .was span{font-size:.8rem; color:var(--tinte-leise);}
+
+.fotoplatz{
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  border:1px dashed var(--rand-stark); border-radius:var(--rund-klein); padding:.8rem;
+  width:100%;
+}
+.fotoplatz img{max-height:11rem; border-radius:var(--rund-klein);}
+.fotoplatz p{font-size:.8rem; color:var(--tinte-zart); text-align:center;}
+.uebungsliste{display:flex; flex-direction:column; gap:.5rem;}
+.uebungsknopf{
+  display:grid; grid-template-columns:1fr auto; gap:.2rem .7rem; align-items:center;
+  padding:.75rem .9rem; border-radius:var(--rund-klein); cursor:pointer; text-align:left;
+  border:1px solid var(--rand); background:var(--flaeche); color:var(--tinte);
+}
+.uebungsknopf:hover{border-color:var(--akzent); background:var(--flaeche-2);}
+.uebungsknopf b{font-weight:600;}
+.uebungsknopf span{grid-column:1/-1; font-size:.82rem; color:var(--tinte-leise);}
+
 /* ---------- Wettstreit ---------- */
 .spieler{display:grid; grid-template-columns:1.6rem 1fr auto auto; gap:.2rem .6rem; align-items:center;
   padding:.55rem .1rem; border-bottom:1px solid var(--rand);}
@@ -619,6 +704,19 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
         <p class="leise" id="gruss-zeile">Ein kleiner Spaziergang für den Kopf &ndash; zwölf Minuten am Tag genügen.</p>
       </div>
 
+      <div class="tueren">
+        <button class="tuer" id="tuer-denkstube" aria-pressed="true">
+          <em><svg viewBox="0 0 48 52" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="3"/><path d="M24 10v14l9 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></em>
+          <b>Gedächtnistraining</b>
+          <span id="tuer-denkstube-satz">200 Stationen</span>
+        </button>
+        <button class="tuer" id="tuer-kraeuter">
+          <em><svg viewBox="0 0 48 52" fill="none" aria-hidden="true"><path d="M24 46V16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M24 26c-9-1-13-6-14-13 8 0 13 5 14 13z" fill="currentColor" opacity=".8"/><path d="M24 34c9-1 13-6 14-13-8 0-13 5-14 13z" fill="currentColor" opacity=".8"/></svg></em>
+          <b>Pflanzenkunde</b>
+          <span id="tuer-kraeuter-satz">40 Karten</span>
+        </button>
+      </div>
+
       <div class="installkarte" id="installkarte" hidden>
         <h3 id="install-titel">Auf den Startbildschirm legen</h3>
         <p id="install-text"></p>
@@ -700,6 +798,95 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
         <button class="knopf knopf-haupt" id="ergebnis-weiter">Nächstes Level</button>
       </div>
       <button class="knopf knopf-still" id="ergebnis-pause">Für heute genug</button>
+    </section>
+
+
+    <!-- ============ Die Kräuterkammer ============ -->
+    <section id="ansicht-kraut" class="stapel" hidden>
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <span class="etikett">Drogenliste, Seite 1</span>
+          <span class="klein zart" id="kraut-countdown"></span>
+        </div>
+        <h2>Die Kräuterkammer</h2>
+        <p class="klein leise" id="kraut-satz">Vierzig Drogen nach verwendeten Pflanzenteilen — Wortlaut wie auf dem Blatt.</p>
+        <div class="balkenspur offen" style="margin-top:.4rem"><i id="kraut-balken"></i></div>
+        <p class="klein leise" id="kraut-stand"></p>
+        <div class="zeile" style="gap:.5rem; margin-top:.2rem">
+          <label class="klein zart" for="kraut-datum">Prüfung am</label>
+          <input type="date" id="kraut-datum" style="font:inherit; font-size:.86rem; color:var(--tinte); background:var(--flaeche-2); border:1px solid var(--rand); border-radius:var(--rund-klein); padding:.3rem .5rem">
+        </div>
+      </div>
+
+      <button class="knopf knopf-haupt knopf-gross" id="kraut-kasten-knopf">Karteikasten</button>
+
+      <div class="karte stapel-eng">
+        <h3>Üben</h3>
+        <div class="uebungsliste" id="kraut-uebungen"></div>
+      </div>
+
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <h3>Hören</h3>
+          <span class="klein zart">vorgelesen</span>
+        </div>
+        <p class="klein leise">Eine ganze Gruppe am Stück — zum Mitsprechen beim Abwaschen. Bildschirm dabei anlassen, sonst hört das Handy auf zu lesen.</p>
+        <div id="kraut-hoeren"></div>
+      </div>
+
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <h3>Die sieben Gruppen</h3>
+          <span class="klein zart">was schon sitzt</span>
+        </div>
+        <div class="felder" id="kraut-gruppen"></div>
+      </div>
+
+      <button class="knopf" id="kraut-alle">Alle vierzig Karten ansehen</button>
+      <button class="knopf knopf-still" id="kraut-zurueck">Zurück zum Gedächtnistraining</button>
+    </section>
+
+    <!-- ============ Karteikasten ============ -->
+    <section id="ansicht-kasten" class="stapel" hidden>
+      <div class="zeile-weit">
+        <span class="etikett" id="kasten-etikett">Karteikasten</span>
+        <span class="klein zart" id="kasten-zaehler"></span>
+      </div>
+      <div class="lernkarte" id="kasten-karte"></div>
+      <button class="knopf knopf-haupt knopf-gross" id="kasten-umdrehen">Umdrehen</button>
+      <div class="kasten-knoepfe" id="kasten-bewerten" hidden>
+        <button class="nochnicht" id="kasten-nochnicht">Noch nicht<small>morgen wieder</small></button>
+        <button class="fast" id="kasten-fast">Fast<small>bald wieder</small></button>
+        <button class="sitzt" id="kasten-sitzt">Sitzt<small>später wieder</small></button>
+      </div>
+      <button class="knopf knopf-still" id="kasten-ende">Für heute genug</button>
+    </section>
+
+    <!-- ============ Alle Karten ============ -->
+    <section id="ansicht-kliste" class="stapel" hidden>
+      <p class="klein leise">Alles so, wie es auf dem Blatt steht. Antippen öffnet die Karte zum Hören und für ein eigenes Foto.</p>
+      <div id="kliste-inhalt" class="stapel"></div>
+      <button class="knopf" id="kliste-zurueck">Zurück zur Kräuterkammer</button>
+    </section>
+
+    <!-- ============ Eine Karte im Einzelnen ============ -->
+    <section id="ansicht-kkarte" class="stapel" hidden>
+      <div class="lernkarte" id="kkarte-inhalt"></div>
+      <div class="knopf-reihe">
+        <button class="knopf" id="kkarte-hoeren">Vorlesen</button>
+        <button class="knopf" id="kkarte-weiter">Nächste Karte</button>
+      </div>
+      <div class="karte stapel-eng">
+        <h3>Eigenes Foto</h3>
+        <p class="klein leise">Du kannst das Bild von deinem Blatt oder aus dem Buch abfotografieren. Es bleibt auf diesem Gerät und wird nirgends hochgeladen.</p>
+        <div class="fotoplatz" id="kkarte-fotoplatz"></div>
+        <input type="file" id="kkarte-datei" accept="image/*" hidden>
+        <div class="knopf-reihe">
+          <button class="knopf" id="kkarte-foto">Foto wählen</button>
+          <button class="knopf knopf-still" id="kkarte-fotoweg" hidden>Foto entfernen</button>
+        </div>
+      </div>
+      <button class="knopf knopf-still" id="kkarte-zurueck">Zurück zur Liste</button>
     </section>
 
     <!-- ============ Wettstreit ============ -->
@@ -962,6 +1149,11 @@ const FELDER = {
   waagschale:  'Schlussfolgern',
   kalender:    'Datum und Wochentag',
   silben:      'Wortbau',
+  kzuordnen:   'Drogenliste: zuordnen',
+  kgruppe:     'Drogenliste: Pflanzenteile',
+  kpaare:      'Drogenliste: Wirkstoffe',
+  kkorb:       'Drogenliste: Wirkstoffe sammeln',
+  kpruefung:   'Drogenliste: Prüfungsrunde',
   pruefung:    'Alles zusammen'
 };
 
@@ -1019,6 +1211,11 @@ const NOTIZEN = {
   lueckentext: 'Einen Text lesen und die Wörter danach aus dem Kopf wieder einsetzen. So arbeitet das Gedächtnis beim Erzählen: der Sinn bleibt, die genauen Worte muss man halten.',
   waagschale:  'Aus einzelnen Sätzen eine Reihenfolge schließen. Reines Denken, kein Merken — und mit dem Schalter „aus dem Gedächtnis" wird beides zusammen verlangt.',
   kalender:    'Wochentage und Datum im Kopf weiterrechnen. Eine der alltagsnächsten Übungen überhaupt: Termine liegen nun mal in der Zukunft.',
+  kzuordnen:   'Droge, Wirkstoff und Anwendungsgebiet gehören zusammen — abgefragt wird in beide Richtungen, so wie es in der Prüfung drankommen kann.',
+  kgruppe:     'Blatt, Blüte, Frucht, Kraut, Rinde, Samen oder Wurzel: die Einteilung nach dem verwendeten Pflanzenteil ist das Gerüst der ganzen Liste.',
+  kpaare:      'Droge und Wirkstoff als Paar — hier zählt nur, was eindeutig ist, damit nichts Falsches gelernt wird.',
+  kkorb:       'Von der anderen Seite gedacht: nicht „was ist drin", sondern „wo ist es drin". Das sitzt im Zweifel sicherer.',
+  kpruefung:   'Zwanzig gemischte Fragen wie in der Prüfung, danach die Auswertung nach Gruppen — damit du siehst, was noch wackelt.',
   silben:      'Ein langes Wort aus seinen Silben wieder zusammenbauen. Das trainiert den Zugriff auf die Wortform — dieselbe Stelle, an der es hakt, wenn ein Wort „auf der Zunge liegt".'
 };
 
@@ -1487,6 +1684,129 @@ GESCHICHTEN.vogelhaus = {
     {f:'Wie viele Vögel zählte er im Januar an einem Morgen?', o:['Vier','Neun','Vierzehn','Vierzig'], r:2},
     {f:'Was bekamen die Amseln?', o:['Sonnenblumenkerne','Äpfel','Haferflocken','Nichts'], r:1}
   ]};
+
+/* =========================================================
+   Die Kräuterkammer — Drogenliste nach verwendeten Pflanzenteilen
+   Seite 1 von 2. Die Texte stehen hier WORTWÖRTLICH wie auf dem
+   Seminarblatt; nichts umformuliert, nichts gekürzt. Wer hier etwas
+   ändert, ändert den Prüfungsstoff.
+   ========================================================= */
+
+const DROGENGRUPPEN = [
+  {id:'blatt',  name:'Blattdrogen',  teil:'Blätter',
+   bild:'<path d="M12 44c0-16 10-28 26-32-2 18-10 28-26 32z" fill="currentColor" opacity=".85"/><path d="M12 44C20 36 28 26 38 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>'},
+  {id:'bluete', name:'Blütendrogen', teil:'Blüten',
+   bild:'<g fill="currentColor"><ellipse cx="24" cy="12" rx="5" ry="8"/><ellipse cx="36" cy="24" rx="8" ry="5"/><ellipse cx="24" cy="36" rx="5" ry="8"/><ellipse cx="12" cy="24" rx="8" ry="5"/></g><circle cx="24" cy="24" r="5" fill="currentColor" opacity=".5"/><path d="M24 36v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>'},
+  {id:'frucht', name:'Fruchtdrogen', teil:'Früchte',
+   bild:'<circle cx="18" cy="30" r="10" fill="currentColor" opacity=".85"/><circle cx="32" cy="32" r="8" fill="currentColor" opacity=".55"/><path d="M18 20c0-6 3-10 8-12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M26 10c4 1 6 4 6 8-4 0-6-3-6-8z" fill="currentColor"/>'},
+  {id:'kraut',  name:'Krautdrogen',  teil:'ganzes Kraut',
+   bild:'<path d="M24 46V14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M24 24c-8-1-12-5-13-11 7 0 12 4 13 11z" fill="currentColor" opacity=".8"/><path d="M24 32c8-1 12-5 13-11-7 0-12 4-13 11z" fill="currentColor" opacity=".8"/><path d="M24 16c-4-2-6-5-6-9 4 1 6 4 6 9z" fill="currentColor" opacity=".8"/>'},
+  {id:'rinde',  name:'Rindendrogen', teil:'Rinde',
+   bild:'<rect x="14" y="8" width="20" height="34" rx="6" fill="currentColor" opacity=".8"/><path d="M20 14c2 6 2 14 0 22M28 14c-2 6-2 14 0 22" stroke="var(--flaeche)" stroke-width="2" fill="none" stroke-linecap="round"/>'},
+  {id:'samen',  name:'Samendrogen',  teil:'Samen',
+   bild:'<g fill="currentColor"><ellipse cx="18" cy="20" rx="6" ry="4" transform="rotate(-25 18 20)"/><ellipse cx="31" cy="26" rx="6" ry="4" transform="rotate(15 31 26)"/><ellipse cx="22" cy="34" rx="6" ry="4" transform="rotate(-10 22 34)"/></g>'},
+  {id:'wurzel', name:'Wurzeldrogen', teil:'Wurzel',
+   bild:'<path d="M24 6v14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M24 20c-6 4-8 12-6 22 4-6 6-14 6-22zM24 20c6 4 8 12 6 22-4-6-6-14-6-22z" fill="currentColor" opacity=".85"/><path d="M18 30c-4 2-6 6-6 10M30 30c4 2 6 6 6 10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>'}
+];
+
+const DROGEN = [
+  /* --- Blattdrogen --- */
+  {n:'Bärentraubenblätter', g:'blatt', w:['Gerbstoffe','Arbutin'],
+   a:'harndesinfizierend'},
+  {n:'Birkenblätter', g:'blatt', w:['Flavonoide','Gerbstoffe'],
+   a:'harntreibend'},
+  {n:'Melissenblätter', g:'blatt', w:['ätherisches Öl'],
+   a:'bei nervöser Unruhe bzw. Schlafstörungen, krampflösend bei nervösen Magen-Darm-Beschwerden'},
+  {n:'Pfefferminzblätter', g:'blatt', w:['ätherisches Öl'],
+   a:'krampflösend bei Magen-Darm-Beschwerden'},
+  {n:'Rosmarinblätter', g:'blatt', w:['ätherisches Öl','Gerbstoffe'],
+   a:'Herz-Kreislaufanregend bzw. durchblutungsfördernd als Badezusatz, innerlich: krampflösend bei Magen-Darm-Beschwerden'},
+  {n:'Salbeiblätter', g:'blatt', w:['ätherisches Öl','Gerbstoff'],
+   a:'entzündungshemmend in Mund- und Rachen, schweißhemmend und bei Magen-Darm-Beschwerden'},
+  {n:'Weißdornblätter mit Blüten', g:'blatt', w:['Flavonoide'],
+   a:'Herz-Kreislauf stärkend'},
+
+  /* --- Blütendrogen --- */
+  {n:'Arnikablüten', g:'bluete', w:['ätherisches Öl','Flavonoide'],
+   a:'nur äußerlich bei Prellungen und Verstauchungen'},
+  {n:'Gewürznelken', g:'bluete', w:['ätherisches Öl'],
+   a:'schmerzlindernd, entzündungshemmend in Mundschleimhaut (Zahnschmerzen)'},
+  {n:'Holunderblüten', g:'bluete', w:['Flavonoide','wenig äth. Öl u. Gerbstoffe'],
+   a:'schweißtreibend bei Erkältung'},
+  {n:'Hopfenzapfen', g:'bluete', w:['ätherisches Öl','Bitterstoffe'],
+   a:'Unruhezustände, Schlafstörungen, appetitanregend'},
+  {n:'Kamillenblüten', g:'bluete', w:['ätherisches Öl','Flavonoide','Azulene'],
+   a:'krampflösend bei Magen-Darm-Beschwerden, entzündungshemmend bei Haut- u. Schleimhautentzündungen, als Inhalation bei Erkrankung der Atemwege'},
+  {n:'Lavendelblüten', g:'bluete', w:['ätherisches Öl'],
+   a:'bei Einschlafstörungen und Unruhezuständen'},
+  {n:'Lindenblüten', g:'bluete', w:['Schleim','Flavonoide'],
+   a:'schweißtreibend bei fiebriger Erkältung, Linderung von Hustenreiz'},
+  {n:'Malvenblüten', g:'bluete', w:['Schleim'],
+   a:'reizlindernd bei Husten'},
+  {n:'Ringelblumenblüten', g:'bluete', w:['Flavonoide','ätherisches Öl'],
+   a:'äußerlich bei Entzündungen von Haut- u. Schleimhaut, sowie bei Riss-, Quetsch- und Brandwunden'},
+
+  /* --- Fruchtdrogen --- */
+  {n:'Anisfrüchte', g:'frucht', w:['ätherisches Öl'],
+   a:'krampflösend bei Magen-Darm-Beschwerden, schleimlösend bei Husten'},
+  {n:'Fenchelfrüchte', g:'frucht', w:['ätherisches Öl'],
+   a:'krampflösend bei Blähungen, schleimlösend bei Husten'},
+  {n:'Hagebuttenfrüchte', g:'frucht', w:['Vitamin C (Ascorbinsäure)'],
+   a:'vorbeugend bei Erkältungskrankheiten, immunstärkend'},
+  {n:'Heidelbeeren', g:'frucht', w:['Gerbstoffe'],
+   a:'gegen leichten Durchfall'},
+  {n:'Kümmelfrüchte', g:'frucht', w:['ätherisches Öl'],
+   a:'bei Völlegefühl und Blähungen, krampflösend, verdauungsfördernd'},
+  {n:'Wacholderbeeren', g:'frucht', w:['ätherisches Öl','Gerbstoffe'],
+   a:'harntreibend, Sodbrennen, Völlegefühl'},
+
+  /* --- Krautdrogen --- */
+  {n:'Brennnesselkraut', g:'kraut', w:['Kieselsäure','Mineralstoffe'],
+   a:'harntreibend, Anregung des Stoffwechsels'},
+  {n:'Löwenzahnwurzel mit Kraut', g:'kraut', w:['Bitterstoffe'],
+   a:'verdauungsfördernd, appetitanregend, bei Galle- u. Leberbeschwerden, leicht harntreibend'},
+  {n:'Mistelkraut', g:'kraut', w:['Flavonoide'],
+   a:'Stärkung der Herz- und Kreislauffunktion, allgemeine Arterienverkalkung'},
+  {n:'Schachtelhalmkraut', g:'kraut', w:['Kieselsäure','Flavonoide'],
+   a:'harntreibend, zur Wundheilung äußerlich oder als Badezusatz'},
+  {n:'Schafgarbenkraut', g:'kraut', w:['ätherisches Öl','Bitterstoffe'],
+   a:'bei leichten Magen-Darm-Beschwerden, appetitanregend, entzündungshemmend'},
+  {n:'Spitzwegerichkraut', g:'kraut', w:['Schleim','Gerbstoffe'],
+   a:'reizlindernd bei Husten'},
+  {n:'Tausendgüldenkraut', g:'kraut', w:['Bitterstoffe'],
+   a:'bei Appetitlosigkeit und mangelnder Bildung von Magensaft u. Gallenflüssigkeit'},
+  {n:'Thymiankraut', g:'kraut', w:['ätherisches Öl'],
+   a:'krampflösend und schleimlösend bei Husten u. Bronchitis'},
+  {n:'Wermutkraut', g:'kraut', w:['Bitterstoffe','ätherisches Öl'],
+   a:'appetitanregend, Magensaftbildend, bei Magenbeschwerden u. Verdauungsstörungen'},
+
+  /* --- Rindendrogen --- */
+  {n:'Eichenrinde', g:'rinde', w:['Gerbstoffe'],
+   a:'äußerlich gegen Frostbeulen, Fußschweiß u. Ausschlägen, als Badezusatz oder Spülung bei entzündlichen Hautkrankheiten'},
+
+  /* --- Samendrogen --- */
+  {n:'Flohsamen', g:'samen', w:['Schleim','fettes Öl'],
+   a:'Quellstoff-Abführmittel'},
+  {n:'Kürbissamen', g:'samen', w:['Fettes Öl','Vitamin E'],
+   a:'unterstützend bei Blasenschwäche und Prostatabeschwerden'},
+  {n:'Leinsamen', g:'samen', w:['Schleim','fettes Öl','Ballaststoffe'],
+   a:'Quellstoff-Abführmittel, bei entzündlichen Magen- und Darmerkrankungen'},
+
+  /* --- Wurzeldrogen --- */
+  {n:'Baldrianwurzel', g:'wurzel', w:['ätherisches Öl','Valepotriate (farbloses Öl)'],
+   a:'beruhigend bei allgemeiner Nervosität, Unruhe und Einschlafstörungen'},
+  {n:'Eibischwurzel', g:'wurzel', w:['Schleim','Pektine'],
+   a:'reizlindernd bei Husten, Reizungen des Mund- u. Rachenraums'},
+  {n:'Enzianwurzel', g:'wurzel', w:['Bitterstoffe'],
+   a:'appetitanregend, verdauungsfördernd, fördert Magensaftbildung, bei fiebrigen Erkältungskrankheiten'},
+  {n:'Primelwurzel', g:'wurzel', w:['Saponine'],
+   a:'auswurffördernd u. schleimlösend bei Husten u. Bronchitis'},
+  {n:'Süßholzwurzel', g:'wurzel', w:['Saponine','Flavonoide'],
+   a:'auswurffördernd u. schleimlösend bei Husten u. Bronchitis'}
+];
+
+/* Leitner-Kasten: fünf Fächer, Abstände in Tagen */
+const FACHTAGE = [0, 1, 2, 4, 9, 18];
 
 const LEVEL = [
   /* --- Der Kiesweg: sanft anfangen --- */
@@ -3710,6 +4030,235 @@ SPIELE.silben = async function(api, p){
   }
 };
 
+/* --- Übungen der Kräuterkammer --- */
+
+/* Falschantworten möglichst aus derselben Gruppe — sonst ist es zu leicht */
+function andereAus(d, feld, anzahl){
+  const wert = x => feld === 'n' ? x.n : feld === 'a' ? x.a : x.w.join(', ');
+  const eigen = wert(d);
+  const gleiche = mischen(DROGEN.filter(x => x.g === d.g && wert(x) !== eigen));
+  const rest = mischen(DROGEN.filter(x => x.g !== d.g && wert(x) !== eigen));
+  const raus = [];
+  gleiche.concat(rest).forEach(x => {
+    const v = wert(x);
+    if(raus.length < anzahl && raus.indexOf(v) < 0) raus.push(v);
+  });
+  return raus;
+}
+
+async function krautFrage(api, d, richtung){
+  if(richtung === 'anwendung'){
+    return await frageStellen(api, 'Wofür wird ' + d.n + ' verwendet?',
+      [d.a].concat(andereAus(d, 'a', 3)), 0, {unter:'Anwendungsgebiet'});
+  }
+  if(richtung === 'droge'){
+    return await frageStellen(api, 'Welche Droge gehört dazu: „' + d.a + '"?',
+      [d.n].concat(andereAus(d, 'n', 3)), 0, {zwei:true, unter:'Name der Droge'});
+  }
+  if(richtung === 'gruppe'){
+    const g = gruppeVon(d.g);
+    const andere = mischen(DROGENGRUPPEN.filter(x => x.id !== d.g)).slice(0, 3).map(x => x.name);
+    return await frageStellen(api, 'Zu welcher Gruppe gehört ' + d.n + '?',
+      [g.name].concat(andere), 0, {zwei:true, unter:'Welcher Pflanzenteil wird verwendet?'});
+  }
+  return await frageStellen(api, 'Was ist der Hauptwirkstoff von ' + d.n + '?',
+    [d.w.join(', ')].concat(andereAus(d, 'w', 3)), 0, {zwei:true, unter:'Hauptwirkstoff oder -stoffe'});
+}
+
+SPIELE.kzuordnen = async function(api, p){
+  const fragen = waehle(DROGEN, p.anzahl);
+  for(let i = 0; i < fragen.length; i++){
+    api.buehne();
+    api.zaehler('Frage ' + (i+1) + ' von ' + fragen.length);
+    const gut = await krautFrage(api, fragen[i], p.richtung);
+    if(!gut) api.fehler();
+  }
+};
+
+SPIELE.kgruppe = async function(api, p){
+  const fragen = waehle(DROGEN, p.anzahl);
+  for(let i = 0; i < fragen.length; i++){
+    const d = fragen[i];
+    const b = api.buehne();
+    const kopf = mach('div', 'lernkarte');
+    kopf.style.minHeight = '0';
+    kopf.appendChild(gruppenZeichen(d.g, true));
+    kopf.lastChild.style.opacity = '.18';
+    kopf.appendChild(mach('p', 'name', d.n));
+    b.appendChild(kopf);
+    api.zaehler('Frage ' + (i+1) + ' von ' + fragen.length);
+    const g = gruppeVon(d.g);
+    const gut = await frageStellen(api, 'Welcher Pflanzenteil wird verwendet?',
+      DROGENGRUPPEN.map(x => x.name), DROGENGRUPPEN.indexOf(g),
+      {anhaengen:true, zwei:true, unter:''});
+    if(!gut) api.fehler();
+  }
+};
+
+SPIELE.kpaare = async function(api, p){
+  /* nur Drogen mit eindeutigem Wirkstoff-Text, sonst gäbe es zwei richtige Lösungen */
+  const nachWirkstoff = {};
+  DROGEN.forEach(d => {
+    const s = d.w.join(', ');
+    (nachWirkstoff[s] = nachWirkstoff[s] || []).push(d);
+  });
+  const eindeutig = Object.keys(nachWirkstoff).filter(s => nachWirkstoff[s].length === 1);
+  const gewaehlt = waehle(eindeutig, p.anzahl).map(s => nachWirkstoff[s][0]);
+  const karten = mischen([].concat.apply([], gewaehlt.map((d, i) => [
+    {t:d.n, k:i}, {t:d.w.join(', '), k:i}
+  ])));
+  const b = api.buehne();
+  const gitter = mach('div', 'gitter');
+  gitter.style.setProperty('--spalten', 3);
+  const felder = karten.map(k => {
+    const f = mach('button', 'feldchen wortfeld', k.t);
+    f.dataset.k = k.k;
+    gitter.appendChild(f);
+    return f;
+  });
+  b.appendChild(gitter);
+  api.anweisung('Droge und Wirkstoff gehören zusammen.');
+  api.unter('Erst anschauen, dann werden sie umgedreht.');
+  await api.merken(api.zeit(p.vorschau || 10));
+  felder.forEach(f => f.classList.add('ruecken'));
+  api.anweisung('Finde die Paare.');
+  api.unter('Zwei Karten antippen.');
+  let erste = null, gefunden = 0;
+  api.zaehler('0 von ' + gewaehlt.length + ' Paaren');
+  while(gefunden < gewaehlt.length){
+    const i = await api.klick(felder);
+    const f = felder[i];
+    if(!f.classList.contains('ruecken') || f === erste) continue;
+    f.classList.remove('ruecken');
+    f.classList.add('offen');
+    if(!erste){ erste = f; continue; }
+    const a = erste, c = f;
+    erste = null;
+    if(a.dataset.k === c.dataset.k){
+      a.className = 'feldchen wortfeld gefunden';
+      c.className = 'feldchen wortfeld gefunden';
+      gefunden++;
+      api.ton('gut');
+      api.zaehler(gefunden + ' von ' + gewaehlt.length + ' Paaren');
+      api.unter(a.textContent + ' — ' + c.textContent);
+    }else{
+      api.fehler();
+      api.ton('nein');
+      api.unter('Die beiden gehören nicht zusammen.');
+      await api.warte(950);
+      [a, c].forEach(k => { k.className = 'feldchen wortfeld ruecken'; });
+    }
+  }
+};
+
+SPIELE.kkorb = async function(api, p){
+  const haeufig = {};
+  DROGEN.forEach(d => d.w.forEach(w => { haeufig[w] = (haeufig[w] || 0) + 1; }));
+  const tauglich = Object.keys(haeufig).filter(w => haeufig[w] >= 3);
+  for(let r = 0; r < p.anzahl; r++){
+    const stoff = tauglich[zufall(tauglich.length)];
+    const treffer = DROGEN.filter(d => d.w.indexOf(stoff) >= 0);
+    const rest = waehle(DROGEN.filter(d => d.w.indexOf(stoff) < 0), Math.max(4, 14 - treffer.length));
+    const alle = mischen(treffer.concat(rest));
+    const b = api.buehne();
+    const kasten = mach('div', 'wortwahl');
+    const knoepfe = alle.map(d => {
+      const k = mach('button', 'wahl-knopf', d.n);
+      k.style.fontSize = '.86rem';
+      kasten.appendChild(k);
+      return k;
+    });
+    b.appendChild(kasten);
+    api.zaehler('Korb ' + (r+1) + ' von ' + p.anzahl);
+    api.anweisung('Welche enthalten ' + stoff + '?');
+    api.unter('Alle ' + treffer.length + ' antippen — die Uhr läuft mit.');
+    const ms = api.zeit(p.sekunden);
+    const bal = $('#spiel-balken'), inn = bal.firstElementChild;
+    bal.hidden = false;
+    inn.style.transition = 'none';
+    inn.style.transform = 'scaleX(1)';
+    requestAnimationFrame(() => { inn.style.transition = 'transform ' + ms + 'ms linear'; inn.style.transform = 'scaleX(0)'; });
+    const schluss = Date.now() + ms;
+    let gefunden = 0;
+    while(gefunden < treffer.length && Date.now() < schluss){
+      const i = await api.klickOderZeit(knoepfe, Math.max(0, schluss - Date.now()));
+      if(i < 0) break;
+      const k = knoepfe[i];
+      if(k.disabled) continue;
+      k.disabled = true;
+      if(treffer.some(d => d.n === k.textContent)){
+        k.classList.add('richtig');
+        gefunden++;
+        api.ton('gut');
+        api.zaehler(gefunden + ' von ' + treffer.length);
+      }else{
+        k.classList.add('falsch');
+        api.fehler();
+        api.ton('nein');
+        api.unter('Da ist kein ' + stoff + ' drin.');
+      }
+    }
+    bal.hidden = true;
+    inn.style.transition = 'none';
+    inn.style.transform = 'scaleX(1)';
+    const fehlend = treffer.filter(d => knoepfe.some(k => k.textContent === d.n && !k.disabled));
+    knoepfe.forEach(k => { k.disabled = true; k.onclick = null; });
+    if(fehlend.length){
+      api.fehler(fehlend.length);
+      knoepfe.forEach(k => { if(fehlend.some(d => d.n === k.textContent)) k.classList.add('richtig'); });
+      api.unter('Die Zeit ist um — hier steckt auch ' + stoff + ' drin: ' + fehlend.map(d => d.n).join(', ') + '.');
+      api.ton('nein');
+      await api.warte(3200);
+    }else{
+      api.unter('Korb voll.');
+      api.ton('gut');
+      await api.warte(900);
+    }
+  }
+};
+
+SPIELE.kpruefung = async function(api, p){
+  const arten = ['anwendung', 'droge', 'wirkstoff', 'gruppe'];
+  const fragen = waehle(DROGEN, Math.min(p.anzahl, DROGEN.length));
+  const bilanz = {};
+  DROGENGRUPPEN.forEach(g => { bilanz[g.id] = {richtig:0, gesamt:0}; });
+  for(let i = 0; i < fragen.length; i++){
+    const d = fragen[i];
+    api.buehne();
+    api.zaehler('Frage ' + (i+1) + ' von ' + fragen.length);
+    const gut = await krautFrage(api, d, arten[zufall(arten.length)]);
+    bilanz[d.g].gesamt++;
+    if(gut) bilanz[d.g].richtig++;
+    else api.fehler();
+  }
+  const b = api.buehne();
+  api.anweisung('Die Auswertung');
+  api.unter('So steht es nach zwanzig Fragen.');
+  const liste = mach('div', 'felder');
+  DROGENGRUPPEN.forEach(g => {
+    const z = bilanz[g.id];
+    if(!z.gesamt) return;
+    const zeile = mach('div', 'feld-zeile');
+    zeile.appendChild(mach('span', null, g.name));
+    zeile.appendChild(mach('span', 'wieviel', z.richtig + ' / ' + z.gesamt));
+    const spur = mach('div', 'spur');
+    const innen = mach('i');
+    innen.style.width = Math.round(z.richtig / z.gesamt * 100) + '%';
+    if(z.richtig < z.gesamt) innen.style.background = 'var(--kupfer)';
+    spur.appendChild(innen);
+    zeile.appendChild(spur);
+    liste.appendChild(zeile);
+  });
+  b.appendChild(liste);
+  const schwach = DROGENGRUPPEN.filter(g => bilanz[g.id].gesamt && bilanz[g.id].richtig < bilanz[g.id].gesamt);
+  b.appendChild(mach('p', 'klein leise', schwach.length
+    ? 'Nimm dir als Nächstes vor: ' + schwach.map(g => g.name).join(', ') + '.'
+    : 'Alles richtig — das sitzt.'));
+  const weiter = mach('button', 'knopf knopf-haupt knopf-gross', 'Fertig');
+  b.appendChild(weiter);
+  await api.klick([weiter]);
+};
+
 /* --- Die Prüfung --- */
 SPIELE.pruefung = async function(api, p){
   for(let i = 0; i < p.teile.length; i++){
@@ -3732,6 +4281,7 @@ let E = {schrift:1, zeit:false, ton:true, ruhe:false, offen:false, ziel:12, them
 let Z = {sterne:{}, zeiten:{}, zeitPlus:{}, letzterTag:'', folge:0, heuteTag:'', heuteAnzahl:0, heuteSek:0,
          gespielt:0, rast:{}, name:'', karten:{}};
 let wartendeKarte = null;
+let K = {fach:{}, faellig:{}, bilder:{}, pruefung:'2027-03-02', heuteTag:'', heuteKarten:0};
 let aktuell = null;
 let ansichtJetzt = 'start';
 
@@ -3745,7 +4295,10 @@ function gesternStr(){
 }
 
 function sichern(){
-  try{ localStorage.setItem(SCHLUESSEL, JSON.stringify({E, Z})); }catch(e){}
+  try{
+    localStorage.setItem(SCHLUESSEL, JSON.stringify({E, Z, K}));
+    return true;
+  }catch(e){ return false; }
 }
 function holen(){
   try{
@@ -3754,6 +4307,7 @@ function holen(){
     const d = JSON.parse(rohe);
     if(d && d.E) E = Object.assign(E, d.E);
     if(d && d.Z) Z = Object.assign(Z, d.Z);
+    if(d && d.K) K = Object.assign(K, d.K);
   }catch(e){}
 }
 
@@ -3816,7 +4370,11 @@ const ANSICHTEN = {
   mehr:   {id:'#ansicht-mehr',   titel:'Einstellungen',zurueck:true},
   wissen: {id:'#ansicht-wissen', titel:'Für den Kopf', zurueck:true},
   wett:   {id:'#ansicht-wett',   titel:'Wettstreit',   zurueck:true},
-  duell:  {id:'#ansicht-duell',  titel:'Duell',        zurueck:true}
+  duell:  {id:'#ansicht-duell',  titel:'Duell',        zurueck:true},
+  kraut:  {id:'#ansicht-kraut',  titel:'Kräuterkammer', zurueck:true},
+  kasten: {id:'#ansicht-kasten', titel:'Karteikasten',  zurueck:true},
+  kliste: {id:'#ansicht-kliste', titel:'Alle Karten',   zurueck:true},
+  kkarte: {id:'#ansicht-kkarte', titel:'Karte',         zurueck:true}
 };
 function zeigeAnsicht(name){
   ansichtJetzt = name;
@@ -3836,6 +4394,10 @@ function zeigeAnsicht(name){
   if(name === 'karte') zeichneKarte();
   if(name === 'mehr') zeichneMehr();
   if(name === 'wett') zeichneWett();
+  sprichStopp();
+  if(name === 'kraut') zeichneKraut();
+  if(name === 'kliste') zeichneKliste();
+  if(name === 'kkarte') zeichneKkarte();
 }
 
 /* ---------- Startseite ---------- */
@@ -3892,6 +4454,12 @@ function zeichneStart(){
 
   zeichneFelder();
   zeichneInstall();
+  const faellig = heutigerStapel().alle.length;
+  $('#tuer-denkstube-satz').textContent = geschafft() + ' von ' + LEVEL.length + ' Stationen';
+  $('#tuer-kraeuter-satz').textContent = faellig
+    ? faellig + ' Karten für heute'
+    : gelernteKarten() + ' von ' + DROGEN.length + ' sitzen';
+  $('#kraut-datum').value = K.pruefung;
 }
 
 function zeichneFelder(){
@@ -4092,8 +4660,13 @@ function fertigLevel(l, fehler, ms){
   }
 
   const naechste = (typeof l.n === 'number') ? levelVon(l.n + 1) : null;
-  weiter.textContent = naechste ? 'Weiter: ' + naechste.titel : 'Zur Wegkarte';
-  weiter.onclick = () => naechste ? starteLevel(naechste.n) : zeigeAnsicht('karte');
+  if(l.kraut){
+    weiter.textContent = 'Zurück in die Kräuterkammer';
+    weiter.onclick = () => zeigeAnsicht('kraut');
+  }else{
+    weiter.textContent = naechste ? 'Weiter: ' + naechste.titel : 'Zur Wegkarte';
+    weiter.onclick = () => naechste ? starteLevel(naechste.n) : zeigeAnsicht('karte');
+  }
   $('#ergebnis-nochmal').hidden = (l.typ === 'rastplatz');
   $('#ergebnis-nochmal').textContent = l.wieder ? 'Neue Runde' : 'Noch einmal';
   $('#ergebnis-nochmal').onclick = () => starteLevel(l.wieder ? l.wieder() : l);
@@ -4482,10 +5055,356 @@ function karteAufnehmen(w){
   return true;
 }
 
+/* =========================================================
+   Die Kräuterkammer — Lernraum für die Drogenliste
+   ========================================================= */
+
+function drogeVon(name){ return DROGEN.find(d => d.n === name); }
+function gruppeVon(id){ return DROGENGRUPPEN.find(g => g.id === id); }
+
+function gruppenZeichen(gid, gross){
+  const g = gruppeVon(gid);
+  const s = mach('span', 'gruppenzeichen gz-' + gid + (gross ? ' gross' : ''));
+  s.innerHTML = '<svg viewBox="0 0 48 52" fill="none" aria-hidden="true">' + (g ? g.bild : '') + '</svg>';
+  return s;
+}
+
+function plusTage(iso, n){
+  const t = new Date(iso + 'T12:00:00');
+  t.setDate(t.getDate() + n);
+  return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+}
+function tageBis(iso){
+  const a = new Date(heuteStr() + 'T12:00:00'), b = new Date(iso + 'T12:00:00');
+  return Math.round((b - a) / 864e5);
+}
+function fachVon(d){ return (K.fach || {})[d.n] || 0; }
+function istFaellig(d){
+  const f = (K.faellig || {})[d.n];
+  return !f || f <= heuteStr();
+}
+function faellige(){ return DROGEN.filter(istFaellig); }
+
+/* Was heute dran ist: alle faelligen Wiederholungen plus so viele neue Karten,
+   dass es bis zur Pruefung reicht — nicht alle vierzig auf einmal. */
+function heutigerStapel(){
+  const tage = Math.max(1, tageBis(K.pruefung));
+  const neu = DROGEN.filter(d => !fachVon(d));
+  const proTag = Math.max(3, Math.ceil(neu.length / tage));
+  /* Was heute schon neu dazukam, zaehlt gegen die Tagesportion */
+  const heuteNeu = DROGEN.filter(d => (K.start || {})[d.n] === heuteStr()).length;
+  const rest = Math.max(0, proTag - heuteNeu);
+  const wiederholung = DROGEN.filter(d => fachVon(d) >= 1 && istFaellig(d));
+  return {wiederholung, neu:neu.slice(0, rest), proTag, alle:wiederholung.concat(neu.slice(0, rest))};
+}
+function gelernteKarten(){ return DROGEN.filter(d => fachVon(d) >= 4).length; }
+
+function kartePlanen(d, stufe){
+  K.fach = K.fach || {};
+  K.faellig = K.faellig || {};
+  K.start = K.start || {};
+  if(!fachVon(d) && !K.start[d.n]) K.start[d.n] = heuteStr();
+  let f = fachVon(d);
+  if(stufe === 'nochnicht') f = 1;
+  else if(stufe === 'fast') f = Math.max(1, f);
+  else f = Math.min(5, f + 1);
+  K.fach[d.n] = f;
+  K.faellig[d.n] = plusTage(heuteStr(), Math.max(1, FACHTAGE[f]));
+  if(K.heuteTag !== heuteStr()){ K.heuteTag = heuteStr(); K.heuteKarten = 0; }
+  K.heuteKarten = (K.heuteKarten || 0) + 1;
+  sichern();
+}
+
+/* ---------- Vorlesen ---------- */
+let vorleserAn = false;
+function stimmeSuchen(){
+  try{
+    const alle = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang));
+    return alle.find(v => v.localService) || alle[0] || null;
+  }catch(e){ return null; }
+}
+function sprich(text, dann){
+  if(!('speechSynthesis' in window)){ if(dann) dann(); return; }
+  try{
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'de-DE';
+    u.rate = .92;
+    const st = stimmeSuchen();
+    if(st) u.voice = st;
+    u.onend = () => { if(dann) dann(); };
+    u.onerror = () => { if(dann) dann(); };
+    speechSynthesis.speak(u);
+  }catch(e){ if(dann) dann(); }
+}
+function sprichStopp(){
+  vorleserAn = false;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  document.querySelectorAll('.hoerknopf.laeuft').forEach(k => k.classList.remove('laeuft'));
+}
+function karteSatz(d){
+  return d.n + '. Hauptwirkstoffe: ' + d.w.join(', ') + '. Anwendungsgebiete: ' + d.a + '.';
+}
+function gruppeVorlesen(gid, knopf){
+  const liste = DROGEN.filter(d => d.g === gid);
+  const g = gruppeVon(gid);
+  sprichStopp();
+  vorleserAn = true;
+  if(knopf) knopf.classList.add('laeuft');
+  let i = -1;
+  const weiter = () => {
+    if(!vorleserAn) return;
+    i++;
+    if(i >= liste.length){
+      sprichStopp();
+      return;
+    }
+    sprich(karteSatz(liste[i]), () => setTimeout(weiter, 700));
+  };
+  sprich(g.name + '. ' + liste.length + ' Drogen.', () => setTimeout(weiter, 500));
+}
+
+/* ---------- Die Kammer ---------- */
+function zeichneKraut(){
+  const tage = tageBis(K.pruefung);
+  const heute = heutigerStapel();
+  $('#kraut-countdown').textContent = tage > 0 ? 'noch ' + tage + ' Tage' : 'Prüfungszeit';
+  $('#kraut-balken').style.width = Math.round(gelernteKarten() / DROGEN.length * 100) + '%';
+  $('#kraut-stand').textContent = gelernteKarten() + ' von ' + DROGEN.length + ' Karten sitzen · heute '
+    + (heute.alle.length
+        ? heute.neu.length + ' neue und ' + heute.wiederholung.length + ' zum Wiederholen'
+        : 'nichts mehr fällig — morgen geht es weiter');
+  $('#kraut-kasten-knopf').textContent = heute.alle.length
+    ? 'Karteikasten — ' + heute.alle.length + ' Karten'
+    : 'Karteikasten — freiwillig weiterüben';
+
+  const uebungen = [
+    {typ:'kzuordnen', p:{richtung:'anwendung', anzahl:8}, titel:'Wofür nimmt man das?', satz:'Droge zeigen, Anwendungsgebiet wählen.'},
+    {typ:'kzuordnen', p:{richtung:'droge', anzahl:8}, titel:'Welche Droge ist gemeint?', satz:'Anwendungsgebiet zeigen, Droge wählen.'},
+    {typ:'kzuordnen', p:{richtung:'wirkstoff', anzahl:8}, titel:'Was steckt drin?', satz:'Droge zeigen, Hauptwirkstoff wählen.'},
+    {typ:'kgruppe', p:{anzahl:10}, titel:'Welcher Pflanzenteil?', satz:'Blatt, Blüte, Frucht, Kraut, Rinde, Samen oder Wurzel.'},
+    {typ:'kpaare', p:{anzahl:6}, titel:'Paare finden', satz:'Droge und Wirkstoff zusammenbringen.'},
+    {typ:'kkorb', p:{anzahl:2, sekunden:45}, titel:'Der Wirkstoff-Korb', satz:'Alle Drogen mit einem bestimmten Wirkstoff einsammeln.'},
+    {typ:'kpruefung', p:{anzahl:20}, titel:'Prüfungsrunde', satz:'Zwanzig gemischte Fragen, danach die Auswertung nach Gruppen.'}
+  ];
+  const kasten = $('#kraut-uebungen');
+  kasten.innerHTML = '';
+  uebungen.forEach(u => {
+    const k = mach('button', 'uebungsknopf');
+    k.appendChild(mach('b', null, u.titel));
+    k.appendChild(mach('span', null, u.satz));
+    k.onclick = () => starteLevel({
+      n:'kraut-' + u.typ, typ:u.typ, titel:u.titel, p:u.p,
+      etikett:'Kräuterkammer · ' + (FELDER[u.typ] || ''), kraut:true
+    });
+    kasten.appendChild(k);
+  });
+
+  const hoeren = $('#kraut-hoeren');
+  hoeren.innerHTML = '';
+  DROGENGRUPPEN.forEach(g => {
+    const z = mach('div', 'hoerzeile');
+    z.appendChild(gruppenZeichen(g.id));
+    const was = mach('div', 'was');
+    was.appendChild(mach('b', null, g.name));
+    was.appendChild(mach('span', null, DROGEN.filter(d => d.g === g.id).length + ' Drogen · ' + g.teil));
+    z.appendChild(was);
+    const k = mach('button', 'hoerknopf', '▶');
+    k.setAttribute('aria-label', g.name + ' vorlesen');
+    k.onclick = () => {
+      if(k.classList.contains('laeuft')) sprichStopp();
+      else gruppeVorlesen(g.id, k);
+    };
+    z.appendChild(k);
+    hoeren.appendChild(z);
+  });
+
+  const gruppen = $('#kraut-gruppen');
+  gruppen.innerHTML = '';
+  DROGENGRUPPEN.forEach(g => {
+    const alle = DROGEN.filter(d => d.g === g.id);
+    const sitzt = alle.filter(d => fachVon(d) >= 4).length;
+    const zeile = mach('div', 'feld-zeile');
+    zeile.appendChild(mach('span', null, g.name));
+    zeile.appendChild(mach('span', 'wieviel', sitzt + ' / ' + alle.length));
+    const spur = mach('div', 'spur');
+    const innen = mach('i');
+    innen.style.width = Math.round(sitzt / alle.length * 100) + '%';
+    spur.appendChild(innen);
+    zeile.appendChild(spur);
+    gruppen.appendChild(zeile);
+  });
+}
+
+/* ---------- Karteikasten ---------- */
+let kastenStapel = [], kastenKarte = null, kastenGedreht = false, kastenAnfang = 0;
+
+function starteKasten(){
+  const heute = heutigerStapel();
+  kastenStapel = mischen(heute.alle);
+  if(!kastenStapel.length) kastenStapel = mischen(DROGEN.slice()).slice(0, 10);
+  kastenAnfang = kastenStapel.length;
+  zeigeAnsicht('kasten');
+  naechsteKarte();
+}
+function naechsteKarte(){
+  kastenGedreht = false;
+  kastenKarte = kastenStapel.shift() || null;
+  if(!kastenKarte){
+    zeichneKraut();
+    zeigeAnsicht('kraut');
+    return;
+  }
+  zeichneKasten();
+}
+function zeichneKasten(){
+  const d = kastenKarte;
+  const g = gruppeVon(d.g);
+  const karte = $('#kasten-karte');
+  karte.innerHTML = '';
+  karte.appendChild(gruppenZeichen(d.g, true));
+  karte.appendChild(mach('p', 'gruppe', g.name));
+  karte.appendChild(mach('p', 'name', d.n));
+  if(kastenGedreht){
+    karte.appendChild(mach('div', 'trennlinie'));
+    const w = mach('div');
+    w.appendChild(mach('p', 'feldname', 'Hauptwirkstoff'));
+    w.appendChild(mach('p', 'wirkstoff', d.w.join(', ')));
+    karte.appendChild(w);
+    const a = mach('div');
+    a.appendChild(mach('p', 'feldname', 'Anwendungsgebiet'));
+    a.appendChild(mach('p', 'anwendung', d.a));
+    karte.appendChild(a);
+    const bild = (K.bilder || {})[d.n];
+    if(bild){
+      const img = document.createElement('img');
+      img.className = 'foto';
+      img.src = bild;
+      img.alt = 'Eigenes Foto zu ' + d.n;
+      karte.appendChild(img);
+    }
+  }
+  $('#kasten-umdrehen').hidden = kastenGedreht;
+  $('#kasten-bewerten').hidden = !kastenGedreht;
+  $('#kasten-zaehler').textContent = (kastenAnfang - kastenStapel.length) + ' von ' + kastenAnfang
+    + ' · ' + (fachVon(d) ? 'Fach ' + fachVon(d) : 'neue Karte');
+  $('#kasten-etikett').textContent = 'Karteikasten · ' + g.name;
+}
+function bewerten(stufe){
+  if(!kastenKarte) return;
+  const d = kastenKarte;
+  kartePlanen(d, stufe);
+  ton(stufe === 'sitzt' ? 'gut' : stufe === 'fast' ? 'tick' : 'nein');
+  if(stufe === 'nochnicht') kastenStapel.push(d);
+  naechsteKarte();
+}
+
+/* ---------- Alle Karten ---------- */
+let kkarteIndex = 0;
+
+function zeichneKliste(){
+  const kasten = $('#kliste-inhalt');
+  kasten.innerHTML = '';
+  DROGENGRUPPEN.forEach(g => {
+    const block = mach('div', 'karte');
+    const kopf = mach('div', 'abschnitt-kopf');
+    const zeichen = gruppenZeichen(g.id);
+    zeichen.style.width = '1.8rem';
+    zeichen.style.height = '1.8rem';
+    kopf.appendChild(zeichen);
+    kopf.appendChild(mach('h2', null, g.name));
+    const alle = DROGEN.filter(d => d.g === g.id);
+    kopf.appendChild(mach('span', 'klein zart', alle.length));
+    block.appendChild(kopf);
+    alle.forEach(d => {
+      const z = mach('button', 'drogenzeile');
+      const zeichen2 = gruppenZeichen(d.g);
+      zeichen2.style.width = '2rem';
+      zeichen2.style.height = '2rem';
+      z.appendChild(zeichen2);
+      const text = mach('div');
+      text.appendChild(mach('b', null, d.n));
+      text.appendChild(mach('span', null, d.w.join(', ')));
+      z.appendChild(text);
+      const f = fachVon(d);
+      z.appendChild(mach('span', 'fach' + (f >= 4 ? ' voll' : ''), f ? 'Fach ' + f : 'neu'));
+      z.onclick = () => zeigeKarte(DROGEN.indexOf(d));
+      block.appendChild(z);
+    });
+    kasten.appendChild(block);
+  });
+}
+
+function zeichneKkarte(){
+  const d = DROGEN[kkarteIndex];
+  const g = gruppeVon(d.g);
+  const karte = $('#kkarte-inhalt');
+  karte.innerHTML = '';
+  karte.appendChild(gruppenZeichen(d.g, true));
+  karte.appendChild(mach('p', 'gruppe', g.name + ' · ' + g.teil));
+  karte.appendChild(mach('p', 'name', d.n));
+  karte.appendChild(mach('div', 'trennlinie'));
+  const w = mach('div');
+  w.appendChild(mach('p', 'feldname', 'Hauptwirkstoff'));
+  w.appendChild(mach('p', 'wirkstoff', d.w.join(', ')));
+  karte.appendChild(w);
+  const a = mach('div');
+  a.appendChild(mach('p', 'feldname', 'Anwendungsgebiet'));
+  a.appendChild(mach('p', 'anwendung', d.a));
+  karte.appendChild(a);
+
+  const platz = $('#kkarte-fotoplatz');
+  platz.innerHTML = '';
+  const bild = (K.bilder || {})[d.n];
+  if(bild){
+    const img = document.createElement('img');
+    img.src = bild;
+    img.alt = 'Eigenes Foto zu ' + d.n;
+    platz.appendChild(img);
+    $('#kkarte-fotoweg').hidden = false;
+  }else{
+    platz.appendChild(mach('p', null, 'Noch kein Foto. Hier passt das Bild aus deinem Blatt oder aus dem Buch hinein.'));
+    $('#kkarte-fotoweg').hidden = true;
+  }
+  $('#leiste-titel').textContent = d.n;
+}
+function zeigeKarte(i){
+  kkarteIndex = (i + DROGEN.length) % DROGEN.length;
+  zeigeAnsicht('kkarte');
+}
+
+function fotoLesen(datei, fertig){
+  try{
+    const leser = new FileReader();
+    leser.onerror = () => fertig(null);
+    leser.onload = () => {
+      const bild = new Image();
+      bild.onerror = () => fertig(null);
+      bild.onload = () => {
+        try{
+          const max = 680;
+          const f = Math.min(1, max / Math.max(bild.width, bild.height));
+          const c = document.createElement('canvas');
+          c.width = Math.round(bild.width * f);
+          c.height = Math.round(bild.height * f);
+          c.getContext('2d').drawImage(bild, 0, 0, c.width, c.height);
+          fertig(c.toDataURL('image/jpeg', .6));
+        }catch(e){ fertig(null); }
+      };
+      bild.src = leser.result;
+    };
+    leser.readAsDataURL(datei);
+  }catch(e){ fertig(null); }
+}
+
 /* ---------- Bedienung ---------- */
 $('#zurueck').onclick = () => {
-  if(ansichtJetzt === 'spiel'){ abbrechen(); zeigeAnsicht('karte'); }
-  else if(ansichtJetzt === 'wissen') zeigeAnsicht('start');
+  if(ansichtJetzt === 'spiel'){
+    const krautWar = aktuell && aktuell.kraut;
+    abbrechen();
+    zeigeAnsicht(krautWar ? 'kraut' : 'karte');
+  }
+  else if(ansichtJetzt === 'kasten' || ansichtJetzt === 'kliste') zeigeAnsicht('kraut');
+  else if(ansichtJetzt === 'kkarte') zeigeAnsicht('kliste');
   else zeigeAnsicht('start');
 };
 $('#knopf-karte').onclick = () => zeigeAnsicht('karte');
@@ -4493,6 +5412,55 @@ $('#knopf-mehr').onclick = () => zeigeAnsicht('mehr');
 $('#weiter-knopf').onclick = () => starteLevel(naechstes());
 $('#knopf-runde').onclick = () => starteLevel(bauTagesrunde());
 $('#knopf-wett').onclick = () => zeigeAnsicht('wett');
+$('#tuer-kraeuter').onclick = () => zeigeAnsicht('kraut');
+$('#tuer-denkstube').onclick = () => zeigeAnsicht('start');
+$('#kraut-zurueck').onclick = () => zeigeAnsicht('start');
+$('#kraut-kasten-knopf').onclick = () => starteKasten();
+$('#kraut-alle').onclick = () => zeigeAnsicht('kliste');
+$('#kliste-zurueck').onclick = () => zeigeAnsicht('kraut');
+$('#kraut-datum').onchange = () => {
+  const w = $('#kraut-datum').value;
+  if(w){ K.pruefung = w; sichern(); zeichneKraut(); }
+};
+$('#kasten-umdrehen').onclick = () => { kastenGedreht = true; zeichneKasten(); };
+$('#kasten-nochnicht').onclick = () => bewerten('nochnicht');
+$('#kasten-fast').onclick = () => bewerten('fast');
+$('#kasten-sitzt').onclick = () => bewerten('sitzt');
+$('#kasten-ende').onclick = () => zeigeAnsicht('kraut');
+$('#kkarte-zurueck').onclick = () => zeigeAnsicht('kliste');
+$('#kkarte-weiter').onclick = () => zeigeKarte(kkarteIndex + 1);
+$('#kkarte-hoeren').onclick = () => {
+  const knopf = $('#kkarte-hoeren');
+  if(knopf.dataset.laeuft === '1'){ sprichStopp(); knopf.dataset.laeuft = ''; knopf.textContent = 'Vorlesen'; return; }
+  knopf.dataset.laeuft = '1';
+  knopf.textContent = 'Stopp';
+  sprich(karteSatz(DROGEN[kkarteIndex]), () => { knopf.dataset.laeuft = ''; knopf.textContent = 'Vorlesen'; });
+};
+$('#kkarte-foto').onclick = () => $('#kkarte-datei').click();
+$('#kkarte-datei').onchange = () => {
+  const datei = $('#kkarte-datei').files && $('#kkarte-datei').files[0];
+  if(!datei) return;
+  const name = DROGEN[kkarteIndex].n;
+  fotoLesen(datei, bild => {
+    $('#kkarte-datei').value = '';
+    if(!bild){ alert('Das Bild ließ sich nicht lesen. Versuch ein anderes.'); return; }
+    K.bilder = K.bilder || {};
+    const vorher = K.bilder[name];
+    K.bilder[name] = bild;
+    if(!sichern()){
+      if(vorher) K.bilder[name] = vorher; else delete K.bilder[name];
+      sichern();
+      alert('Der Speicher des Browsers ist voll — dieses Foto passt nicht mehr hinein. Entferne ein anderes Foto, dann geht es wieder.');
+    }
+    zeichneKkarte();
+  });
+};
+$('#kkarte-fotoweg').onclick = () => {
+  const name = DROGEN[kkarteIndex].n;
+  if(K.bilder) delete K.bilder[name];
+  sichern();
+  zeichneKkarte();
+};
 $('#knopf-wissen').onclick = () => zeigeAnsicht('wissen');
 $('#duell-zurueck').onclick = () => zeigeAnsicht('wett');
 $('#wett-teilen').onclick = () => karteTeilen();
