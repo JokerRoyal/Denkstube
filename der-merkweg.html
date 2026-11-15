@@ -470,6 +470,27 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
 .hoerzeile .was b{display:block;}
 .hoerzeile .was span{font-size:.8rem; color:var(--tinte-leise);}
 
+.saeulen{display:flex; align-items:flex-end; gap:3px; height:5.4rem; padding-top:.9rem;}
+.saeule{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+  height:100%; position:relative;}
+.saeule i{display:block; width:100%; background:var(--moos); border-radius:3px 3px 0 0; min-height:2px;}
+.saeule.heute i{background:var(--akzent);}
+.saeule.leer i{background:var(--rand); min-height:2px;}
+.saeule b{position:absolute; top:-.05rem; font-size:.6rem; font-family:"IBM Plex Mono",monospace;
+  color:var(--tinte-leise); font-weight:500;}
+.saeule span{font-size:.56rem; color:var(--tinte-zart); margin-top:.2rem; letter-spacing:-.02em;}
+.lage{border-radius:var(--rund-klein); padding:.75rem .9rem; font-size:.93rem;}
+.lage.gut{background:var(--moos-weich); color:var(--moos);}
+.lage.knapp{background:var(--kupfer-weich); color:var(--kupfer);}
+.lage.eng{background:var(--akzent-weich); color:var(--akzent-tief);}
+.lage b{display:block; font-family:Fraunces, Georgia, serif; font-size:1.02rem; margin-bottom:.15rem;}
+.rundenzeile{display:grid; grid-template-columns:4.6rem 1fr auto; gap:.6rem; align-items:center;
+  font-size:.85rem; padding:.3rem 0; border-bottom:1px solid var(--rand);}
+.rundenzeile:last-child{border-bottom:0;}
+.rundenzeile .wann{font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--tinte-zart);}
+.rundenzeile .spur{height:6px; border-radius:3px; background:var(--flaeche-2); overflow:hidden;}
+.rundenzeile .spur i{display:block; height:100%; border-radius:3px; background:var(--moos);}
+.rundenzeile .zahl{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:.8rem;}
 .tafel{max-width:100%; max-height:11rem; border-radius:var(--rund-klein); background:#fdfcf7; padding:.35rem;
   border:1px solid var(--rand);}
 .tafel.gross{max-height:15rem;}
@@ -795,6 +816,18 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
       </div>
 
       <button class="knopf knopf-haupt knopf-gross" id="kraut-kasten-knopf">Karteikasten</button>
+
+      <div class="karte stapel-eng">
+        <div class="zeile-weit">
+          <h3>Liegst du im Plan?</h3>
+          <span class="klein zart" id="verlauf-folge"></span>
+        </div>
+        <div class="lage" id="verlauf-lage"></div>
+        <div class="saeulen" id="verlauf-saeulen" aria-hidden="true"></div>
+        <p class="klein zart" id="verlauf-legende"></p>
+        <div class="werte" id="verlauf-werte"></div>
+        <div id="verlauf-runden" class="stapel-eng" style="margin-top:.4rem"></div>
+      </div>
 
       <div class="karte stapel-eng">
         <h3>Üben</h3>
@@ -4254,6 +4287,10 @@ SPIELE.kpruefung = async function(api, p){
     liste.appendChild(zeile);
   });
   b.appendChild(liste);
+  let gesamtRichtig = 0, gesamtFragen = 0;
+  DROGENGRUPPEN.forEach(g => { gesamtRichtig += bilanz[g.id].richtig; gesamtFragen += bilanz[g.id].gesamt; });
+  K.runden = (K.runden || []).concat([{d:heuteStr(), r:gesamtRichtig, g:gesamtFragen}]).slice(-30);
+  sichern();
   const schwach = DROGENGRUPPEN.filter(g => bilanz[g.id].gesamt && bilanz[g.id].richtig < bilanz[g.id].gesamt);
   b.appendChild(mach('p', 'klein leise', schwach.length
     ? 'Nimm dir als Nächstes vor: ' + schwach.map(g => g.name).join(', ') + '.'
@@ -4285,7 +4322,8 @@ let E = {schrift:1, zeit:false, ton:true, ruhe:false, offen:false, ziel:12, them
 let Z = {sterne:{}, zeiten:{}, zeitPlus:{}, letzterTag:'', folge:0, heuteTag:'', heuteAnzahl:0, heuteSek:0,
          gespielt:0, rast:{}, name:'', karten:{}};
 let wartendeKarte = null;
-let K = {fach:{}, faellig:{}, bilder:{}, pruefung:'2027-03-02', heuteTag:'', heuteKarten:0};
+let K = {fach:{}, faellig:{}, bilder:{}, pruefung:'2027-03-02', heuteTag:'', heuteKarten:0,
+         verlauf:{}, runden:[]};
 let aktuell = null;
 let ansichtJetzt = 'start';
 
@@ -4626,6 +4664,11 @@ function fertigLevel(l, fehler, ms){
       (fehler === 0 ? 'Kein Fehler' : fehler === 1 ? 'Ein Fehler' : fehler + ' Fehler') + ' · ' + zeitText
     )) + (E.zeit ? ' · mit verlängerter Merkzeit' : '');
 
+  if(l.kraut){
+    verlaufBuchen('uebungen', 1);
+    verlaufBuchen('sek', sek);
+    sichern();
+  }
   if(!ohne && typeof l.n === 'number'){
     const bisher = (Z.zeiten || {})[l.n];
     let anhang = bisher ? ' · Bestzeit ' + bisher + ' s' : '';
@@ -5154,7 +5197,97 @@ function kartePlanen(d, stufe){
   K.faellig[d.n] = plusTage(heuteStr(), Math.max(1, FACHTAGE[f]));
   if(K.heuteTag !== heuteStr()){ K.heuteTag = heuteStr(); K.heuteKarten = 0; }
   K.heuteKarten = (K.heuteKarten || 0) + 1;
+  verlaufBuchen('karten', 1);
   sichern();
+}
+
+/* ---------- Verlauf: was an welchem Tag geschafft wurde ---------- */
+function verlaufBuchen(art, wert){
+  K.verlauf = K.verlauf || {};
+  const tag = heuteStr();
+  const e = K.verlauf[tag] || {karten:0, uebungen:0, sek:0};
+  if(art === 'karten') e.karten += wert;
+  else if(art === 'uebungen') e.uebungen += wert;
+  else if(art === 'sek') e.sek += wert;
+  K.verlauf[tag] = e;
+  const grenze = plusTage(tag, -190);
+  Object.keys(K.verlauf).forEach(t => { if(t < grenze) delete K.verlauf[t]; });
+}
+
+function letzteTage(anzahl){
+  const raus = [];
+  for(let i = anzahl - 1; i >= 0; i--){
+    const tag = plusTage(heuteStr(), -i);
+    const e = (K.verlauf || {})[tag] || {karten:0, uebungen:0, sek:0};
+    raus.push({tag:tag, karten:e.karten, uebungen:e.uebungen, sek:e.sek});
+  }
+  return raus;
+}
+
+function lernfolge(){
+  let folge = 0;
+  for(let i = 0; i < 200; i++){
+    const tag = plusTage(heuteStr(), -i);
+    const e = (K.verlauf || {})[tag];
+    if(e && (e.karten || e.uebungen)) folge++;
+    else if(i > 0) break;
+  }
+  return folge;
+}
+
+/* Wie steht es um den Zeitplan? Ehrlich gerechnet, nicht schöngeredet. */
+function lernstand(){
+  const tage = tageBis(K.pruefung);
+  const kennt = DROGEN.filter(d => fachVon(d) >= 1).length;
+  const sitzt = DROGEN.filter(d => fachVon(d) >= 4).length;
+  const offen = DROGEN.length - kennt;
+  const woche = letzteTage(7);
+  const karten7 = woche.reduce((a, t) => a + t.karten, 0);
+  const aktiv = woche.filter(t => t.karten || t.uebungen).length;
+  const tempo = karten7 / 7;
+  const noetig = tage > 0 ? offen / tage : offen;
+  let lage = 'eng', titel = '', satz = '';
+
+  if(!kennt){
+    titel = 'Noch nicht angefangen';
+    satz = tage > 0
+      ? 'Noch ' + tage + ' Tage bis zur Prüfung. Drei Karten am Tag reichen völlig — dann bist du in gut zwei Wochen einmal durch.'
+      : 'Die Prüfung ist da oder vorbei. Stell das Datum unten um, wenn sie verschoben wurde.';
+  }else if(offen === 0 && sitzt >= DROGEN.length - 2){
+    lage = 'gut';
+    titel = 'Du bist durch';
+    satz = 'Alle ' + DROGEN.length + ' Karten sitzen. Ab jetzt reicht Wiederholen — der Karteikasten meldet sich von allein.';
+  }else if(tempo <= 0.01 && aktiv === 0){
+    lage = 'knapp';
+    titel = 'Seit einer Woche Pause';
+    satz = kennt + ' von ' + DROGEN.length + ' Karten kennst du schon. Für die restlichen ' + offen
+      + ' bräuchtest du ab jetzt ' + Math.max(1, Math.ceil(noetig)) + ' neue am Tag — das ist gut zu schaffen.';
+  }else{
+    const prognoseTage = tempo > 0 ? Math.ceil(offen / tempo) : 999;
+    const fertigAm = prognoseTage < 400 ? plusTage(heuteStr(), prognoseTage) : '';
+    const puffer = tage - prognoseTage;
+    if(offen === 0){
+      lage = 'gut';
+      titel = 'Alle Karten kennengelernt';
+      satz = sitzt + ' von ' + DROGEN.length + ' sitzen schon fest. Jetzt geht es nur noch ums Wiederholen — bis März wird daraus Sicherheit.';
+    }else if(puffer >= 21){
+      lage = 'gut';
+      titel = 'Gut im Plan';
+      satz = 'In deinem Tempo (' + tempo.toFixed(1).replace('.', ',') + ' Karten am Tag) bist du am '
+        + datumDeutsch(fertigAm) + ' einmal durch — rund ' + Math.round(puffer / 7) + ' Wochen vor der Prüfung.';
+    }else if(puffer >= 0){
+      lage = 'knapp';
+      titel = 'Es reicht, aber ohne Puffer';
+      satz = 'In deinem Tempo bist du am ' + datumDeutsch(fertigAm) + ' durch — kurz vor der Prüfung. Mit '
+        + Math.ceil(noetig + 1) + ' Karten am Tag hättest du Luft zum Wiederholen.';
+    }else{
+      titel = 'Zu langsam für März';
+      satz = 'Bei ' + tempo.toFixed(1).replace('.', ',') + ' Karten am Tag reicht die Zeit nicht. Nötig wären '
+        + Math.max(1, Math.ceil(noetig)) + ' neue Karten am Tag.';
+    }
+  }
+  return {tage:tage, kennt:kennt, sitzt:sitzt, offen:offen, tempo:tempo, noetig:noetig,
+          lage:lage, titel:titel, satz:satz, karten7:karten7, aktiv:aktiv};
 }
 
 /* ---------- Vorlesen ---------- */
@@ -5263,6 +5396,68 @@ function zeichneKraut(){
     z.appendChild(k);
     hoeren.appendChild(z);
   });
+
+  /* Verlauf und Zeitplan */
+  const st = lernstand();
+  const lageKasten = $('#verlauf-lage');
+  lageKasten.className = 'lage ' + st.lage;
+  lageKasten.innerHTML = '';
+  lageKasten.appendChild(mach('b', null, st.titel));
+  lageKasten.appendChild(mach('span', null, st.satz));
+
+  const folge = lernfolge();
+  $('#verlauf-folge').textContent = folge > 1 ? folge + ' Tage in Folge'
+    : (st.tage > 0 ? 'noch ' + st.tage + ' Tage' : '');
+
+  const tage14 = letzteTage(14);
+  let hoch = 3;
+  tage14.forEach(t => { if(t.karten > hoch) hoch = t.karten; });
+  const saeulen = $('#verlauf-saeulen');
+  saeulen.innerHTML = '';
+  tage14.forEach((t, i) => {
+    const sp = mach('div', 'saeule' + (i === tage14.length - 1 ? ' heute' : '') + (t.karten ? '' : ' leer'));
+    if(t.karten) sp.appendChild(mach('b', null, t.karten));
+    const balken = mach('i');
+    balken.style.height = Math.round(Math.max(t.karten ? 8 : 2, t.karten / hoch * 100)) + '%';
+    sp.appendChild(balken);
+    sp.appendChild(mach('span', null, t.tag.slice(8) + '.'));
+    sp.title = datumDeutsch(t.tag) + ': ' + t.karten + ' Karten, ' + t.uebungen + ' Übungen';
+    saeulen.appendChild(sp);
+  });
+  $('#verlauf-legende').textContent = 'Karten je Tag, die letzten vierzehn Tage. Heute ist rechts.';
+
+  const werte = $('#verlauf-werte');
+  werte.innerHTML = '';
+  let sekGesamt = 0;
+  Object.keys(K.verlauf || {}).forEach(t => { sekGesamt += (K.verlauf[t].sek || 0); });
+  [[st.kennt + ' / ' + DROGEN.length, 'Karten kennengelernt'],
+   [st.sitzt + ' / ' + DROGEN.length, 'sitzen fest'],
+   [Math.round(sekGesamt / 60) + ' min', 'insgesamt geübt']].forEach(paar => {
+    const w = mach('div', 'wert');
+    w.appendChild(mach('b', null, paar[0]));
+    w.appendChild(mach('span', null, paar[1]));
+    werte.appendChild(w);
+  });
+
+  const runden = $('#verlauf-runden');
+  runden.innerHTML = '';
+  const liste = (K.runden || []).slice(-5).reverse();
+  if(liste.length){
+    runden.appendChild(mach('p', 'etikett', 'Deine Prüfungsrunden'));
+    liste.forEach(r => {
+      const z = mach('div', 'rundenzeile');
+      z.appendChild(mach('span', 'wann', datumDeutsch(r.d)));
+      const spur = mach('div', 'spur');
+      const innen = mach('i');
+      const anteil = Math.round(r.r / r.g * 100);
+      innen.style.width = anteil + '%';
+      if(anteil < 70) innen.style.background = 'var(--kupfer)';
+      spur.appendChild(innen);
+      z.appendChild(spur);
+      z.appendChild(mach('span', 'zahl', r.r + '/' + r.g));
+      runden.appendChild(z);
+    });
+  }
 
   const gruppen = $('#kraut-gruppen');
   gruppen.innerHTML = '';
