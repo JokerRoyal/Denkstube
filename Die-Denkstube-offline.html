@@ -494,6 +494,33 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
 .hoerzeile .was b{display:block;}
 .hoerzeile .was span{font-size:.8rem; color:var(--tinte-leise);}
 
+/* Bild groß ansehen */
+#bildschau{
+  position:fixed; inset:0; z-index:120; display:flex; flex-direction:column;
+  background:rgba(18,22,16,.94); padding:env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+}
+#bildschau-flaeche{
+  flex:1; overflow:auto; display:grid; place-items:center; padding:.8rem;
+  -webkit-overflow-scrolling:touch;
+}
+#bildschau-bild{
+  max-width:100%; max-height:100%; border-radius:var(--rund-klein); background:#fdfcf7;
+  padding:.4rem; cursor:zoom-in; display:block;
+}
+#bildschau-bild.nah{max-width:none; max-height:none; width:210%; cursor:zoom-out;}
+#bildschau-fuss{
+  display:flex; align-items:center; gap:.8rem; padding:.7rem 1rem;
+  padding-bottom:calc(.7rem + env(safe-area-inset-bottom, 0px));
+  background:rgba(18,22,16,.92); color:#eef0e6;
+}
+#bildschau-text{flex:1; font-size:.9rem; line-height:1.35;}
+#bildschau-text small{display:block; font-size:.72rem; opacity:.65;}
+#bildschau-zu{
+  min-width:3rem; min-height:3rem; border-radius:999px; border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.12); color:#fff; font-size:1.1rem; cursor:pointer; flex:none;
+}
+#bildschau-zu:hover{background:rgba(255,255,255,.2);}
+.tafel, .lernkarte .foto, .fotoplatz img{cursor:zoom-in;}
 .saeulen{display:flex; align-items:flex-end; gap:3px; height:5.4rem; padding-top:.9rem;}
 .saeule{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
   height:100%; position:relative;}
@@ -598,6 +625,14 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
     <button id="knopf-karte" class="leiste-knopf" aria-label="Wegkarte" title="Wegkarte">&#9781;</button>
     <button id="knopf-mehr" class="leiste-knopf" aria-label="Einstellungen" title="Einstellungen">&#9788;</button>
   </header>
+
+  <div id="bildschau" hidden role="dialog" aria-modal="true" aria-label="Bild groß">
+    <div id="bildschau-flaeche"><img id="bildschau-bild" alt=""></div>
+    <div id="bildschau-fuss">
+      <p id="bildschau-text"></p>
+      <button id="bildschau-zu" aria-label="Bild schließen">✕</button>
+    </div>
+  </div>
 
   <main>
     <!-- ============ Start ============ -->
@@ -4451,6 +4486,7 @@ function zeigeAnsicht(name){
   $('#zurueck').hidden = !a.zurueck;
   $('#knopf-karte').hidden = (name === 'spiel');
   $('#knopf-mehr').hidden = (name === 'spiel');
+  bildSchliessen();
   const ruht = (name === 'spiel');
   if(ruht) document.documentElement.setAttribute('data-spiel', '1');
   else document.documentElement.removeAttribute('data-spiel');
@@ -5145,13 +5181,43 @@ function tafelBild(d, klasse){
   img.loading = 'lazy';
   img.onerror = () => { const q = img.nextElementSibling; if(q && q.classList.contains('tafelquelle')) q.remove(); img.remove(); };
   img.src = 'bilder/' + d.b;
-  return img;
+  return zumVergroessern(img, d.n, (d.q === 'a')
+    ? 'Historische Pflanzentafel — gemeinfrei'
+    : 'Köhlers Medizinal-Pflanzen, 1887 — gemeinfrei');
 }
 function tafelQuelle(d){
   return mach('p', 'tafelquelle', (d && d.q === 'a')
     ? 'Historische Pflanzentafel — gemeinfrei'
     : 'Tafel aus Köhlers Medizinal-Pflanzen, 1887 — gemeinfrei');
 }
+/* Ein Bild groß ansehen — antippen schließt, noch einmal antippen zoomt */
+function bildZeigen(quelle, text, zusatz){
+  const schau = $('#bildschau');
+  const bild = $('#bildschau-bild');
+  if(!schau || !bild) return;
+  bild.classList.remove('nah');
+  bild.src = quelle;
+  bild.alt = text || '';
+  const feld = $('#bildschau-text');
+  feld.innerHTML = '';
+  feld.appendChild(document.createTextNode(text || ''));
+  if(zusatz) feld.appendChild(mach('small', null, zusatz));
+  schau.hidden = false;
+  try{ $('#bildschau-zu').focus(); }catch(e){}
+}
+function bildSchliessen(){
+  const schau = $('#bildschau');
+  if(!schau) return;
+  schau.hidden = true;
+  $('#bildschau-bild').classList.remove('nah');
+  $('#bildschau-bild').removeAttribute('src');
+}
+function zumVergroessern(img, text, zusatz){
+  img.onclick = () => bildZeigen(img.src, text, zusatz);
+  img.title = 'Antippen zum Vergrößern';
+  return img;
+}
+
 function bildVorhanden(d){
   if(!d.b) return Promise.resolve(false);
   if(d.b in tafelBekannt) return Promise.resolve(tafelBekannt[d.b]);
@@ -5548,7 +5614,7 @@ function zeichneKasten(){
       img.className = 'foto';
       img.src = bild;
       img.alt = 'Eigenes Foto zu ' + d.n;
-      karte.appendChild(img);
+      karte.appendChild(zumVergroessern(img, d.n, 'Dein eigenes Foto'));
     }
   }
   $('#kasten-umdrehen').hidden = kastenGedreht;
@@ -5629,7 +5695,7 @@ function zeichneKkarte(){
     const img = document.createElement('img');
     img.src = bild;
     img.alt = 'Eigenes Foto zu ' + d.n;
-    platz.appendChild(img);
+    platz.appendChild(zumVergroessern(img, d.n, 'Dein eigenes Foto'));
     $('#kkarte-fotoweg').hidden = false;
   }else{
     platz.appendChild(mach('p', null, 'Noch kein Foto. Hier passt das Bild aus deinem Blatt oder aus dem Buch hinein.'));
@@ -5685,6 +5751,12 @@ $('#knopf-wett').onclick = () => zeigeAnsicht('wett');
 $('#tuer-kraeuter').onclick = () => zeigeAnsicht('kraut');
 $('#tuer-denkstube').onclick = () => zeigeAnsicht('start');
 $('#kraut-zurueck').onclick = () => zeigeAnsicht('start');
+$('#bildschau-zu').onclick = () => bildSchliessen();
+$('#bildschau').onclick = (e) => { if(e.target.id === 'bildschau' || e.target.id === 'bildschau-flaeche') bildSchliessen(); };
+$('#bildschau-bild').onclick = () => $('#bildschau-bild').classList.toggle('nah');
+window.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && !$('#bildschau').hidden) bildSchliessen();
+});
 $('#kraut-kasten-knopf').onclick = () => starteKasten();
 $('#kraut-alle').onclick = () => zeigeAnsicht('kliste');
 $('#kliste-zurueck').onclick = () => zeigeAnsicht('kraut');
