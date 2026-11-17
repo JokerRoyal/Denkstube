@@ -1,0 +1,7 @@
+# Binärdateien nie als Text behandeln — sonst zerstört Git beim Auschecken
+# unter Windows die Zeilenenden in PDF, Bildern und Zip.
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.zip binary
