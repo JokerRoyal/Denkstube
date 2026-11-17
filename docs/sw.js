@@ -1,7 +1,7 @@
 /* Die Denkstube — Service Worker.
    Kern der App wird beim ersten Öffnen abgelegt, danach zuerst aus dem Gerät
    beantwortet. Schriften und alles Weitere wandern beim ersten Gebrauch dazu. */
-const CACHE = 'denkstube-v17';
+const CACHE = 'denkstube-v18';
 const KERN = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 /* Die Pflanzentafeln kommen beim ersten Oeffnen mit ins Geraet, damit die
    Kraeuterkammer auch ohne Netz Bilder zeigt. */

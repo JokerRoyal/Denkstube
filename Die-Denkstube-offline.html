@@ -912,6 +912,8 @@ main{flex:1; width:100%; max-width:640px; margin:0 auto; padding:1.15rem 1rem 3r
       </div>
 
       <button class="knopf" id="kraut-alle">Alle vierzig Karten ansehen</button>
+      <a class="knopf" id="kraut-pdf" href="Lernkarten-Kraeuterkammer.pdf" download hidden
+         style="text-decoration:none">Lernkarten zum Ausdrucken (PDF)</a>
       <button class="knopf knopf-still" id="kraut-zurueck">Zurück zum Gedächtnistraining</button>
     </section>
 
@@ -5549,6 +5551,10 @@ function zeichneKraut(){
       runden.appendChild(z);
     });
   }
+
+  /* Das PDF gibt es nur in der App auf dem Handy, nicht in der Claude-Vorschau */
+  const pdfKnopf = $('#kraut-pdf');
+  if(pdfKnopf) pdfKnopf.hidden = !document.querySelector('link[rel="manifest"]');
 
   const gruppen = $('#kraut-gruppen');
   gruppen.innerHTML = '';
